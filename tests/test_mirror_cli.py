@@ -25,12 +25,16 @@ class MirrorCliTests(unittest.TestCase):
           <img src="chart.png" alt="Chart"><p>Final paragraph.</p>
           </article><footer>Site footer content</footer></body></html>''')
         (self.fixtures / "no-date.html").write_text((self.fixtures / "article.html").read_text())
+        (self.fixtures / "updated-only.html").write_text((self.fixtures / "article.html").read_text())
         article_url = (self.fixtures / "article.html").as_uri()
         no_date_url = (self.fixtures / "no-date.html").as_uri()
+        updated_only_url = (self.fixtures / "updated-only.html").as_uri()
         feed = f'''<?xml version="1.0"?><rss><channel><item>
           <title>Copilot fixture update</title><link>{article_url}</link><guid>fixture-1</guid>
           <pubDate>Tue, 29 Sep 2026 12:30:00 GMT</pubDate>
         </item><item><title>No publication date</title><link>{no_date_url}</link></item>
+        <item><title>Updated but not published</title><link>{updated_only_url}</link>
+          <updated>Wed, 30 Sep 2026 12:30:00 GMT</updated></item>
         </channel></rss>'''
         (self.fixtures / "feed.xml").write_text(feed)
 
@@ -56,7 +60,7 @@ class MirrorCliTests(unittest.TestCase):
         self.assertEqual(self.git("status", "--porcelain").stdout, "")
         self.assertEqual(self.git("ls-tree", "--name-only", "mirror-data").stdout.strip(), "posts")
         paths = self.git("ls-tree", "-r", "--name-only", "mirror-data").stdout.splitlines()
-        self.assertEqual(len(paths), 2)
+        self.assertEqual(len(paths), 3)
         archived = self.git("show", f"mirror-data:{paths[0]}").stdout
         self.assertIn("source_url: file://", archived)
         self.assertIn("published_at: 2026-09-29T12:30:00+00:00", archived)
@@ -67,6 +71,8 @@ class MirrorCliTests(unittest.TestCase):
         self.assertNotIn("Site footer content", archived)
         optional_date = self.git("show", f"mirror-data:{paths[1]}").stdout
         self.assertNotIn("published_at:", optional_date)
+        updated_only = self.git("show", f"mirror-data:{paths[2]}").stdout
+        self.assertNotIn("published_at:", updated_only)
 
         first_commit = self.git("rev-parse", "mirror-data").stdout.strip()
         self.run_mirror()

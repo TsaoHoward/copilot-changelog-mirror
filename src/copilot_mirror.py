@@ -73,8 +73,6 @@ def parse_feed(xml_content: bytes, feed_url: str) -> list[FeedPost]:
             continue
         title = _child_text(element, "title") or link
         published = _child_text(element, "pubdate") or _child_text(element, "published")
-        if published is None:
-            published = _child_text(element, "updated")
         posts.append(FeedPost(title, _absolute_url(feed_url, link), _normalize_date(published)))
     return posts
 
