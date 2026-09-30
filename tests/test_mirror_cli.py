@@ -22,7 +22,8 @@ class MirrorCliTests(unittest.TestCase):
         self.fixtures.mkdir()
         (self.fixtures / "article.html").write_text('''<html><body><article><h1>Fixture update</h1>
           <p>Full <strong>article</strong> text.</p><ul><li>First point</li></ul>
-          </article></body></html>''')
+          <img src="chart.png" alt="Chart"><p>Final paragraph.</p>
+          </article><footer>Site footer content</footer></body></html>''')
         (self.fixtures / "no-date.html").write_text((self.fixtures / "article.html").read_text())
         article_url = (self.fixtures / "article.html").as_uri()
         no_date_url = (self.fixtures / "no-date.html").as_uri()
@@ -62,6 +63,8 @@ class MirrorCliTests(unittest.TestCase):
         self.assertIn("fetched_at:", archived)
         self.assertIn("Full **article** text.", archived)
         self.assertIn("- First point", archived)
+        self.assertIn("![Chart](chart.png)", archived)
+        self.assertNotIn("Site footer content", archived)
         optional_date = self.git("show", f"mirror-data:{paths[1]}").stdout
         self.assertNotIn("published_at:", optional_date)
 

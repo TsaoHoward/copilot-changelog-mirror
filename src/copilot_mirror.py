@@ -88,6 +88,7 @@ class ArticleMarkdown(HTMLParser):
 
     BLOCKS = {"p", "div", "section", "article", "header", "footer", "ul", "ol", "li", "blockquote", "pre", "table", "tr"}
     SKIP = {"script", "style", "noscript", "svg", "iframe", "nav"}
+    VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
     TARGET_CLASSES = {"entry-content", "wp-block-post-content", "changelog-entry__content", "wp-block-changelog-entry__content"}
 
     def __init__(self):
@@ -100,6 +101,7 @@ class ArticleMarkdown(HTMLParser):
         self.list_stack: list[tuple[str, int]] = []
         self.pre_depth = 0
         self.target_tag: str | None = None
+        self.finished_target = False
 
     def _flush(self):
         value = "".join(self.inline).strip()
@@ -113,13 +115,16 @@ class ArticleMarkdown(HTMLParser):
             self.lines.append("")
 
     def handle_starttag(self, tag, attrs):
+        if self.finished_target:
+            return
         attrs = dict(attrs)
         if tag in self.SKIP:
             self.skip_depth += 1
             return
         if self.skip_depth:
             return
-        self.depth += 1
+        if tag not in self.VOID:
+            self.depth += 1
         classes = set((attrs.get("class") or "").split())
         if self.target_depth is None and (tag == "article" or classes & self.TARGET_CLASSES):
             self.target_depth = self.depth
@@ -161,6 +166,8 @@ class ArticleMarkdown(HTMLParser):
             self.inline.append(f"![{attrs['alt']}]({attrs.get('src', '')})")
 
     def handle_endtag(self, tag):
+        if self.finished_target or tag in self.VOID:
+            return
         if tag in self.SKIP:
             self.skip_depth = max(0, self.skip_depth - 1)
             return
@@ -189,10 +196,11 @@ class ArticleMarkdown(HTMLParser):
         if self.target_depth == self.depth and tag == self.target_tag:
             self.target_depth = None
             self.target_tag = None
+            self.finished_target = True
         self.depth = max(0, self.depth - 1)
 
     def handle_data(self, data):
-        if self.skip_depth or (self.target_depth is not None and self.depth < self.target_depth):
+        if self.finished_target or self.skip_depth or (self.target_depth is not None and self.depth < self.target_depth):
             return
         cleaned = re.sub(r"\s+", " ", data)
         if cleaned.strip():
