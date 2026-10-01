@@ -80,6 +80,7 @@ class PagesArtifactTests(unittest.TestCase):
             shutil.copy(PROJECT_ROOT / "_config.yml", source / "_config.yml")
             shutil.copy(PROJECT_ROOT / "index.md", source / "index.md")
             shutil.copytree(PROJECT_ROOT / "_layouts", source / "_layouts", dirs_exist_ok=True)
+            shutil.copytree(PROJECT_ROOT / "_plugins", source / "_plugins", dirs_exist_ok=True)
             (source / "_archive" / "available-date.md").write_text(
                 """---
 source_url: https://github.blog/changelog/copilot-fixture/
