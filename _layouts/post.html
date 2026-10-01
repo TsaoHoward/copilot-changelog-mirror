@@ -3,7 +3,7 @@ layout: default
 ---
 <nav><a href="{{ '/' | relative_url }}">← All posts</a></nav>
 <article>
-  <h1>{{ page.title | replace: '-', ' ' | replace: '_', ' ' | capitalize | escape }}</h1>
+  <h1>{% include archive-title.html post=page %}</h1>
   <dl>
     <dt>Source</dt>
     <dd><a href="{{ page.source_url | escape }}">{{ page.source_url | escape }}</a></dd>

@@ -14,7 +14,7 @@ There are no archived posts yet.
 {% else %}
 <ul>
 {% for post in posts %}
-  <li><a href="{{ post.url | relative_url }}">{{ post.title | replace: '-', ' ' | replace: '_', ' ' | capitalize | escape }}</a></li>
+  <li><a href="{{ post.url | relative_url }}">{% include archive-title.html post=post %}</a></li>
 {% endfor %}
 </ul>
 {% endif %}

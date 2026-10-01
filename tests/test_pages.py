@@ -93,6 +93,8 @@ No publication time was available.
 
             self.assertIn("/copilot-changelog-mirror/posts/available-date/", listing)
             self.assertIn("/copilot-changelog-mirror/posts/no-date/", listing)
+            self.assertIn("Fixture update", listing)
+            self.assertNotIn("Available date", listing)
             self.assertIn("All posts", article)
             self.assertIn("Fixture update", article)
             self.assertIn("https://github.blog/changelog/copilot-fixture/", article)
