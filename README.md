@@ -1,6 +1,6 @@
 # Copilot Changelog Mirror
 
-A small, manually run mirror of public GitHub Copilot Changelog articles. It reads the official RSS feed, fetches each linked article, converts its article body to Markdown, and commits the archive to the separate `mirror-data` Git branch. The branch is created as an orphan on the first run, so it contains archive content without the application files from `main`.
+A small GitHub Actions workflow and CLI for mirroring public GitHub Copilot Changelog articles. It reads the official RSS feed, fetches each linked article, converts its article body to Markdown, and commits the archive to the separate `mirror-data` Git branch. The branch is created as an orphan on the first run, so it contains archive content without the application files from `main`.
 
 ## Requirements
 
@@ -39,7 +39,9 @@ uv run python -m unittest discover -s tests -v
 
 ## GitHub Pages
 
-The `Publish archive to GitHub Pages` workflow builds the Jekyll site from `main` and the Markdown posts on `mirror-data`. It runs only when started manually from the Actions tab and does not run the mirror. The remote `mirror-data` branch must exist before the workflow can publish. For the first publication, run the mirror once from a checkout and push its new branch:
+The `Mirror and publish Copilot Changelog` workflow runs the mirror and publishes the site at 06:17 and 12:17 in the `Asia/Taipei` timezone. It can also be started manually to run the same end-to-end flow. The workflow fetches existing `mirror-data` history when that branch is present. On the first run, it lets the mirror create the branch, pushes it, and then calls the Pages build and deployment workflow.
+
+The `Publish archive to GitHub Pages` workflow remains available as a manual Pages-only recovery path. It builds the Jekyll site from `main` and the Markdown posts on `mirror-data`. The remote `mirror-data` branch must exist before this Pages-only workflow can publish. The full mirror-and-publish workflow can create it automatically; to bootstrap it manually instead, run the mirror once from a checkout and push its new branch:
 
 ```sh
 uv run copilot-mirror

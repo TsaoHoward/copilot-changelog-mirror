@@ -1,11 +1,14 @@
+import os
 import shutil
 import subprocess
 import tempfile
+import textwrap
 import unittest
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = PROJECT_ROOT / ".github" / "workflows" / "publish-pages.yml"
+ORCHESTRATION_WORKFLOW = PROJECT_ROOT / ".github" / "workflows" / "mirror-and-publish.yml"
 CI_WORKFLOW = PROJECT_ROOT / ".github" / "workflows" / "ci.yml"
 
 
@@ -104,6 +107,123 @@ class PagesWorkflowTests(unittest.TestCase):
                 for block in deploy_step_blocks
             )
         )
+
+    def test_workflow_can_be_called_after_mirror_while_remaining_manually_runnable(self):
+        lines = WORKFLOW.read_text(encoding="utf-8").splitlines()
+        triggers = yaml_block(lines, "on:", 0)
+
+        self.assertIn("  workflow_dispatch:", triggers)
+        self.assertIn("  workflow_call:", triggers)
+
+
+class OrchestrationWorkflowTests(unittest.TestCase):
+    def test_schedules_and_manual_trigger_run_the_mirror_then_reusable_pages_workflow(self):
+        lines = ORCHESTRATION_WORKFLOW.read_text(encoding="utf-8").splitlines()
+        triggers = yaml_block(lines, "on:", 0)
+        schedule = yaml_block(triggers, "schedule:", 2)
+        root_permissions = yaml_block(lines, "permissions:", 0)
+        jobs = yaml_block(lines, "jobs:", 0)
+        mirror = yaml_block(jobs, "mirror:", 2)
+        mirror_permissions = yaml_block(mirror, "permissions:", 4)
+        mirror_steps = yaml_block(mirror, "steps:", 4)
+        publish = yaml_block(jobs, "publish:", 2)
+        publish_permissions = yaml_block(publish, "permissions:", 4)
+        mirror_step_blocks = ["\n".join(block) for block in list_item_blocks(mirror_steps, 6)]
+        archive_fetch_step = next(
+            block for block in mirror_step_blocks if "Fetch existing archive history" in block
+        )
+        mirror_commands = [
+            line.strip().removeprefix("run: ")
+            for block in mirror_step_blocks
+            for line in block.splitlines()
+            if line.strip().startswith("run: ")
+        ]
+        schedule_config = [line.strip().removeprefix("- ") for line in schedule]
+        trigger_config = [line.strip() for line in triggers]
+        mirror_permission_config = [line.strip() for line in mirror_permissions]
+        publish_permission_config = [line.strip() for line in publish_permissions]
+
+        self.assertEqual(
+            [line for line in schedule_config if line.startswith("cron:")],
+            ['cron: "17 6,12 * * *"'],
+        )
+        self.assertIn('timezone: "Asia/Taipei"', schedule_config)
+        self.assertIn("workflow_dispatch:", trigger_config)
+        self.assertNotIn("contents: write", [line.strip() for line in root_permissions])
+        self.assertIn("contents: write", mirror_permission_config)
+        self.assertEqual(len(mirror_permission_config), 2)
+        self.assertIn("needs: mirror", [line.strip() for line in publish])
+        self.assertIn(
+            "uses: ./.github/workflows/publish-pages.yml",
+            [line.strip() for line in publish],
+        )
+        self.assertCountEqual(
+            publish_permission_config,
+            [
+                "permissions:",
+                "contents: read",
+                "pages: write",
+                "id-token: write",
+            ],
+        )
+        mirror_command = "uv run copilot-mirror"
+        push_command = "git push origin mirror-data"
+        self.assertIn(
+            "git ls-remote --exit-code --heads origin refs/heads/mirror-data",
+            archive_fetch_step,
+        )
+        self.assertIn('[ "$status" -eq 2 ]', archive_fetch_step)
+        self.assertIn('exit "$status"', archive_fetch_step)
+        self.assertIn(
+            "git fetch origin mirror-data:refs/remotes/origin/mirror-data",
+            archive_fetch_step,
+        )
+        self.assertLess(
+            mirror_step_blocks.index(archive_fetch_step),
+            next(
+                index for index, block in enumerate(mirror_step_blocks) if mirror_command in block
+            ),
+        )
+        self.assertLess(mirror_commands.index(mirror_command), mirror_commands.index(push_command))
+
+    def test_archive_history_fetch_bootstraps_without_hiding_remote_errors(self):
+        lines = ORCHESTRATION_WORKFLOW.read_text(encoding="utf-8").splitlines()
+        jobs = yaml_block(lines, "jobs:", 0)
+        mirror = yaml_block(jobs, "mirror:", 2)
+        mirror_steps = yaml_block(mirror, "steps:", 4)
+        fetch_step = next(
+            "\n".join(block)
+            for block in list_item_blocks(mirror_steps, 6)
+            if "Fetch existing archive history" in "\n".join(block)
+        )
+        fetch_script = textwrap.dedent(fetch_step.split("run: |", 1)[1])
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            fake_git = Path(temp_dir) / "git"
+            for lookup_status, fetch_status, expected_status, should_fetch in (
+                (0, 0, 0, True),
+                (2, 0, 0, False),
+                (128, 0, 128, False),
+                (0, 128, 128, True),
+            ):
+                fake_git.write_text(
+                    "#!/bin/sh\n"
+                    f'if [ "$1" = "ls-remote" ]; then exit {lookup_status}; fi\n'
+                    f'if [ "$1" = "fetch" ]; then printf "fetched\\n"; exit {fetch_status}; fi\n'
+                    "exit 99\n",
+                    encoding="utf-8",
+                )
+                fake_git.chmod(0o755)
+                result = subprocess.run(
+                    ["bash", "-e", "-o", "pipefail", "-c", fetch_script],
+                    env={**os.environ, "PATH": f"{temp_dir}:/usr/bin:/bin"},
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                )
+
+                self.assertEqual(result.returncode, expected_status)
+                self.assertEqual("fetched" in result.stdout, should_fetch)
 
     def test_ci_installs_locked_jekyll_dependencies_before_running_tests(self):
         lines = CI_WORKFLOW.read_text(encoding="utf-8").splitlines()

@@ -2,6 +2,7 @@ name: Publish archive to GitHub Pages
 
 on:
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
