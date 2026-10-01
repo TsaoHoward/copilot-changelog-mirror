@@ -49,6 +49,8 @@ The **full article** is preserved, including [links](https://example.com) and li
 - First point
 - Second point
 
+![Fixture chart](images/chart.png)
+
 ```python
 print("article code")
 ```
@@ -103,6 +105,9 @@ No publication time was available.
             self.assertIn("The <strong>full article</strong> is preserved", article)
             self.assertIn('<a href="https://example.com">links</a>', article)
             self.assertIn("<li>First point</li>", article)
+            self.assertIn(
+                'src="https://github.blog/changelog/copilot-fixture/images/chart.png"', article
+            )
             self.assertIn("article code", article)
             self.assertIn("No publication time was available.", no_date)
             self.assertNotIn("Published", no_date)

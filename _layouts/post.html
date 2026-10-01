@@ -15,5 +15,5 @@ layout: default
     <dd>{{ page.fetched_at | escape }}</dd>
   </dl>
   <hr>
-  <div class="article-content">{{ content }}</div>
+  <div class="article-content">{{ content | resolve_archive_relative_urls: page.source_url }}</div>
 </article>
