@@ -57,7 +57,10 @@ class PagesWorkflowTests(unittest.TestCase):
             )
         )
         self.assertTrue(
-            any("mirror-data has no Markdown posts" in block for block in build_step_blocks)
+            any(
+                "scripts/stage_archive.py archive-source/posts _archive" in block
+                for block in build_step_blocks
+            )
         )
         self.assertTrue(any("bundle exec jekyll build" in block for block in build_step_blocks))
         self.assertTrue(
@@ -69,6 +72,36 @@ class PagesWorkflowTests(unittest.TestCase):
         self.assertNotIn("copilot-mirror", WORKFLOW.read_text(encoding="utf-8"))
 
 
+class ArchiveStagingTests(unittest.TestCase):
+    def test_stages_markdown_from_issue_2_posts_directory(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            posts = root / "archive-source" / "posts"
+            posts.mkdir(parents=True)
+            (posts / "fixture.md").write_text(
+                "---\nsource_url: https://example.com/post/\nfetched_at: 2026-10-01T00:00:00Z\n---\n\nBody.\n",
+                encoding="utf-8",
+            )
+            destination = root / "_archive"
+
+            subprocess.run(
+                [
+                    "python3",
+                    str(PROJECT_ROOT / "scripts" / "stage_archive.py"),
+                    str(posts),
+                    str(destination),
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(
+                (destination / "fixture.md").read_text(encoding="utf-8"),
+                (posts / "fixture.md").read_text(encoding="utf-8"),
+            )
+
+
 @unittest.skipUnless(shutil.which("bundle"), "Ruby Bundler is required for the Jekyll build")
 class PagesArtifactTests(unittest.TestCase):
     def test_fixture_archive_builds_browsable_pages_with_provenance(self):
@@ -76,12 +109,14 @@ class PagesArtifactTests(unittest.TestCase):
             root = Path(temp_dir)
             source = root / "source"
             (source / "_layouts").mkdir(parents=True)
-            (source / "_archive").mkdir()
+            archive_posts = source / "archive-source" / "posts"
+            archive_posts.mkdir(parents=True)
             shutil.copy(PROJECT_ROOT / "_config.yml", source / "_config.yml")
             shutil.copy(PROJECT_ROOT / "index.md", source / "index.md")
             shutil.copytree(PROJECT_ROOT / "_layouts", source / "_layouts", dirs_exist_ok=True)
             shutil.copytree(PROJECT_ROOT / "_plugins", source / "_plugins", dirs_exist_ok=True)
-            (source / "_archive" / "available-date.md").write_text(
+            shutil.copytree(PROJECT_ROOT / "scripts", source / "scripts", dirs_exist_ok=True)
+            (archive_posts / "available-date.md").write_text(
                 """---
 source_url: https://github.blog/changelog/copilot-fixture/
 published_at: 2026-09-29T12:30:00+00:00
@@ -103,7 +138,7 @@ print("article code")
 """,
                 encoding="utf-8",
             )
-            (source / "_archive" / "no-date.md").write_text(
+            (archive_posts / "no-date.md").write_text(
                 """---
 source_url: https://github.blog/changelog/copilot-no-date/
 fetched_at: 2026-10-01T01:01:00+00:00
@@ -112,6 +147,18 @@ fetched_at: 2026-10-01T01:01:00+00:00
 No publication time was available.
 """,
                 encoding="utf-8",
+            )
+
+            subprocess.run(
+                [
+                    "python3",
+                    str(source / "scripts" / "stage_archive.py"),
+                    str(archive_posts),
+                    str(source / "_archive"),
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
             )
 
             destination = root / "_site"

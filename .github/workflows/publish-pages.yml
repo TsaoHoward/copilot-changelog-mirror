@@ -26,11 +26,7 @@ jobs:
           path: archive-source
 
       - name: Validate and stage archive
-        run: |
-          test -d archive-source/posts || { echo "mirror-data has no posts directory" >&2; exit 1; }
-          test -n "$(find archive-source/posts -maxdepth 1 -type f -name '*.md' -print -quit)" || { echo "mirror-data has no Markdown posts" >&2; exit 1; }
-          mkdir -p _archive
-          cp archive-source/posts/*.md _archive/
+        run: python3 scripts/stage_archive.py archive-source/posts _archive
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1

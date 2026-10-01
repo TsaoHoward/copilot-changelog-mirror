@@ -20,4 +20,5 @@ exclude:
   - Gemfile.lock
   - README.md
   - tests
+  - scripts
   - archive-source
