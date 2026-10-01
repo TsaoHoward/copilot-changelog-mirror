@@ -1,0 +1,24 @@
+title: Copilot Changelog Archive
+description: A browsable mirror of public GitHub Copilot Changelog posts.
+markdown: kramdown
+permalink: pretty
+
+collections:
+  archive:
+    output: true
+    permalink: /posts/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: archive
+    values:
+      layout: post
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - tests
+  - scripts
+  - archive-source

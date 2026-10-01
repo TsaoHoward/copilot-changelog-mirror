@@ -1,0 +1,8 @@
+{% assign rendered = include.post.content | markdownify %}
+{% assign heading_chunk = rendered | split: '</h1>' | first %}
+{% assign heading = heading_chunk | split: '>' | last | strip_html | strip %}
+{% if rendered contains '</h1>' and heading != '' %}
+{{ heading | escape }}
+{% else %}
+{{ include.post.title | replace: '-', ' ' | replace: '_', ' ' | capitalize | escape }}
+{% endif %}
