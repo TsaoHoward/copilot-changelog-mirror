@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if page.title %}{{ page.title | escape }} · {% endif %}{{ site.title | escape }}</title>
+    <style>
+      :root { color-scheme: light; font: 17px/1.65 system-ui, sans-serif; color: #24292f; background: #f6f8fa; }
+      body { margin: 0; }
+      header, main, footer { box-sizing: border-box; width: min(100% - 2rem, 54rem); margin-inline: auto; }
+      header { padding-block: 2rem 1rem; }
+      header a { color: inherit; font-weight: 700; text-decoration: none; }
+      main { padding: 2rem; background: white; border: 1px solid #d0d7de; border-radius: 8px; }
+      footer { padding-block: 1.5rem 3rem; color: #57606a; font-size: .9rem; }
+      a { color: #0969da; }
+      img { max-width: 100%; height: auto; }
+      pre { overflow-x: auto; padding: 1rem; background: #f6f8fa; border-radius: 6px; }
+      code { font-family: ui-monospace, SFMono-Regular, monospace; }
+      @media (max-width: 40rem) { main { padding: 1.25rem; } }
+    </style>
+  </head>
+  <body>
+    <header><a href="{{ '/' | relative_url }}">{{ site.title | escape }}</a></header>
+    <main>{{ content }}</main>
+    <footer>Mirrored from the public GitHub Copilot Changelog. Follow each source link for the official article.</footer>
+  </body>
+</html>

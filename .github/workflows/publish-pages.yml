@@ -1,0 +1,64 @@
+name: Publish archive to GitHub Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out site source
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Check out archive branch
+        uses: actions/checkout@v4
+        with:
+          ref: mirror-data
+          path: archive-source
+
+      - name: Validate and stage archive
+        run: |
+          test -d archive-source/posts || { echo "mirror-data has no posts directory" >&2; exit 1; }
+          test -n "$(find archive-source/posts -maxdepth 1 -type f -name '*.md' -print -quit)" || { echo "mirror-data has no Markdown posts" >&2; exit 1; }
+          mkdir -p _archive
+          cp archive-source/posts/*.md _archive/
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build site
+        run: bundle exec jekyll build --baseurl "/${GITHUB_REPOSITORY#*/}"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy Pages artifact
+        id: deployment
+        uses: actions/deploy-pages@v4
