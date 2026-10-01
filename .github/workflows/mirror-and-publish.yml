@@ -33,7 +33,18 @@ jobs:
         run: uv sync --locked
 
       - name: Fetch existing archive history
-        run: git fetch origin mirror-data:refs/remotes/origin/mirror-data
+        shell: bash
+        run: |
+          if git ls-remote --exit-code --heads origin refs/heads/mirror-data >/dev/null; then
+            git fetch origin mirror-data:refs/remotes/origin/mirror-data
+          else
+            status=$?
+            if [ "$status" -eq 2 ]; then
+              echo "Remote mirror-data branch does not exist yet; the mirror will create it."
+            else
+              exit "$status"
+            fi
+          fi
 
       - name: Configure archive commit identity
         run: |
