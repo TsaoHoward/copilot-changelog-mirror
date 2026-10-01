@@ -39,4 +39,11 @@ uv run python -m unittest discover -s tests -v
 
 ## GitHub Pages
 
-The `Publish archive to GitHub Pages` workflow builds the Jekyll site from `main` and the Markdown posts on `mirror-data`. It runs only when started manually from the Actions tab and does not run the mirror. Before the first publication, set the repository's Pages build and deployment source to **GitHub Actions** under **Settings → Pages**. Then run the workflow from **Actions → Publish archive to GitHub Pages → Run workflow**.
+The `Publish archive to GitHub Pages` workflow builds the Jekyll site from `main` and the Markdown posts on `mirror-data`. It runs only when started manually from the Actions tab and does not run the mirror. The remote `mirror-data` branch must exist before the workflow can publish. For the first publication, run the mirror once from a checkout and push its new branch:
+
+```sh
+uv run copilot-mirror
+git push origin mirror-data
+```
+
+Then set the repository's Pages build and deployment source to **GitHub Actions** under **Settings → Pages**, and run the workflow from **Actions → Publish archive to GitHub Pages → Run workflow**.

@@ -6,6 +6,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = PROJECT_ROOT / ".github" / "workflows" / "publish-pages.yml"
+CI_WORKFLOW = PROJECT_ROOT / ".github" / "workflows" / "ci.yml"
 
 
 def yaml_block(lines, header, indent):
@@ -52,6 +53,12 @@ class PagesWorkflowTests(unittest.TestCase):
             for line in block.splitlines()
             if line.strip().startswith("run: ")
         ]
+        action_refs = [
+            line.strip().split("uses: ", 1)[1].split("@", 1)[1].split()[0]
+            for block in [*build_step_blocks, *deploy_step_blocks]
+            for line in block.splitlines()
+            if "uses: " in line
+        ]
 
         self.assertIn("  workflow_dispatch:", triggers)
         self.assertFalse(any("schedule:" in line for line in triggers))
@@ -69,6 +76,13 @@ class PagesWorkflowTests(unittest.TestCase):
             )
         )
         self.assertTrue(any("bundle exec jekyll build" in block for block in build_step_blocks))
+        self.assertTrue(action_refs)
+        self.assertTrue(
+            all(
+                len(ref) == 40 and all(char in "0123456789abcdef" for char in ref)
+                for ref in action_refs
+            )
+        )
         self.assertCountEqual(
             build_commands,
             [
@@ -77,11 +91,41 @@ class PagesWorkflowTests(unittest.TestCase):
             ],
         )
         self.assertTrue(
-            any("actions/upload-pages-artifact@v4" in block for block in build_step_blocks)
+            any(
+                "actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b" in block
+                for block in build_step_blocks
+            )
         )
         self.assertIn("      pages: write", deploy_permissions)
         self.assertIn("      id-token: write", deploy_permissions)
-        self.assertTrue(any("actions/deploy-pages@v4" in block for block in deploy_step_blocks))
+        self.assertTrue(
+            any(
+                "actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e" in block
+                for block in deploy_step_blocks
+            )
+        )
+
+    def test_ci_installs_locked_jekyll_dependencies_before_running_tests(self):
+        lines = CI_WORKFLOW.read_text(encoding="utf-8").splitlines()
+        jobs = yaml_block(lines, "jobs:", 0)
+        python_job = yaml_block(jobs, "python:", 2)
+        steps = yaml_block(python_job, "steps:", 4)
+        step_blocks = ["\n".join(block) for block in list_item_blocks(steps, 6)]
+        ruby_step = next(block for block in step_blocks if "ruby/setup-ruby@" in block)
+        test_step_index = next(
+            index for index, block in enumerate(step_blocks) if "unittest discover" in block
+        )
+
+        self.assertIn('ruby-version: "3.3"', ruby_step)
+        self.assertIn("bundler-cache: true", ruby_step)
+        self.assertTrue(
+            all(
+                len(ref) == 40 and all(char in "0123456789abcdef" for char in ref)
+                for ref in [ruby_step.split("ruby/setup-ruby@", 1)[1].split()[0]]
+            )
+        )
+        self.assertTrue(test_step_index > step_blocks.index(ruby_step))
+        self.assertTrue((PROJECT_ROOT / "Gemfile.lock").is_file())
 
 
 class ArchiveStagingTests(unittest.TestCase):
@@ -126,6 +170,7 @@ class PagesArtifactTests(unittest.TestCase):
             shutil.copy(PROJECT_ROOT / "_config.yml", source / "_config.yml")
             shutil.copy(PROJECT_ROOT / "index.md", source / "index.md")
             shutil.copytree(PROJECT_ROOT / "_layouts", source / "_layouts", dirs_exist_ok=True)
+            shutil.copytree(PROJECT_ROOT / "_includes", source / "_includes", dirs_exist_ok=True)
             shutil.copytree(PROJECT_ROOT / "_plugins", source / "_plugins", dirs_exist_ok=True)
             shutil.copytree(PROJECT_ROOT / "scripts", source / "scripts", dirs_exist_ok=True)
             (archive_posts / "available-date.md").write_text(
@@ -174,7 +219,7 @@ No publication time was available.
             )
 
             destination = root / "_site"
-            subprocess.run(
+            build_result = subprocess.run(
                 [
                     "bundle",
                     "exec",
@@ -188,10 +233,11 @@ No publication time was available.
                     "/copilot-changelog-mirror",
                 ],
                 cwd=PROJECT_ROOT,
-                check=True,
+                check=False,
                 capture_output=True,
                 text=True,
             )
+            self.assertEqual(build_result.returncode, 0, build_result.stdout + build_result.stderr)
 
             listing = (destination / "index.html").read_text(encoding="utf-8")
             article_path = destination / "posts" / "available-date" / "index.html"
@@ -205,8 +251,8 @@ No publication time was available.
             self.assertIn("All posts", article)
             self.assertIn("Fixture update", article)
             self.assertIn("https://github.blog/changelog/copilot-fixture/", article)
-            self.assertIn("2026-09-29T12:30:00+00:00", article)
-            self.assertIn("2026-10-01T01:00:00+00:00", article)
+            self.assertIn("2026-09-29 12:30:00 +0000", article)
+            self.assertIn("2026-10-01 01:00:00 +0000", article)
             self.assertIn("The <strong>full article</strong> is preserved", article)
             self.assertIn('<a href="https://example.com">links</a>', article)
             self.assertIn("<li>First point</li>", article)
