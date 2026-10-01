@@ -8,20 +8,65 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = PROJECT_ROOT / ".github" / "workflows" / "publish-pages.yml"
 
 
+def yaml_block(lines, header, indent):
+    marker = " " * indent + header
+    start = next(index for index, line in enumerate(lines) if line == marker)
+    end = start + 1
+    while end < len(lines):
+        line = lines[end]
+        if line.strip() and len(line) - len(line.lstrip()) <= indent:
+            break
+        end += 1
+    return lines[start:end]
+
+
+def list_item_blocks(lines, indent):
+    starts = [
+        index
+        for index, line in enumerate(lines)
+        if len(line) - len(line.lstrip()) == indent and line.lstrip().startswith("- ")
+    ]
+    blocks = []
+    for item_index, start in enumerate(starts):
+        end = starts[item_index + 1] if item_index + 1 < len(starts) else len(lines)
+        blocks.append(lines[start:end])
+    return blocks
+
+
 class PagesWorkflowTests(unittest.TestCase):
     def test_workflow_manually_builds_and_deploys_mirror_data(self):
-        workflow = WORKFLOW.read_text(encoding="utf-8")
+        lines = WORKFLOW.read_text(encoding="utf-8").splitlines()
+        triggers = yaml_block(lines, "on:", 0)
+        root_permissions = yaml_block(lines, "permissions:", 0)
+        jobs = yaml_block(lines, "jobs:", 0)
+        build = yaml_block(jobs, "build:", 2)
+        build_steps = yaml_block(build, "steps:", 4)
+        deploy = yaml_block(jobs, "deploy:", 2)
+        deploy_permissions = yaml_block(deploy, "permissions:", 4)
+        deploy_steps = yaml_block(deploy, "steps:", 4)
+        build_step_blocks = ["\n".join(block) for block in list_item_blocks(build_steps, 6)]
+        deploy_step_blocks = ["\n".join(block) for block in list_item_blocks(deploy_steps, 6)]
 
-        self.assertIn("workflow_dispatch:", workflow)
-        self.assertNotIn("schedule:", workflow)
-        self.assertIn("ref: mirror-data", workflow)
-        self.assertIn("pages: write", workflow)
-        self.assertIn("id-token: write", workflow)
-        self.assertIn("actions/upload-pages-artifact@v4", workflow)
-        self.assertIn("actions/deploy-pages@v4", workflow)
-        self.assertIn("bundle exec jekyll build", workflow)
-        self.assertIn("mirror-data has no Markdown posts", workflow)
-        self.assertNotIn("copilot-mirror", workflow)
+        self.assertIn("  workflow_dispatch:", triggers)
+        self.assertFalse(any("schedule:" in line for line in triggers))
+        self.assertIn("  contents: read", root_permissions)
+        self.assertTrue(
+            any(
+                "Check out archive branch" in block and "ref: mirror-data" in block
+                for block in build_step_blocks
+            )
+        )
+        self.assertTrue(
+            any("mirror-data has no Markdown posts" in block for block in build_step_blocks)
+        )
+        self.assertTrue(any("bundle exec jekyll build" in block for block in build_step_blocks))
+        self.assertTrue(
+            any("actions/upload-pages-artifact@v4" in block for block in build_step_blocks)
+        )
+        self.assertIn("      pages: write", deploy_permissions)
+        self.assertIn("      id-token: write", deploy_permissions)
+        self.assertTrue(any("actions/deploy-pages@v4" in block for block in deploy_step_blocks))
+        self.assertNotIn("copilot-mirror", WORKFLOW.read_text(encoding="utf-8"))
 
 
 @unittest.skipUnless(shutil.which("bundle"), "Ruby Bundler is required for the Jekyll build")
