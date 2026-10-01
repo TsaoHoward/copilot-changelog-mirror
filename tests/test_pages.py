@@ -46,6 +46,12 @@ class PagesWorkflowTests(unittest.TestCase):
         deploy_steps = yaml_block(deploy, "steps:", 4)
         build_step_blocks = ["\n".join(block) for block in list_item_blocks(build_steps, 6)]
         deploy_step_blocks = ["\n".join(block) for block in list_item_blocks(deploy_steps, 6)]
+        build_commands = [
+            line.strip().removeprefix("run: ")
+            for block in build_step_blocks
+            for line in block.splitlines()
+            if line.strip().startswith("run: ")
+        ]
 
         self.assertIn("  workflow_dispatch:", triggers)
         self.assertFalse(any("schedule:" in line for line in triggers))
@@ -63,13 +69,19 @@ class PagesWorkflowTests(unittest.TestCase):
             )
         )
         self.assertTrue(any("bundle exec jekyll build" in block for block in build_step_blocks))
+        self.assertCountEqual(
+            build_commands,
+            [
+                "python3 scripts/stage_archive.py archive-source/posts _archive",
+                'bundle exec jekyll build --baseurl "/${GITHUB_REPOSITORY#*/}"',
+            ],
+        )
         self.assertTrue(
             any("actions/upload-pages-artifact@v4" in block for block in build_step_blocks)
         )
         self.assertIn("      pages: write", deploy_permissions)
         self.assertIn("      id-token: write", deploy_permissions)
         self.assertTrue(any("actions/deploy-pages@v4" in block for block in deploy_step_blocks))
-        self.assertNotIn("copilot-mirror", WORKFLOW.read_text(encoding="utf-8"))
 
 
 class ArchiveStagingTests(unittest.TestCase):
