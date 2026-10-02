@@ -1,0 +1,141 @@
+{
+  "capture_commit": "c3c50e345ad8f5c8eddd504b7934c6cc30f8dcfb",
+  "snapshot_path": "snapshots/2026-09-25-github-copilot-weekly-releases-september-21-48eaa8bbafaa.html",
+  "sha256": "3fabbc264e3d8ce7887e5473eac70dda8c2105b92a1f2f8ea6c6a640ac19ffca",
+  "source_url": "https://github.blog/changelog/2026-09-25-github-copilot-weekly-releases-september-21",
+  "fetched_at": "2026-10-02T06:17:30.690233+00:00",
+  "title": "GitHub Copilot weekly releases — September 21",
+  "blocks": [
+    {
+      "text": "This week’s releases add new models to Copilot, local sandboxing in the Copilot app, and updates to Copilot in Slack, Microsoft Teams, JetBrains, and VS Code.",
+      "markdown": "This week’s releases add new models to Copilot, local sandboxing in the Copilot app, and updates to Copilot in Slack, Microsoft Teams, JetBrains, and VS Code."
+    },
+    {
+      "text": "GitHub Copilot",
+      "markdown": "GitHub Copilot"
+    },
+    {
+      "text": "Claude Opus 5.5 is available to Copilot Pro+, Max, Business, and Enterprise plans.",
+      "markdown": "Claude Opus 5.5 is available to Copilot Pro+, Max, Business, and Enterprise plans."
+    },
+    {
+      "text": "GPT-6 Sol is available to Copilot Pro+, Max, Business, and Enterprise plans.",
+      "markdown": "GPT-6 Sol is available to Copilot Pro+, Max, Business, and Enterprise plans."
+    },
+    {
+      "text": "GPT-6 Luna is available to Copilot Pro, Pro+, Max, Business, and Enterprise plans.",
+      "markdown": "GPT-6 Luna is available to Copilot Pro, Pro+, Max, Business, and Enterprise plans."
+    },
+    {
+      "text": "Grok 4.7 is available to Copilot Pro, Pro+, Max, Business, and Enterprise plans.",
+      "markdown": "Grok 4.7 is available to Copilot Pro, Pro+, Max, Business, and Enterprise plans."
+    },
+    {
+      "text": "GitHub Copilot app",
+      "markdown": "GitHub Copilot app"
+    },
+    {
+      "text": "Limit agents’ access to files, networks, and credentials with local sandboxing, now in public preview.",
+      "markdown": "Limit agents’ access to files, networks, and credentials with local sandboxing, now in public preview."
+    },
+    {
+      "text": "Track agent activity in your existing monitoring tools with OpenTelemetry, configured through enterprise-managed settings.",
+      "markdown": "Track agent activity in your existing monitoring tools with OpenTelemetry, configured through enterprise-managed settings."
+    },
+    {
+      "text": "Download the Copilot app .",
+      "markdown": "Download [the Copilot app](https://github.com/features/ai/github-app?utm_source=download-app-09-07&utm_medium=changelog&utm_campaign=weekly-copilot-launches-aug-2026)."
+    },
+    {
+      "text": "GitHub Copilot in Slack and Microsoft Teams",
+      "markdown": "GitHub Copilot in Slack and Microsoft Teams"
+    },
+    {
+      "text": "Choose the best model for each task. Switch models mid-conversation, and Copilot keeps your choice for the rest of the thread. In Slack, you can also set channel defaults.",
+      "markdown": "Choose the best model for each task. Switch models mid-conversation, and Copilot keeps your choice for the rest of the thread. In Slack, you can also set channel defaults."
+    },
+    {
+      "text": "Avoid duplicate issues since Copilot now checks for similar existing issues before creating a new one.",
+      "markdown": "Avoid duplicate issues since Copilot now checks for similar existing issues before creating a new one."
+    },
+    {
+      "text": "Follow longer-running tasks more easily with clearer implementation-plan status, better recovery from interrupted or stale replies, and more predictable reconnection when a conversation goes idle.",
+      "markdown": "Follow longer-running tasks more easily with clearer implementation-plan status, better recovery from interrupted or stale replies, and more predictable reconnection when a conversation goes idle."
+    },
+    {
+      "text": "Give Copilot more context in Slack by sharing supported files, attachments, and message links.",
+      "markdown": "Give Copilot more context in Slack by sharing supported files, attachments, and message links."
+    },
+    {
+      "text": "Learn more about GitHub Copilot public previews in Slack and Teams .",
+      "markdown": "Learn more about GitHub Copilot public previews in [Slack](https://docs.github.com/copilot/how-tos/copilot-integrations/integrate-cloud-agent-with-slack) and [Teams](https://docs.github.com/copilot/how-tos/copilot-integrations/integrate-cloud-agent-with-teams)."
+    },
+    {
+      "text": "GitHub Copilot in JetBrains",
+      "markdown": "GitHub Copilot in JetBrains"
+    },
+    {
+      "text": "Assisted approvals, now in public preview for Copilot agent sessions, automatically approve low-risk tool calls while prompting you for higher-risk actions.",
+      "markdown": "Assisted approvals, now in public preview for Copilot agent sessions, automatically approve low-risk tool calls while prompting you for higher-risk actions."
+    },
+    {
+      "text": "Edit an earlier message to redirect an agent session and Copilot rewinds both the conversation and file changes before sending the replacement request.",
+      "markdown": "Edit an earlier message to redirect an agent session and Copilot rewinds both the conversation and file changes before sending the replacement request."
+    },
+    {
+      "text": "Shared organization and enterprise skills, along with organization-managed custom instructions, now work in local and Copilot agent sessions.",
+      "markdown": "Shared organization and enterprise skills, along with organization-managed custom instructions, now work in local and Copilot agent sessions."
+    },
+    {
+      "text": "Learn more in the full Copilot in JetBrains changelog .",
+      "markdown": "Learn more in the [full Copilot in JetBrains changelog](https://github.blog/changelog/2026-09-22-new-features-and-improvements-in-copilot-for-jetbrains/)."
+    },
+    {
+      "text": "GitHub Copilot in VS Code 1.139 release",
+      "markdown": "GitHub Copilot in VS Code 1.139 release"
+    },
+    {
+      "text": "Run agents in Dev Containers on SSH, Tunnel, and WSL hosts, using your remote project’s tools and dependencies. Support is rolling out gradually.",
+      "markdown": "Run agents in Dev Containers on SSH, Tunnel, and WSL hosts, using your remote project’s tools and dependencies. Support is rolling out gradually."
+    },
+    {
+      "text": "Keep busy session lists organized with Compact View, filters to hide empty groups, and the ability to rename sessions and chats directly in the list.",
+      "markdown": "Keep busy session lists organized with Compact View, filters to hide empty groups, and the ability to rename sessions and chats directly in the list."
+    },
+    {
+      "text": "Choose between separate chat tabs or a single active-chat view within a session, without losing your conversations. This layout option is now in preview.",
+      "markdown": "Choose between separate chat tabs or a single active-chat view within a session, without losing your conversations. This layout option is now in preview."
+    },
+    {
+      "text": "Explore everything that’s new in the full release notes .",
+      "markdown": "Explore everything that’s new in the [full release notes](https://code.visualstudio.com/updates/v1_139)."
+    }
+  ],
+  "headings": [
+    "GitHub Copilot",
+    "GitHub Copilot app",
+    "GitHub Copilot in Slack and Microsoft Teams",
+    "GitHub Copilot in JetBrains",
+    "GitHub Copilot in VS Code 1.139 release"
+  ],
+  "images": [
+    {
+      "src": "https://github.blog/wp-content/uploads/2026/09/649772462-cd2b8dcf-4eac-422d-81a2-5e9ef2709240_5bfdb7.jpg?resize=2064%2C848",
+      "alt": "Small text on the left side that says \"GITHUB COPILOT\" with larger text underneath it that says \"Weekly releases\". On the right side is the GitHub Copilot logo."
+    }
+  ],
+  "links": [
+    "https://github.com/features/ai/github-app?utm_source=download-app-09-07&utm_medium=changelog&utm_campaign=weekly-copilot-launches-aug-2026",
+    "https://docs.github.com/copilot/how-tos/copilot-integrations/integrate-cloud-agent-with-slack",
+    "https://docs.github.com/copilot/how-tos/copilot-integrations/integrate-cloud-agent-with-teams",
+    "https://github.blog/changelog/2026-09-22-new-features-and-improvements-in-copilot-for-jetbrains/",
+    "https://code.visualstudio.com/updates/v1_139"
+  ],
+  "strong": [],
+  "lists": {
+    "ul": 5,
+    "ol": 0,
+    "li": 16
+  },
+  "videos": []
+}
