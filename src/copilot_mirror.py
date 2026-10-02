@@ -106,9 +106,11 @@ def _element_marker(element) -> str:
     class_names = element.get("class", [])
     if isinstance(class_names, str):
         class_names = [class_names]
-    return " ".join(
-        [str(element.get("id", "")), *(str(value) for value in class_names)]
-    ).casefold().replace("_", "-")
+    return (
+        " ".join([str(element.get("id", "")), *(str(value) for value in class_names)])
+        .casefold()
+        .replace("_", "-")
+    )
 
 
 def _is_table_of_contents(element) -> bool:

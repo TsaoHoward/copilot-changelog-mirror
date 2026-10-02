@@ -485,9 +485,7 @@ No publication time was available.
             if heading.get("id")
         }
         fragment_links = [
-            link
-            for link in content.find_all("a", href=True)
-            if link["href"].startswith("#")
+            link for link in content.find_all("a", href=True) if link["href"].startswith("#")
         ]
         expected_targets = {
             "What changed?": "What changed?",
