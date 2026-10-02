@@ -184,7 +184,6 @@ def _is_source_chrome(element, retained_toc_ids: set[int]) -> bool:
             "site-navigation",
             "primary-navigation",
             "secondary-navigation",
-            "table-of-contents-menu",
             "post-terms",
             "tag-list",
             "tag-cloud",
@@ -199,7 +198,7 @@ def _is_source_chrome(element, retained_toc_ids: set[int]) -> bool:
             "reading-time",
             "changelog-entry__footer",
         )
-    ) or _text(element).casefold().startswith("menu. currently selected:")
+    ) or _is_table_of_contents_menu(element)
 
 
 def _find_article_root(soup):
