@@ -55,31 +55,13 @@ class MirrorCliTests(unittest.TestCase):
             ["git", *args], cwd=self.repo, check=True, capture_output=True, text=True
         )
 
-    def run_mirror(self):
+    def run_cli(self, *arguments):
         return subprocess.run(
             [
                 sys.executable,
                 "-m",
                 "copilot_mirror",
-                "--repo",
-                str(self.repo),
-                "--feed-url",
-                (self.fixtures / "feed.xml").as_uri(),
-            ],
-            cwd=PROJECT_ROOT,
-            env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT / "src")},
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-
-    def run_capture(self):
-        return subprocess.run(
-            [
-                sys.executable,
-                "-m",
-                "copilot_mirror",
-                "capture",
+                *arguments,
                 "--repo",
                 str(self.repo),
                 "--feed-url",
@@ -126,7 +108,7 @@ class MirrorCliTests(unittest.TestCase):
             )
 
     def test_cli_archives_article_with_provenance_on_separate_branch_idempotently(self):
-        self.run_mirror()
+        self.run_cli()
 
         self.assertEqual(self.git("branch", "--show-current").stdout.strip(), "main")
         self.assertEqual(self.git("status", "--porcelain").stdout, "")
@@ -148,13 +130,13 @@ class MirrorCliTests(unittest.TestCase):
         self.assertNotIn("published_at:", updated_only)
 
         first_commit = self.git("rev-parse", "mirror-data").stdout.strip()
-        self.run_mirror()
+        self.run_cli()
         self.assertEqual(self.git("rev-parse", "mirror-data").stdout.strip(), first_commit)
         self.assertEqual(self.git("branch", "--show-current").stdout.strip(), "main")
 
         article_path = self.fixtures / "article.html"
         article_path.write_text(article_path.read_text().replace("Full", "Updated"))
-        self.run_mirror()
+        self.run_cli()
         updated_commit = self.git("rev-parse", "mirror-data").stdout.strip()
         self.assertNotEqual(updated_commit, first_commit)
         updated = self.git("show", f"mirror-data:{paths[0]}").stdout
@@ -162,7 +144,7 @@ class MirrorCliTests(unittest.TestCase):
         self.assertEqual(self.git("branch", "--show-current").stdout.strip(), "main")
 
     def test_capture_persists_raw_html_and_provenance_without_changing_posts(self):
-        self.run_mirror()
+        self.run_cli()
         self.add_archive_file("archive-state.json", b"{\"preserve\": true}\n")
         existing_archive = {
             path: self.git_bytes("show", f"mirror-data:{path}")
@@ -171,7 +153,7 @@ class MirrorCliTests(unittest.TestCase):
         }
         self.assertIn("archive-state.json", existing_archive)
 
-        self.run_capture()
+        self.run_cli("capture")
         paths = self.git("ls-tree", "-r", "--name-only", "mirror-data").stdout.splitlines()
         snapshot_paths = [path for path in paths if path.startswith("snapshots/")]
         self.assertEqual(len(snapshot_paths), 6)
@@ -197,7 +179,7 @@ class MirrorCliTests(unittest.TestCase):
         first_snapshot = {
             path: self.git_bytes("show", f"mirror-data:{path}") for path in snapshot_paths
         }
-        self.run_capture()
+        self.run_cli("capture")
         self.assertEqual(self.git("rev-parse", "mirror-data").stdout.strip(), first_commit)
         self.assertEqual(
             {
@@ -210,7 +192,7 @@ class MirrorCliTests(unittest.TestCase):
         article_path = self.fixtures / "article.html"
         updated_html = article_path.read_bytes().replace(b"Full", b"Updated")
         article_path.write_bytes(updated_html)
-        self.run_capture()
+        self.run_cli("capture")
         changed_path = captured[(self.fixtures / "article.html").as_uri()][0]
         self.assertEqual(self.git_bytes("show", f"mirror-data:{changed_path}"), updated_html)
         metadata_path = changed_path.removesuffix(".html") + ".json"
