@@ -6,7 +6,12 @@ import textwrap
 import unittest
 from pathlib import Path
 
+from bs4 import BeautifulSoup
+
+from copilot_mirror import FeedPost, archive_document_from_html
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
 WORKFLOW = PROJECT_ROOT / ".github" / "workflows" / "publish-pages.yml"
 ORCHESTRATION_WORKFLOW = PROJECT_ROOT / ".github" / "workflows" / "mirror-and-publish.yml"
 CI_WORKFLOW = PROJECT_ROOT / ".github" / "workflows" / "ci.yml"
@@ -293,12 +298,11 @@ class PagesArtifactTests(unittest.TestCase):
             shutil.copytree(PROJECT_ROOT / "scripts", source / "scripts", dirs_exist_ok=True)
             (archive_posts / "available-date.md").write_text(
                 """---
+title: Fixture update
 source_url: https://github.blog/changelog/copilot-fixture/
 published_at: 2026-09-29T12:30:00+00:00
 fetched_at: 2026-10-01T01:00:00+00:00
 ---
-
-# Fixture update
 
 The **full article** is preserved, including [links](https://example.com) and lists:
 
@@ -381,6 +385,134 @@ No publication time was available.
             self.assertIn("No publication time was available.", no_date)
             self.assertNotIn("Published", no_date)
             self.assertIn("/copilot-changelog-mirror/", article)
+
+    def test_normalized_source_fixture_builds_with_one_title_and_working_fragments(self):
+        root = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, root, ignore_errors=True)
+        source = root / "source"
+        (source / "_layouts").mkdir(parents=True)
+        archive_posts = source / "archive-source" / "posts"
+        archive_posts.mkdir(parents=True)
+        for name in ("_config.yml", "index.md"):
+            shutil.copy(PROJECT_ROOT / name, source / name)
+        for name in ("_layouts", "_includes", "_plugins", "scripts"):
+            shutil.copytree(PROJECT_ROOT / name, source / name, dirs_exist_ok=True)
+
+        fixture = PROJECT_ROOT / "tests" / "fixtures" / "github_changelog_article.html"
+        post = FeedPost(
+            title="Discovery title from the Copilot feed",
+            url="https://github.blog/changelog/copilot-debugging-fixture/",
+            published_at="2026-10-01T12:30:00+00:00",
+        )
+        document = archive_document_from_html(
+            post, fixture.read_bytes(), "2026-10-02T00:00:00+00:00"
+        )
+        self.assertIn('title: "Improved debugging with Copilot Chat"', document)
+        archived_path = archive_posts / "copilot-debugging-fixture.md"
+        archived_path.write_text(document, encoding="utf-8")
+
+        subprocess.run(
+            [
+                "python3",
+                str(source / "scripts" / "stage_archive.py"),
+                str(archive_posts),
+                str(source / "_archive"),
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        destination = root / "_site"
+        build_result = subprocess.run(
+            [
+                "bundle",
+                "exec",
+                "jekyll",
+                "build",
+                "--source",
+                str(source),
+                "--destination",
+                str(destination),
+                "--baseurl",
+                "/copilot-changelog-mirror",
+            ],
+            cwd=PROJECT_ROOT,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(build_result.returncode, 0, build_result.stdout + build_result.stderr)
+
+        listing = BeautifulSoup(
+            (destination / "index.html").read_text(encoding="utf-8"), "html.parser"
+        )
+        article_html = (
+            destination / "posts" / "copilot-debugging-fixture" / "index.html"
+        ).read_text(encoding="utf-8")
+        article_document = BeautifulSoup(article_html, "html.parser")
+        post_element = article_document.select_one("article")
+        self.assertIsNotNone(post_element)
+        self.assertEqual(
+            [heading.get_text(" ", strip=True) for heading in post_element.find_all("h1")],
+            ["Improved debugging with Copilot Chat"],
+        )
+        listing_titles = [link.get_text(" ", strip=True) for link in listing.find_all("a")]
+        self.assertIn("Improved debugging with Copilot Chat", listing_titles)
+
+        content = post_element.select_one(".article-content")
+        self.assertIsNotNone(content)
+        self.assertEqual(content.find_all("h1"), [])
+        self.assertEqual(
+            [heading.get_text(" ", strip=True) for heading in content.find_all("h2")].count(
+                "Table of Contents"
+            ),
+            1,
+        )
+        page_text = content.get_text(" ", strip=True)
+        for chrome in ("Copied", "Shared", "Back to changelog", "Menu. Currently selected"):
+            self.assertNotIn(chrome, page_text)
+
+        heading_ids = {
+            heading.get("id")
+            for heading in content.find_all(["h2", "h3", "h4", "h5", "h6"])
+            if heading.get("id")
+        }
+        heading_ids_by_text = {
+            heading.get_text(" ", strip=True): heading.get("id")
+            for heading in content.find_all(["h2", "h3", "h4", "h5", "h6"])
+            if heading.get("id")
+        }
+        fragment_links = [
+            link for link in content.find_all("a", href=True) if link["href"].startswith("#")
+        ]
+        expected_targets = {
+            "What changed?": "What changed?",
+            "🚀 Try it out + share feedback": "🚀 Try it out + share feedback",
+            "What changed again?": "What changed?",
+        }
+        self.assertEqual(len(fragment_links), len(expected_targets))
+        for link in fragment_links:
+            self.assertIn(link["href"][1:], heading_ids)
+            label = link.get_text(" ", strip=True)
+            self.assertEqual(link["href"], f"#{heading_ids_by_text[expected_targets[label]]}")
+        self.assertNotIn("source-whats-changed-v2", heading_ids)
+        self.assertNotIn("🚀-try-it-out---feedback", heading_ids)
+
+        self.assertIsNotNone(content.find("strong", string="clearer debugging steps"))
+        self.assertIsNotNone(
+            content.find("a", href="https://docs.example.test/debugging#reference")
+        )
+        self.assertEqual(
+            [item.get_text(strip=True) for item in content.find_all("li")][-2:],
+            [
+                "Explain the failed operation.",
+                "Point to the likely source of the invalid state.",
+            ],
+        )
+        self.assertIsNotNone(content.find("img", alt="Debug trace screenshot"))
+        self.assertIsNotNone(
+            content.find("code", string=lambda text: text and "first_frame" in text)
+        )
 
 
 if __name__ == "__main__":
