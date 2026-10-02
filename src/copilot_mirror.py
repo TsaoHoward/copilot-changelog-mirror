@@ -105,6 +105,9 @@ def _element_marker(element) -> str:
 
 
 def _is_table_of_contents(element) -> bool:
+    # The source of the generated sidebar TOC is the editorial body itself.
+    if "js-table-of-contents-source" in element.get("class", []):
+        return False
     marker = _element_marker(element)
     return "table-of-contents" in marker or bool(
         re.search(r"(?:^|[^a-z0-9])toc(?:[^a-z0-9]|$)", marker)
@@ -161,6 +164,8 @@ def _is_hidden_source_element(element) -> bool:
 def _is_source_chrome(element, retained_toc_ids: set[int]) -> bool:
     if id(element) in retained_toc_ids:
         return False
+    if element.name in {"h2", "h3", "h4", "h5", "h6"}:
+        return False
     if element.name in {"script", "style", "noscript", "footer", "form", "button", "input"}:
         return True
     if element.name == "nav" and id(element) not in retained_toc_ids:
@@ -195,6 +200,17 @@ def _is_source_chrome(element, retained_toc_ids: set[int]) -> bool:
 
 
 def _find_article_root(soup):
+    # Captured Changelog pages separate the editorial body from header metadata,
+    # responsive sidebar TOCs, and footer controls. The lead image is a sibling.
+    content = soup.select_one(".PostContent-main.editorial-content-block")
+    if content is not None:
+        root = soup.new_tag("div")
+        article = content.find_parent("article")
+        if article is not None:
+            for image in article.select(".ChangelogFeaturedImage"):
+                root.append(image.extract())
+        root.append(content.extract())
+        return root
     article = soup.find("article")
     if article is not None:
         return article
@@ -269,6 +285,10 @@ def normalize_article(
     from markdownify import MarkdownConverter
 
     class _ArchiveMarkdownConverter(MarkdownConverter):
+        def convert_video(self, node, text, parent_tags):
+            # Markdown has no video syntax; retain the source media as HTML.
+            return f"\n\n{node}\n\n"
+
         def convert_hN(self, level, node, text, parent_tags):
             heading = super().convert_hN(level, node, text, parent_tags)
             archive_id = node.get("id")

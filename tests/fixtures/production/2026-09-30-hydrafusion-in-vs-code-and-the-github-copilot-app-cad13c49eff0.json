@@ -1,0 +1,127 @@
+{
+  "capture_commit": "c3c50e345ad8f5c8eddd504b7934c6cc30f8dcfb",
+  "snapshot_path": "snapshots/2026-09-30-hydrafusion-in-vs-code-and-the-github-copilot-app-cad13c49eff0.html",
+  "sha256": "168779b5faefa029bc7206ed448953c8b5ea15c173a459694ae4cda6b68ac0a6",
+  "source_url": "https://github.blog/changelog/2026-09-30-hydrafusion-in-vs-code-and-the-github-copilot-app",
+  "fetched_at": "2026-10-02T06:17:26.355411+00:00",
+  "title": "HydraFusion in VS Code and the GitHub Copilot app",
+  "blocks": [
+    {
+      "text": "The HydraFusion research preview is now available in Visual Studio Code and the GitHub Copilot app, expanding beyond Copilot CLI.",
+      "markdown": "The HydraFusion research preview is now available in Visual Studio Code and the GitHub Copilot app, expanding beyond Copilot CLI."
+    },
+    {
+      "text": "HydraFusion appears in the model picker, but rather than being a single model, it orchestrates multiple models. HydraFusion treats workflow selection as an optimization problem. It uses capability signals for reasoning, code generation, debugging, and tool use to select the most efficient execution pattern to meet the quality bar. HydraFusion uses one of three workflows:",
+      "markdown": "HydraFusion appears in the model picker, but rather than being a single model, it orchestrates multiple models. HydraFusion treats workflow selection as an optimization problem. It uses capability signals for reasoning, code generation, debugging, and tool use to select the most efficient execution pattern to meet the quality bar. HydraFusion uses one of three workflows:"
+    },
+    {
+      "text": "Single: One selected model directly solves the task.",
+      "markdown": "**Single:** One selected model directly solves the task."
+    },
+    {
+      "text": "Cascade: An efficient model drafts a solution and a quality gate decides whether to accept it or escalate to a stronger model.",
+      "markdown": "**Cascade:** An efficient model drafts a solution and a quality gate decides whether to accept it or escalate to a stronger model."
+    },
+    {
+      "text": "Critique: One model drafts a result, an independent read-only critic from a different model family reviews it—following the same review pattern as Rubber Duck —and the drafting model revises once.",
+      "markdown": "**Critique:** One model drafts a result, an independent read-only critic from a different model family reviews it—following the same review pattern as [Rubber Duck](https://docs.github.com/copilot/concepts/agents/copilot-cli/rubber-duck)—and the drafting model revises once."
+    },
+    {
+      "text": "Get started",
+      "markdown": "Get started"
+    },
+    {
+      "text": "In VS Code (version 1.140 or later, or VS Code Insiders):",
+      "markdown": "In VS Code (version 1.140 or later, or VS Code Insiders):"
+    },
+    {
+      "text": "Select HydraFusion from the Copilot Chat model picker.",
+      "markdown": "Select **HydraFusion** from the Copilot Chat model picker."
+    },
+    {
+      "text": "If it does not appear, enable chat.copilot.hydraFusion.enabled . If you get Copilot through an organization or enterprise, an administrator may need to allow preview features in organization or enterprise settings.",
+      "markdown": "If it does not appear, enable `chat.copilot.hydraFusion.enabled`. If you get Copilot through an organization or enterprise, an administrator may need to allow preview features in organization or enterprise settings."
+    },
+    {
+      "text": "In the GitHub Copilot app:",
+      "markdown": "In the GitHub Copilot app:"
+    },
+    {
+      "text": "Update to the latest version.",
+      "markdown": "Update to the latest version."
+    },
+    {
+      "text": "Open Settings , search for “HydraFusion”, and turn it on.",
+      "markdown": "Open **Settings**, search for “HydraFusion”, and turn it on."
+    },
+    {
+      "text": "Select HydraFusion from the model picker.",
+      "markdown": "Select **HydraFusion** from the model picker."
+    },
+    {
+      "text": "What’s improved",
+      "markdown": "What’s improved"
+    },
+    {
+      "text": "Bringing HydraFusion to more surfaces was the top request from early feedback. This release also improves the overall experience:",
+      "markdown": "Bringing HydraFusion to more surfaces was the top request from early feedback. This release also improves the overall experience:"
+    },
+    {
+      "text": "Greater transparency: See more clearly what HydraFusion is doing at each step of a workflow.",
+      "markdown": "**Greater transparency:** See more clearly what HydraFusion is doing at each step of a workflow."
+    },
+    {
+      "text": "Real-time progress: HydraFusion now sends more frequent progress updates while it works.",
+      "markdown": "**Real-time progress:** HydraFusion now sends more frequent progress updates while it works."
+    },
+    {
+      "text": "Clearer status during long tasks: Progress updates make it easier to tell that HydraFusion is still working, even when a task takes longer.",
+      "markdown": "**Clearer status during long tasks:** Progress updates make it easier to tell that HydraFusion is still working, even when a task takes longer."
+    },
+    {
+      "text": "How HydraFusion differs from Auto",
+      "markdown": "How HydraFusion differs from Auto"
+    },
+    {
+      "text": "Auto selects a model for each request. HydraFusion explores how Copilot can both select a workflow and coordinate multiple models within a turn.",
+      "markdown": "Auto selects a model for each request. HydraFusion explores how Copilot can both select a workflow and coordinate multiple models within a turn."
+    },
+    {
+      "text": "HydraFusion is available to Copilot Pro, Pro+, Business, and Enterprise users. For Copilot Business and Enterprise, an administrator must enable preview features. HydraFusion remains a research preview and is subject to change.",
+      "markdown": "HydraFusion is available to Copilot Pro, Pro+, Business, and Enterprise users. For Copilot Business and Enterprise, an administrator must enable preview features. HydraFusion remains a research preview and is subject to change."
+    },
+    {
+      "text": "Learn more in the HydraFusion documentation , read about the research and benchmark results in Project HydraFusion: Frontier quality via multi-model orchestration , or share feedback in the GitHub Community .",
+      "markdown": "Learn more in the [HydraFusion documentation](https://docs.github.com/early-access/copilot/hydrafusion), read about the research and benchmark results in [Project HydraFusion: Frontier quality via multi-model orchestration](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/), or share feedback in the [GitHub Community](https://github.com/orgs/community/discussions/206492)."
+    }
+  ],
+  "headings": [
+    "Get started",
+    "What’s improved",
+    "How HydraFusion differs from Auto"
+  ],
+  "images": [],
+  "links": [
+    "https://docs.github.com/copilot/concepts/agents/copilot-cli/rubber-duck",
+    "https://docs.github.com/early-access/copilot/hydrafusion",
+    "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
+    "https://github.com/orgs/community/discussions/206492"
+  ],
+  "strong": [
+    "Single:",
+    "Cascade:",
+    "Critique:",
+    "HydraFusion",
+    "Settings",
+    "HydraFusion",
+    "Greater transparency:",
+    "Real-time progress:",
+    "Clearer status during long tasks:"
+  ],
+  "lists": {
+    "ul": 2,
+    "ol": 2,
+    "li": 11
+  },
+  "videos": []
+}

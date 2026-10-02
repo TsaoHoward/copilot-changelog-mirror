@@ -1,0 +1,120 @@
+{
+  "capture_commit": "c3c50e345ad8f5c8eddd504b7934c6cc30f8dcfb",
+  "snapshot_path": "snapshots/2026-09-29-gpt-6-1-sol-in-github-copilot-27fa41ed5cc2.html",
+  "sha256": "867e9f81d01b549a022e48dd94293cebd98e14bcdb5da42db4fb073d0476a02b",
+  "source_url": "https://github.blog/changelog/2026-09-29-gpt-6-1-sol-in-github-copilot",
+  "fetched_at": "2026-10-02T06:17:26.615910+00:00",
+  "title": "GPT-6.1 Sol in GitHub Copilot",
+  "blocks": [
+    {
+      "text": "GPT-6.1 Sol, the latest model from OpenAI, is now generally available and rolling out in GitHub Copilot. You can use it for agentic coding and terminal workflows with strong multistep coding performance and efficient token use. In early testing, it reliably completed tasks while using noticeably fewer tokens and steps than earlier models in the GPT-6 and GPT-5.6 families.",
+      "markdown": "GPT-6.1 Sol, the latest model from OpenAI, is now generally available and rolling out in GitHub Copilot. You can use it for agentic coding and terminal workflows with strong multistep coding performance and efficient token use. In early testing, it reliably completed tasks while using noticeably fewer tokens and steps than earlier models in the GPT-6 and GPT-5.6 families."
+    },
+    {
+      "text": "This model is billed at provider list pricing under usage-based billing. See Models and pricing for GitHub Copilot for details.",
+      "markdown": "This model is billed at provider list pricing under usage-based billing. See [Models and pricing for GitHub Copilot](https://docs.github.com/copilot/reference/copilot-billing/models-and-pricing) for details."
+    },
+    {
+      "text": "Availability in GitHub Copilot",
+      "markdown": "Availability in GitHub Copilot"
+    },
+    {
+      "text": "GPT-6.1 Sol is available to Copilot Pro+, Max, Business, and Enterprise users. You can select it in the model picker in:",
+      "markdown": "GPT-6.1 Sol is available to Copilot Pro+, Max, Business, and Enterprise users. You can select it in the model picker in:"
+    },
+    {
+      "text": "Visual Studio Code",
+      "markdown": "Visual Studio Code"
+    },
+    {
+      "text": "Visual Studio",
+      "markdown": "Visual Studio"
+    },
+    {
+      "text": "Copilot CLI",
+      "markdown": "Copilot CLI"
+    },
+    {
+      "text": "GitHub Copilot coding agent",
+      "markdown": "GitHub Copilot coding agent"
+    },
+    {
+      "text": "GitHub Copilot app",
+      "markdown": "GitHub Copilot app"
+    },
+    {
+      "text": "github.com",
+      "markdown": "github.com"
+    },
+    {
+      "text": "GitHub Mobile on iOS and Android",
+      "markdown": "GitHub Mobile on iOS and Android"
+    },
+    {
+      "text": "JetBrains IDEs",
+      "markdown": "JetBrains IDEs"
+    },
+    {
+      "text": "Xcode",
+      "markdown": "Xcode"
+    },
+    {
+      "text": "Eclipse",
+      "markdown": "Eclipse"
+    },
+    {
+      "text": "Rollout will be gradual. Check back soon if you don’t see it yet.",
+      "markdown": "Rollout will be gradual. Check back soon if you don’t see it yet."
+    },
+    {
+      "text": "Enabling access",
+      "markdown": "Enabling access"
+    },
+    {
+      "text": "Copilot Business and Enterprise administrators can manage access to GPT-6.1 Sol through the model policy in Copilot settings. Under default model enablement, new models are automatically enabled unless an administrator has turned off the global default or explicitly disables this model.",
+      "markdown": "Copilot Business and Enterprise administrators can manage access to GPT-6.1 Sol through the model policy in Copilot settings. Under default model enablement, new models are automatically enabled unless an administrator has turned off the global default or explicitly disables this model."
+    },
+    {
+      "text": "Learn more",
+      "markdown": "Learn more"
+    },
+    {
+      "text": "Learn more about the models available in GitHub Copilot .",
+      "markdown": "Learn more about the [models available in GitHub Copilot](https://docs.github.com/copilot/reference/ai-models/supported-models)."
+    },
+    {
+      "text": "Share your feedback",
+      "markdown": "Share your feedback"
+    },
+    {
+      "text": "Share your feedback in GitHub Community .",
+      "markdown": "Share your feedback in [GitHub Community](https://github.com/orgs/community/discussions/categories/copilot-conversations)."
+    }
+  ],
+  "headings": [
+    "Availability in GitHub Copilot",
+    "Enabling access",
+    "Learn more",
+    "Share your feedback"
+  ],
+  "images": [
+    {
+      "src": "https://github.blog/wp-content/uploads/2026/09/660696984-44c41ab1-3b3d-4b54-a905-9576d7ac24f5.png?resize=2064%2C600",
+      "alt": "GPT-6.1 Sol in GitHub Copilot"
+    }
+  ],
+  "links": [
+    "https://docs.github.com/copilot/reference/copilot-billing/models-and-pricing",
+    "https://docs.github.com/copilot/reference/ai-models/supported-models",
+    "https://github.com/orgs/community/discussions/categories/copilot-conversations"
+  ],
+  "strong": [],
+  "lists": {
+    "ul": 1,
+    "ol": 0,
+    "li": 10
+  },
+  "videos": [
+    "https://github.com/user-attachments/assets/a4b67a37-0105-4da9-b710-aa33b88cba8f"
+  ]
+}

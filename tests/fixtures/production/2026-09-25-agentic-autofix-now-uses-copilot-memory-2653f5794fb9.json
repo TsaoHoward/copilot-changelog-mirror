@@ -1,0 +1,38 @@
+{
+  "capture_commit": "c3c50e345ad8f5c8eddd504b7934c6cc30f8dcfb",
+  "snapshot_path": "snapshots/2026-09-25-agentic-autofix-now-uses-copilot-memory-2653f5794fb9.html",
+  "sha256": "f6c7b646997eb92cd61de02ae26f35b7da8408a6733b6a603ade04df993ca58b",
+  "source_url": "https://github.blog/changelog/2026-09-25-agentic-autofix-now-uses-copilot-memory",
+  "fetched_at": "2026-10-02T06:17:30.138578+00:00",
+  "title": "Agentic autofix now uses Copilot Memory",
+  "blocks": [
+    {
+      "text": "Agentic autofix now uses Copilot Memory for customers who’ve enabled it. When you use agentic autofix, it reviews existing memories for context that can help resolve security alerts. When it creates a fix, it stores the fix pattern as a memory for future use.",
+      "markdown": "Agentic autofix now uses Copilot Memory for customers who’ve enabled it. When you use agentic autofix, it reviews existing memories for context that can help resolve security alerts. When it creates a fix, it stores the fix pattern as a memory for future use."
+    },
+    {
+      "text": "These memories can help agentic autofix resolve additional security alerts and teach other GitHub Copilot features (e.g., Copilot code review, Copilot cloud agent) about secure development patterns unique to your repository.",
+      "markdown": "These memories can help agentic autofix resolve additional security alerts and teach other GitHub Copilot features (e.g., Copilot code review, Copilot cloud agent) about secure development patterns unique to your repository."
+    },
+    {
+      "text": "Both agentic autofix and Copilot Memory are available in public preview.",
+      "markdown": "Both agentic autofix and Copilot Memory are available in public preview."
+    },
+    {
+      "text": "Learn more in our docs about GitHub Copilot Memory .",
+      "markdown": "Learn more in [our docs about GitHub Copilot Memory](https://docs.github.com/enterprise-cloud@latest/copilot/concepts/agents/copilot-memory)."
+    }
+  ],
+  "headings": [],
+  "images": [],
+  "links": [
+    "https://docs.github.com/enterprise-cloud@latest/copilot/concepts/agents/copilot-memory"
+  ],
+  "strong": [],
+  "lists": {
+    "ul": 0,
+    "ol": 0,
+    "li": 0
+  },
+  "videos": []
+}

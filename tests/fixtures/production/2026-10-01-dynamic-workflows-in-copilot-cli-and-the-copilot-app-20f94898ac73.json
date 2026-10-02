@@ -1,0 +1,156 @@
+{
+  "capture_commit": "c3c50e345ad8f5c8eddd504b7934c6cc30f8dcfb",
+  "snapshot_path": "snapshots/2026-10-01-dynamic-workflows-in-copilot-cli-and-the-copilot-app-20f94898ac73.html",
+  "sha256": "fdd046c6e185fe35896e38bb93835110e390c4ac43029730b825e739ff101c60",
+  "source_url": "https://github.blog/changelog/2026-10-01-dynamic-workflows-in-copilot-cli-and-the-copilot-app",
+  "fetched_at": "2026-10-02T06:17:25.789239+00:00",
+  "title": "Dynamic workflows in Copilot CLI and the Copilot app",
+  "blocks": [
+    {
+      "text": "Dynamic workflows are now available in Copilot CLI, the GitHub Copilot app, and the GitHub Copilot SDK. These let you define an orchestration in code to get the reliability and observability that complex, multi-agent work demands.",
+      "markdown": "Dynamic workflows are now available in Copilot CLI, the GitHub Copilot app, and the GitHub Copilot SDK. These let you define an orchestration in code to get the reliability and observability that complex, multi-agent work demands."
+    },
+    {
+      "text": "What is a dynamic workflow?",
+      "markdown": "What is a dynamic workflow?"
+    },
+    {
+      "text": "A dynamic workflow is a program that defines how a task is carried out. It combines automated steps with the work of one or more agents, and those steps can run one after another, in parallel, or both. The steps, when to involve agents, and how to use their results are all defined in code, while agents handle the parts that need analysis or judgment. The program itself lives inside a GitHub Copilot extension, which means it has access to Copilot’s powerful extensibility APIs.",
+      "markdown": "A dynamic workflow is a program that defines how a task is carried out. It combines automated steps with the work of one or more agents, and those steps can run one after another, in parallel, or both. The steps, when to involve agents, and how to use their results are all defined in code, while agents handle the parts that need analysis or judgment. The program itself lives inside a GitHub Copilot extension, which means it has access to Copilot’s powerful extensibility APIs."
+    },
+    {
+      "text": "For example, you could use a dynamic workflow to investigate a service incident: collect logs and telemetry, assign independent agents to analyze different systems, and combine their structured findings into a timeline and root-cause report. The same steps run every time.",
+      "markdown": "For example, you could use a dynamic workflow to investigate a service incident: collect logs and telemetry, assign independent agents to analyze different systems, and combine their structured findings into a timeline and root-cause report. The same steps run every time."
+    },
+    {
+      "text": "Dynamic workflows can:",
+      "markdown": "Dynamic workflows can:"
+    },
+    {
+      "text": "Run commands, use tools, or call other services.",
+      "markdown": "Run commands, use tools, or call other services."
+    },
+    {
+      "text": "Divide a goal into tasks and run independent tasks in parallel.",
+      "markdown": "Divide a goal into tasks and run independent tasks in parallel."
+    },
+    {
+      "text": "Pass structured results from one stage to the next.",
+      "markdown": "Pass structured results from one stage to the next."
+    },
+    {
+      "text": "Have subagents verify each other’s findings.",
+      "markdown": "Have subagents verify each other’s findings."
+    },
+    {
+      "text": "Ask you for input, if your client supports it.",
+      "markdown": "Ask you for input, if your client supports it."
+    },
+    {
+      "text": "Pause at a checkpoint so you can review results and resume when you’re ready.",
+      "markdown": "Pause at a checkpoint so you can review results and resume when you’re ready."
+    },
+    {
+      "text": "Unlike /fleet , where Copilot delegates work to subagents and coordinates their work in parallel, a dynamic workflow carries out a process defined in code. Learn more in our docs about dynamic workflows .",
+      "markdown": "Unlike `/fleet`, where Copilot delegates work to subagents and coordinates their work in parallel, a dynamic workflow carries out a process defined in code. Learn more in [our docs about dynamic workflows](https://docs.github.com/copilot/concepts/agents/dynamic-workflows#how-dynamic-workflows-differ-from-autopilot-and-fleet)."
+    },
+    {
+      "text": "You can author dynamic workflows yourself or have Copilot write them for you. Just like with extensions, Copilot includes built-in authoring guidance you can use to learn how dynamic workflows work or to have Copilot write one entirely for you.",
+      "markdown": "You can author dynamic workflows yourself or have Copilot write them for you. Just like with extensions, Copilot includes built-in authoring guidance you can use to learn how dynamic workflows work or to have Copilot write one entirely for you."
+    },
+    {
+      "text": "When to use a dynamic workflow",
+      "markdown": "When to use a dynamic workflow"
+    },
+    {
+      "text": "Use a dynamic workflow when you want to define a process you can reuse, or when a single task needs clear stages, checks, or limits. Good candidates include:",
+      "markdown": "Use a dynamic workflow when you want to define a process you can reuse, or when a single task needs clear stages, checks, or limits. Good candidates include:"
+    },
+    {
+      "text": "Running release checks, asking one agent to assess failures, and pausing for you to review the findings before resuming.",
+      "markdown": "Running release checks, asking one agent to assess failures, and pausing for you to review the findings before resuming."
+    },
+    {
+      "text": "Reviewing many changed files in a pull request in parallel.",
+      "markdown": "Reviewing many changed files in a pull request in parallel."
+    },
+    {
+      "text": "Using code to find unresolved review comments on merged pull requests, then asking two models whether the comments still matter. The workflow’s code only reports findings when both agree.",
+      "markdown": "Using code to find unresolved review comments on merged pull requests, then asking two models whether the comments still matter. The workflow’s code only reports findings when both agree."
+    },
+    {
+      "text": "Sweeping a large codebase for a pattern (e.g., missing tests or usages of an API you’re removing) across many directories at once.",
+      "markdown": "Sweeping a large codebase for a pattern (e.g., missing tests or usages of an API you’re removing) across many directories at once."
+    },
+    {
+      "text": "Researching a change, planning its implementation from the findings, and then making the change.",
+      "markdown": "Researching a change, planning its implementation from the findings, and then making the change."
+    },
+    {
+      "text": "Kicking off a long, potentially expensive run that you may want to pause and resume later.",
+      "markdown": "Kicking off a long, potentially expensive run that you may want to pause and resume later."
+    },
+    {
+      "text": "For a quick answer or a simple change, a normal prompt in the standard chat mode is usually sufficient.",
+      "markdown": "For a quick answer or a simple change, a normal prompt in the standard chat mode is usually sufficient."
+    },
+    {
+      "text": "Get started",
+      "markdown": "Get started"
+    },
+    {
+      "text": "Dynamic workflows are available on all Copilot plans.",
+      "markdown": "Dynamic workflows are available on all Copilot plans."
+    },
+    {
+      "text": "To get started:",
+      "markdown": "To get started:"
+    },
+    {
+      "text": "In the GitHub Copilot app, dynamic workflows are always available with no setup required.",
+      "markdown": "In the GitHub Copilot app, dynamic workflows are always available with no setup required."
+    },
+    {
+      "text": "In the latest version of Copilot CLI, enable experimental features by running the CLI with the --experimental command-line option or by using /experimental on in an interactive session. To update Copilot CLI, run /update .",
+      "markdown": "In the latest version of Copilot CLI, enable experimental features by running the CLI with the `--experimental` command-line option or by using `/experimental on` in an interactive session. To update Copilot CLI, run `/update`."
+    },
+    {
+      "text": "Ask Copilot to create a workflow for a process you run often. For step-by-step instructions, see Creating a dynamic workflow .",
+      "markdown": "Ask Copilot to create a workflow for a process you run often. For step-by-step instructions, see [Creating a dynamic workflow](https://docs.github.com/copilot/how-tos/use-copilot-agents/use-dynamic-workflows#creating-a-dynamic-workflow)."
+    },
+    {
+      "text": "Ask “What dynamic workflows are available?” to see the ones you already have.",
+      "markdown": "Ask “What dynamic workflows are available?” to see the ones you already have."
+    },
+    {
+      "text": "Share feedback with /feedback in Copilot CLI.",
+      "markdown": "Share feedback with `/feedback` in Copilot CLI."
+    },
+    {
+      "text": "Dynamic workflows are in public preview and subject to change.",
+      "markdown": "Dynamic workflows are in public preview and subject to change."
+    },
+    {
+      "text": "Join the discussion within GitHub Community .",
+      "markdown": "Join the discussion within [GitHub Community](https://github.com/orgs/community/discussions/categories/announcements)."
+    }
+  ],
+  "headings": [
+    "What is a dynamic workflow?",
+    "When to use a dynamic workflow",
+    "Get started"
+  ],
+  "images": [],
+  "links": [
+    "https://docs.github.com/copilot/concepts/agents/dynamic-workflows#how-dynamic-workflows-differ-from-autopilot-and-fleet",
+    "https://docs.github.com/copilot/how-tos/use-copilot-agents/use-dynamic-workflows#creating-a-dynamic-workflow",
+    "https://github.com/orgs/community/discussions/categories/announcements"
+  ],
+  "strong": [],
+  "lists": {
+    "ul": 3,
+    "ol": 0,
+    "li": 16
+  },
+  "videos": []
+}

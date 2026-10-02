@@ -1,0 +1,110 @@
+{
+  "capture_commit": "c3c50e345ad8f5c8eddd504b7934c6cc30f8dcfb",
+  "snapshot_path": "snapshots/2026-09-25-usage-metrics-api-adds-pull-request-review-stages-0a10d0252c63.html",
+  "sha256": "fe7b38c446652cadfaeb35c4eef068c98d1ffedd8abfcbbd8924fa8861022954",
+  "source_url": "https://github.blog/changelog/2026-09-25-usage-metrics-api-adds-pull-request-review-stages",
+  "fetched_at": "2026-10-02T06:17:28.910541+00:00",
+  "title": "Usage metrics API adds pull request review stages",
+  "blocks": [
+    {
+      "text": "The enterprise and organization repository-level Copilot usage metrics reports now break down how long pull requests spend in each stage of review. A new pull_request_review_times array on each repos-1-day row reports a median and a 90th percentile for the time from ready for review to first review, first review to final review, and final review to merge.",
+      "markdown": "The enterprise and organization [repository-level Copilot usage metrics](https://github.blog/changelog/2026-07-17-repository-level-github-copilot-usage-metrics-generally-available/) reports now break down how long pull requests spend in each stage of review. A new `pull_request_review_times` array on each `repos-1-day` row reports a median and a 90th percentile for the time from ready for review to first review, first review to final review, and final review to merge."
+    },
+    {
+      "text": "What’s new",
+      "markdown": "What’s new"
+    },
+    {
+      "text": "Each entry in pull_request_review_times includes:",
+      "markdown": "Each entry in `pull_request_review_times` includes:"
+    },
+    {
+      "text": "authored_by and reviewed_by : Who opened and who reviewed the pull requests in this entry. Both are human in this release.",
+      "markdown": "**`authored_by` and `reviewed_by`**: Who opened and who reviewed the pull requests in this entry. Both are `human` in this release."
+    },
+    {
+      "text": "total_merged : The number of qualifying pull requests merged in the repository that day.",
+      "markdown": "**`total_merged`**: The number of qualifying pull requests merged in the repository that day."
+    },
+    {
+      "text": "median_minutes_ready_to_first_review and p90_minutes_ready_to_first_review : Time from the pull request becoming ready for review to its first review.",
+      "markdown": "**`median_minutes_ready_to_first_review` and `p90_minutes_ready_to_first_review`**: Time from the pull request becoming ready for review to its first review."
+    },
+    {
+      "text": "median_minutes_first_to_final_review and p90_minutes_first_to_final_review : Time between the first and final review.",
+      "markdown": "**`median_minutes_first_to_final_review` and `p90_minutes_first_to_final_review`**: Time between the first and final review."
+    },
+    {
+      "text": "median_minutes_final_review_to_merge and p90_minutes_final_review_to_merge : Time from the final review to merge.",
+      "markdown": "**`median_minutes_final_review_to_merge` and `p90_minutes_final_review_to_merge`**: Time from the final review to merge."
+    },
+    {
+      "text": "Durations are in minutes and attributed to the day the pull request merged. The existing pull_requests fields are unchanged.",
+      "markdown": "Durations are in minutes and attributed to the day the pull request merged. The existing `pull_requests` fields are unchanged."
+    },
+    {
+      "text": "Why this matters",
+      "markdown": "Why this matters"
+    },
+    {
+      "text": "Teams can already see when pull requests take a long time to merge, but not where the time goes. Splitting the wait into three stages shows whether a pull request is waiting for someone to look at it, waiting on back-and-forth between reviewers, or sitting approved and unmerged. Each of those points to a different fix, and the 90th percentile beside the median shows when a handful of slow pull requests is driving the delay.",
+      "markdown": "Teams can already see when pull requests take a long time to merge, but not where the time goes. Splitting the wait into three stages shows whether a pull request is waiting for someone to look at it, waiting on back-and-forth between reviewers, or sitting approved and unmerged. Each of those points to a different fix, and the 90th percentile beside the median shows when a handful of slow pull requests is driving the delay."
+    },
+    {
+      "text": "Important notes",
+      "markdown": "Important notes"
+    },
+    {
+      "text": "Availability: Present in the enterprise and organization repos-1-day reports.",
+      "markdown": "**Availability:** Present in the enterprise and organization `repos-1-day` reports."
+    },
+    {
+      "text": "What is counted: Pull requests that a person opened and at least one other person reviewed. Only human reviews are timed. Reviews from Copilot code review, other bots, and the author are ignored, so a pull request reviewed by both a person and Copilot code review is still included. As a result, pull_request_review_times[].total_merged is usually lower than pull_requests.total_merged , which also counts pull requests merged without any reviews.",
+      "markdown": "**What is counted:** Pull requests that a person opened and at least one other person reviewed. Only human reviews are timed. Reviews from Copilot code review, other bots, and the author are ignored, so a pull request reviewed by both a person and Copilot code review is still included. As a result, `pull_request_review_times[].total_merged` is usually lower than `pull_requests.total_merged`, which also counts pull requests merged without any reviews."
+    },
+    {
+      "text": "No backfill: Data builds forward from the release date, so early days will be thin. Pull requests that became ready for review before September 21, 2026 are left out of this section but still count toward pull_requests.total_merged .",
+      "markdown": "**No backfill:** Data builds forward from the release date, so early days will be thin. Pull requests that became ready for review before September 21, 2026 are left out of this section but still count toward `pull_requests.total_merged`."
+    },
+    {
+      "text": "A quiet day is an empty array, not a zero: The array is [] on days a repository merged no qualifying pull requests. The first-to-final review stage is 0 when pull requests receive a single review.",
+      "markdown": "**A quiet day is an empty array, not a zero:** The array is `[]` on days a repository merged no qualifying pull requests. The first-to-final review stage is `0` when pull requests receive a single review."
+    },
+    {
+      "text": "Access: Enterprise owners and billing managers, organization owners, and anyone with a custom organization or enterprise role that grants the View Copilot Metrics permission can access these reports. The Copilot usage metrics policy must be enabled.",
+      "markdown": "**Access:** Enterprise owners and billing managers, organization owners, and anyone with a custom organization or enterprise role that grants the `View Copilot Metrics` permission can access these reports. The Copilot usage metrics policy must be enabled."
+    },
+    {
+      "text": "Visit the Copilot usage metrics API documentation to get started.",
+      "markdown": "Visit the [Copilot usage metrics API documentation](https://docs.github.com/rest/copilot/copilot-usage-metrics) to get started."
+    }
+  ],
+  "headings": [
+    "What’s new",
+    "Why this matters",
+    "Important notes"
+  ],
+  "images": [],
+  "links": [
+    "https://github.blog/changelog/2026-07-17-repository-level-github-copilot-usage-metrics-generally-available/",
+    "https://docs.github.com/rest/copilot/copilot-usage-metrics"
+  ],
+  "strong": [
+    "authored_by and reviewed_by",
+    "total_merged",
+    "median_minutes_ready_to_first_review and p90_minutes_ready_to_first_review",
+    "median_minutes_first_to_final_review and p90_minutes_first_to_final_review",
+    "median_minutes_final_review_to_merge and p90_minutes_final_review_to_merge",
+    "Availability:",
+    "What is counted:",
+    "No backfill:",
+    "A quiet day is an empty array, not a zero:",
+    "Access:"
+  ],
+  "lists": {
+    "ul": 2,
+    "ol": 0,
+    "li": 10
+  },
+  "videos": []
+}
