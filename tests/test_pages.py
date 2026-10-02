@@ -479,14 +479,26 @@ No publication time was available.
             for heading in content.find_all(["h2", "h3", "h4", "h5", "h6"])
             if heading.get("id")
         }
+        heading_ids_by_text = {
+            heading.get_text(" ", strip=True): heading.get("id")
+            for heading in content.find_all(["h2", "h3", "h4", "h5", "h6"])
+            if heading.get("id")
+        }
         fragment_links = [
             link
             for link in content.find_all("a", href=True)
             if link["href"].startswith("#")
         ]
-        self.assertGreaterEqual(len(fragment_links), 2)
+        expected_targets = {
+            "What changed?": "What changed?",
+            "🚀 Try it out + share feedback": "🚀 Try it out + share feedback",
+            "What changed again?": "What changed?",
+        }
+        self.assertEqual(len(fragment_links), len(expected_targets))
         for link in fragment_links:
             self.assertIn(link["href"][1:], heading_ids)
+            label = link.get_text(" ", strip=True)
+            self.assertEqual(link["href"], f"#{heading_ids_by_text[expected_targets[label]]}")
         self.assertNotIn("source-whats-changed-v2", heading_ids)
         self.assertNotIn("🚀-try-it-out---feedback", heading_ids)
 

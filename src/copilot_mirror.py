@@ -102,20 +102,24 @@ def _text(element) -> str:
     return " ".join(element.get_text(" ", strip=True).split())
 
 
+def _element_marker(element) -> str:
+    class_names = element.get("class", [])
+    if isinstance(class_names, str):
+        class_names = [class_names]
+    return " ".join(
+        [str(element.get("id", "")), *(str(value) for value in class_names)]
+    ).casefold().replace("_", "-")
+
+
 def _is_table_of_contents(element) -> bool:
-    marker = " ".join(
-        [str(element.get("id", "")), *(str(value) for value in element.get("class", []))]
-    ).lower()
-    marker = marker.replace("_", "-")
+    marker = _element_marker(element)
     return "table-of-contents" in marker or bool(
         re.search(r"(?:^|[^a-z0-9])toc(?:[^a-z0-9]|$)", marker)
     )
 
 
 def _is_table_of_contents_menu(element) -> bool:
-    marker = " ".join(
-        [str(element.get("id", "")), *(str(value) for value in element.get("class", []))]
-    ).lower().replace("_", "-")
+    marker = _element_marker(element)
     return "table-of-contents-menu" in marker or _text(element).casefold().startswith(
         "menu. currently selected:"
     )
@@ -173,9 +177,7 @@ def _is_source_chrome(element, retained_toc_ids: set[int]) -> bool:
     if str(element.get("role", "")).casefold() in {"navigation", "menu", "button"}:
         return True
 
-    marker = " ".join(
-        [str(element.get("id", "")), *(str(value) for value in element.get("class", []))]
-    ).lower().replace("_", "-")
+    marker = _element_marker(element)
     return any(
         value in marker
         for value in (
@@ -240,12 +242,12 @@ def _normalize_heading_fragments(root, source_url: str | None) -> None:
     for heading in headings:
         heading["id"] = archive_ids[id(heading)]
 
+    source_page = urlparse(source_url) if source_url is not None else None
     for link in root.find_all("a", href=True):
         href = str(link["href"])
         if href.startswith("#"):
             source_id = unquote(href[1:])
-        elif source_url:
-            source_page = urlparse(source_url)
+        elif source_url is not None and source_page is not None:
             target_page = urlparse(urljoin(source_url, href))
             same_source_page = (
                 target_page.scheme,
@@ -342,14 +344,15 @@ def collect(feed_url: str, repo: Path, branch: str) -> bool:
         filename = f"{_slug(post.url)}.md"
         prior = _read_archive_file(repo, branch, filename)
         source_html = fetch_url(post.url)
+        article = normalize_article(source_html, post.title, post.url)
         fetched_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
-        candidate = archive_document_from_html(post, source_html, fetched_at)
+        candidate = _archive_document(post, article, fetched_at)
         if prior is not None:
             previous_without_fetch = re.sub(r"(?m)^fetched_at: .+\n", "", prior)
             candidate_without_fetch = re.sub(r"(?m)^fetched_at: .+\n", "", candidate)
             if previous_without_fetch == candidate_without_fetch:
                 fetched_at = _existing_fetch_time_from_text(prior) or fetched_at
-                candidate = archive_document_from_html(post, source_html, fetched_at)
+                candidate = _archive_document(post, article, fetched_at)
         archive[filename] = candidate
     return write_archive_branch(repo, branch, archive)
 
