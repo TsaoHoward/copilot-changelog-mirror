@@ -158,11 +158,11 @@ class OrchestrationWorkflowTests(unittest.TestCase):
             ["capture:"],
         )
         self.assertNotIn("publish-pages", "\n".join(lines))
-        capture_command = "uv run copilot-mirror capture"
-        self.assertEqual(
-            [command for command in capture_commands if "copilot-mirror" in command],
-            [capture_command],
-        )
+        capture_command = "python3 src/copilot_mirror.py capture"
+        self.assertEqual(capture_commands.count(capture_command), 1)
+        self.assertNotIn("uv run copilot-mirror", "\n".join(lines))
+        self.assertNotIn("uv sync --locked", "\n".join(lines))
+        self.assertNotIn("setup-uv", "\n".join(lines))
         push_command = "git push origin mirror-data"
         self.assertIn(
             "git ls-remote --exit-code --heads origin refs/heads/mirror-data",

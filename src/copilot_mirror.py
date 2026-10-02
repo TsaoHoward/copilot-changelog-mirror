@@ -11,15 +11,13 @@ import subprocess
 import sys
 import tempfile
 import xml.etree.ElementTree as ET
+from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import unquote, urljoin, urlparse
 from urllib.request import Request, urlopen
-
-from bs4 import BeautifulSoup
-from markdownify import markdownify
 
 FEED_URL = "https://github.blog/changelog/label/copilot/feed/"
 USER_AGENT = "copilot-changelog-mirror/0.1"
@@ -86,6 +84,9 @@ def _absolute_url(base: str, value: str) -> str:
 
 
 def article_to_markdown(content: bytes) -> str:
+    from bs4 import BeautifulSoup
+    from markdownify import markdownify
+
     soup = BeautifulSoup(content, "html.parser")
     article = soup.find("article")
     if article is None:
@@ -119,13 +120,17 @@ def _archive_document(post: FeedPost, body: str, fetched_at: str) -> str:
     return "---\n" + "\n".join(fields) + "\n---\n\n" + body
 
 
+def _fetch_feed_articles(feed_url: str) -> Iterator[tuple[FeedPost, bytes]]:
+    for post in parse_feed(fetch_url(feed_url), feed_url):
+        yield post, fetch_url(post.url)
+
+
 def collect(feed_url: str, repo: Path, branch: str) -> bool:
-    posts = parse_feed(fetch_url(feed_url), feed_url)
     archive: dict[str, str] = {}
-    for post in posts:
+    for post, source_html in _fetch_feed_articles(feed_url):
         filename = f"{_slug(post.url)}.md"
         prior = _read_archive_file(repo, branch, filename)
-        body = article_to_markdown(fetch_url(post.url))
+        body = article_to_markdown(source_html)
         fetched_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
         candidate = _archive_document(post, body, fetched_at)
         if prior is not None:
@@ -144,13 +149,11 @@ def _snapshot_identity(url: str) -> str:
 
 
 def capture(feed_url: str, repo: Path, branch: str) -> bool:
-    posts = parse_feed(fetch_url(feed_url), feed_url)
     files: dict[str, bytes] = {}
-    for post in posts:
+    for post, source_html in _fetch_feed_articles(feed_url):
         identity = _snapshot_identity(post.url)
         html_path = f"snapshots/{identity}.html"
         metadata_path = f"snapshots/{identity}.json"
-        source_html = fetch_url(post.url)
         previous_html = _read_branch_file(repo, branch, html_path)
         previous_metadata = _read_branch_file(repo, branch, metadata_path)
         if source_html == previous_html and previous_metadata is not None:

@@ -16,10 +16,10 @@ uv sync
 Capture source HTML without article parsing or publishing:
 
 ```sh
-uv run copilot-mirror capture
+python3 src/copilot_mirror.py capture
 ```
 
-The capture command reads `https://github.blog/changelog/label/copilot/feed/` by default, saves each response byte-for-byte under `snapshots/`, and records the source URL and UTC fetch time in a neighboring JSON file. Snapshot paths are derived from each source URL. Identical HTML leaves both snapshot and provenance unchanged; changed HTML updates the same path, preserving earlier versions in Git history. Capture leaves the checked-out application branch and existing `posts/` untouched.
+The capture command uses only Python's standard library and Git. It reads `https://github.blog/changelog/label/copilot/feed/` by default, saves each response byte-for-byte under `snapshots/`, and records the source URL and UTC fetch time in a neighboring JSON file. Snapshot paths are derived from each source URL. Identical HTML leaves both snapshot and provenance unchanged; changed HTML updates the same path, preserving earlier versions in Git history. Capture leaves the checked-out application branch and existing `posts/` untouched.
 
 The original Markdown archive command remains available for local parser work:
 
