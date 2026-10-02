@@ -154,9 +154,7 @@ class OrchestrationWorkflowTests(unittest.TestCase):
         self.assertNotIn("contents: write", [line.strip() for line in root_permissions])
         self.assertEqual(capture_permission_config, ["permissions:", "contents: write"])
         job_names = [
-            line.strip()
-            for line in jobs
-            if line.startswith("  ") and not line.startswith("    ")
+            line.strip() for line in jobs if line.startswith("  ") and not line.startswith("    ")
         ]
         self.assertEqual(
             job_names,

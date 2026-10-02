@@ -384,9 +384,9 @@ def capture(feed_url: str, repo: Path, branch: str) -> bool:
             "fetched_at": datetime.now(timezone.utc).isoformat(timespec="microseconds"),
         }
         files[html_path] = source_html
-        files[metadata_path] = (
-            json.dumps(provenance, ensure_ascii=False, indent=2) + "\n"
-        ).encode("utf-8")
+        files[metadata_path] = (json.dumps(provenance, ensure_ascii=False, indent=2) + "\n").encode(
+            "utf-8"
+        )
     return write_data_branch(repo, branch, files, "Capture Copilot Changelog snapshots")
 
 
@@ -420,9 +420,7 @@ def _existing_fetch_time_from_text(content: str) -> str | None:
 
 
 def write_archive_branch(repo: Path, branch: str, archive: dict[str, str]) -> bool:
-    files = {
-        f"posts/{filename}": content.encode("utf-8") for filename, content in archive.items()
-    }
+    files = {f"posts/{filename}": content.encode("utf-8") for filename, content in archive.items()}
     return write_data_branch(repo, branch, files, "Mirror Copilot Changelog posts")
 
 

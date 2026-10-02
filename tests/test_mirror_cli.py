@@ -75,9 +75,7 @@ class MirrorCliTests(unittest.TestCase):
         )
 
     def git_bytes(self, *args):
-        return subprocess.run(
-            ["git", *args], cwd=self.repo, check=True, capture_output=True
-        ).stdout
+        return subprocess.run(["git", *args], cwd=self.repo, check=True, capture_output=True).stdout
 
     def add_archive_file(self, path, content):
         worktree = self.repo.parent / "archive-worktree"
@@ -145,11 +143,10 @@ class MirrorCliTests(unittest.TestCase):
 
     def test_capture_persists_raw_html_and_provenance_without_changing_posts(self):
         self.run_cli()
-        self.add_archive_file("archive-state.json", b"{\"preserve\": true}\n")
+        self.add_archive_file("archive-state.json", b'{"preserve": true}\n')
         existing_archive = {
             path: self.git_bytes("show", f"mirror-data:{path}")
-            for path in self.git("ls-tree", "-r", "--name-only", "mirror-data")
-            .stdout.splitlines()
+            for path in self.git("ls-tree", "-r", "--name-only", "mirror-data").stdout.splitlines()
         }
         self.assertIn("archive-state.json", existing_archive)
 
@@ -165,9 +162,7 @@ class MirrorCliTests(unittest.TestCase):
                 raw_html = self.git_bytes("show", f"mirror-data:{path}")
                 metadata = json.loads(self.git_bytes("show", f"mirror-data:{metadata_path}"))
                 captured[metadata["source_url"]] = (path, raw_html, metadata)
-                fetched_at = datetime.fromisoformat(
-                    metadata["fetched_at"].replace("Z", "+00:00")
-                )
+                fetched_at = datetime.fromisoformat(metadata["fetched_at"].replace("Z", "+00:00"))
                 self.assertEqual(fetched_at.utcoffset().total_seconds(), 0)
 
         for article_name in ("article.html", "no-date.html", "updated-only.html"):
@@ -182,10 +177,7 @@ class MirrorCliTests(unittest.TestCase):
         self.run_cli("capture")
         self.assertEqual(self.git("rev-parse", "mirror-data").stdout.strip(), first_commit)
         self.assertEqual(
-            {
-                path: self.git_bytes("show", f"mirror-data:{path}")
-                for path in snapshot_paths
-            },
+            {path: self.git_bytes("show", f"mirror-data:{path}") for path in snapshot_paths},
             first_snapshot,
         )
 
