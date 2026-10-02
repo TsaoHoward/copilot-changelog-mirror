@@ -1,4 +1,4 @@
-name: Mirror and publish Copilot Changelog
+name: Capture Copilot Changelog snapshots
 
 on:
   schedule:
@@ -10,11 +10,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: mirror-and-publish
+  group: capture-copilot-snapshots
   cancel-in-progress: false
 
 jobs:
-  mirror:
+  capture:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -46,21 +46,13 @@ jobs:
             fi
           fi
 
-      - name: Configure archive commit identity
+      - name: Configure snapshot commit identity
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Run Copilot mirror
-        run: uv run copilot-mirror
+      - name: Capture raw Copilot Changelog snapshots
+        run: uv run copilot-mirror capture
 
-      - name: Push archive branch
+      - name: Push snapshot branch
         run: git push origin mirror-data
-
-  publish:
-    needs: mirror
-    uses: ./.github/workflows/publish-pages.yml
-    permissions:
-      contents: read
-      pages: write
-      id-token: write

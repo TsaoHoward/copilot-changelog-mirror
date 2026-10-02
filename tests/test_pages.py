@@ -117,31 +117,28 @@ class PagesWorkflowTests(unittest.TestCase):
 
 
 class OrchestrationWorkflowTests(unittest.TestCase):
-    def test_schedules_and_manual_trigger_run_the_mirror_then_reusable_pages_workflow(self):
+    def test_schedule_and_manual_trigger_capture_without_parsing_or_publishing(self):
         lines = ORCHESTRATION_WORKFLOW.read_text(encoding="utf-8").splitlines()
         triggers = yaml_block(lines, "on:", 0)
         schedule = yaml_block(triggers, "schedule:", 2)
         root_permissions = yaml_block(lines, "permissions:", 0)
         jobs = yaml_block(lines, "jobs:", 0)
-        mirror = yaml_block(jobs, "mirror:", 2)
-        mirror_permissions = yaml_block(mirror, "permissions:", 4)
-        mirror_steps = yaml_block(mirror, "steps:", 4)
-        publish = yaml_block(jobs, "publish:", 2)
-        publish_permissions = yaml_block(publish, "permissions:", 4)
-        mirror_step_blocks = ["\n".join(block) for block in list_item_blocks(mirror_steps, 6)]
+        capture = yaml_block(jobs, "capture:", 2)
+        capture_permissions = yaml_block(capture, "permissions:", 4)
+        capture_steps = yaml_block(capture, "steps:", 4)
+        capture_step_blocks = ["\n".join(block) for block in list_item_blocks(capture_steps, 6)]
         archive_fetch_step = next(
-            block for block in mirror_step_blocks if "Fetch existing archive history" in block
+            block for block in capture_step_blocks if "Fetch existing archive history" in block
         )
-        mirror_commands = [
+        capture_commands = [
             line.strip().removeprefix("run: ")
-            for block in mirror_step_blocks
+            for block in capture_step_blocks
             for line in block.splitlines()
             if line.strip().startswith("run: ")
         ]
         schedule_config = [line.strip().removeprefix("- ") for line in schedule]
         trigger_config = [line.strip() for line in triggers]
-        mirror_permission_config = [line.strip() for line in mirror_permissions]
-        publish_permission_config = [line.strip() for line in publish_permissions]
+        capture_permission_config = [line.strip() for line in capture_permissions]
 
         self.assertEqual(
             [line for line in schedule_config if line.startswith("cron:")],
@@ -150,23 +147,22 @@ class OrchestrationWorkflowTests(unittest.TestCase):
         self.assertIn('timezone: "Asia/Taipei"', schedule_config)
         self.assertIn("workflow_dispatch:", trigger_config)
         self.assertNotIn("contents: write", [line.strip() for line in root_permissions])
-        self.assertIn("contents: write", mirror_permission_config)
-        self.assertEqual(len(mirror_permission_config), 2)
-        self.assertIn("needs: mirror", [line.strip() for line in publish])
-        self.assertIn(
-            "uses: ./.github/workflows/publish-pages.yml",
-            [line.strip() for line in publish],
+        self.assertEqual(capture_permission_config, ["permissions:", "contents: write"])
+        job_names = [
+            line.strip()
+            for line in jobs
+            if line.startswith("  ") and not line.startswith("    ")
+        ]
+        self.assertEqual(
+            job_names,
+            ["capture:"],
         )
-        self.assertCountEqual(
-            publish_permission_config,
-            [
-                "permissions:",
-                "contents: read",
-                "pages: write",
-                "id-token: write",
-            ],
+        self.assertNotIn("publish-pages", "\n".join(lines))
+        capture_command = "uv run copilot-mirror capture"
+        self.assertEqual(
+            [command for command in capture_commands if "copilot-mirror" in command],
+            [capture_command],
         )
-        mirror_command = "uv run copilot-mirror"
         push_command = "git push origin mirror-data"
         self.assertIn(
             "git ls-remote --exit-code --heads origin refs/heads/mirror-data",
@@ -179,21 +175,23 @@ class OrchestrationWorkflowTests(unittest.TestCase):
             archive_fetch_step,
         )
         self.assertLess(
-            mirror_step_blocks.index(archive_fetch_step),
+            capture_step_blocks.index(archive_fetch_step),
             next(
-                index for index, block in enumerate(mirror_step_blocks) if mirror_command in block
+                index for index, block in enumerate(capture_step_blocks) if capture_command in block
             ),
         )
-        self.assertLess(mirror_commands.index(mirror_command), mirror_commands.index(push_command))
+        self.assertLess(
+            capture_commands.index(capture_command), capture_commands.index(push_command)
+        )
 
     def test_archive_history_fetch_bootstraps_without_hiding_remote_errors(self):
         lines = ORCHESTRATION_WORKFLOW.read_text(encoding="utf-8").splitlines()
         jobs = yaml_block(lines, "jobs:", 0)
-        mirror = yaml_block(jobs, "mirror:", 2)
-        mirror_steps = yaml_block(mirror, "steps:", 4)
+        capture = yaml_block(jobs, "capture:", 2)
+        capture_steps = yaml_block(capture, "steps:", 4)
         fetch_step = next(
             "\n".join(block)
-            for block in list_item_blocks(mirror_steps, 6)
+            for block in list_item_blocks(capture_steps, 6)
             if "Fetch existing archive history" in "\n".join(block)
         )
         fetch_script = textwrap.dedent(fetch_step.split("run: |", 1)[1])

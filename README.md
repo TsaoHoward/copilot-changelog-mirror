@@ -1,6 +1,6 @@
 # Copilot Changelog Mirror
 
-A small GitHub Actions workflow and CLI for mirroring public GitHub Copilot Changelog articles. It reads the official RSS feed, fetches each linked article, converts its article body to Markdown, and commits the archive to the separate `mirror-data` Git branch. The branch is created as an orphan on the first run, so it contains archive content without the application files from `main`.
+A small GitHub Actions workflow and CLI for mirroring public GitHub Copilot Changelog articles. It can capture original article HTML as durable snapshots or convert articles to Markdown on the separate `mirror-data` Git branch. That branch is created as an orphan on the first run, so it contains archive content without the application files from `main`.
 
 ## Requirements
 
@@ -13,13 +13,21 @@ Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then sync
 uv sync
 ```
 
-Run the mirror manually from the Git checkout:
+Capture source HTML without article parsing or publishing:
+
+```sh
+uv run copilot-mirror capture
+```
+
+The capture command reads `https://github.blog/changelog/label/copilot/feed/` by default, saves each response byte-for-byte under `snapshots/`, and records the source URL and UTC fetch time in a neighboring JSON file. Snapshot paths are derived from each source URL. Identical HTML leaves both snapshot and provenance unchanged; changed HTML updates the same path, preserving earlier versions in Git history. Capture leaves the checked-out application branch and existing `posts/` untouched.
+
+The original Markdown archive command remains available for local parser work:
 
 ```sh
 uv run copilot-mirror
 ```
 
-The command reads `https://github.blog/changelog/label/copilot/feed/` by default, writes Markdown files under `posts/` on `mirror-data`, and leaves the checked-out application branch unchanged. Re-running it keeps unchanged posts and the branch commit unchanged; changed source content updates the archive branch.
+It writes derived Markdown files under `posts/` on `mirror-data` and leaves the checked-out application branch unchanged.
 
 For local fixture runs, pass an RSS file URL and optionally a repository path:
 
@@ -27,7 +35,7 @@ For local fixture runs, pass an RSS file URL and optionally a repository path:
 uv run copilot-mirror --feed-url file:///path/to/feed.xml --repo /path/to/git-checkout
 ```
 
-The RSS feed's article links are fetched as-is. Publication time is recorded when the feed provides one; fetch time is recorded for every archived article.
+Both commands use the official RSS feed for discovery. The Markdown archive records publication time when the feed provides one and fetch time for every generated post.
 
 Run the behavior tests with:
 
@@ -39,9 +47,9 @@ uv run python -m unittest discover -s tests -v
 
 ## GitHub Pages
 
-The `Mirror and publish Copilot Changelog` workflow runs the mirror and publishes the site at 06:17 and 12:17 in the `Asia/Taipei` timezone. It can also be started manually to run the same end-to-end flow. The workflow fetches existing `mirror-data` history when that branch is present. On the first run, it lets the mirror create the branch, pushes it, and then calls the Pages build and deployment workflow.
+The `Capture Copilot Changelog snapshots` workflow captures and pushes raw snapshots at 06:17 and 12:17 in the `Asia/Taipei` timezone. It can also be started manually. It has no parsing or Pages dependency. The workflow fetches existing `mirror-data` history when that branch is present; on the first run, it creates the branch and pushes it.
 
-The `Publish archive to GitHub Pages` workflow remains available as a manual Pages-only recovery path. It builds the Jekyll site from `main` and the Markdown posts on `mirror-data`. The remote `mirror-data` branch must exist before this Pages-only workflow can publish. The full mirror-and-publish workflow can create it automatically; to bootstrap it manually instead, run the mirror once from a checkout and push its new branch:
+The `Publish archive to GitHub Pages` workflow remains available as an independent manual Pages-only recovery path. It builds the Jekyll site from `main` and the Markdown posts on `mirror-data`. The remote `mirror-data` branch must exist before this Pages-only workflow can publish. To bootstrap it manually, run the Markdown archive command once from a checkout and push its new branch:
 
 ```sh
 uv run copilot-mirror

@@ -1,8 +1,10 @@
+import json
 import os
 import subprocess
 import sys
 import tempfile
 import unittest
+from datetime import datetime
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -71,6 +73,58 @@ class MirrorCliTests(unittest.TestCase):
             text=True,
         )
 
+    def run_capture(self):
+        return subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "copilot_mirror",
+                "capture",
+                "--repo",
+                str(self.repo),
+                "--feed-url",
+                (self.fixtures / "feed.xml").as_uri(),
+            ],
+            cwd=PROJECT_ROOT,
+            env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT / "src")},
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+    def git_bytes(self, *args):
+        return subprocess.run(
+            ["git", *args], cwd=self.repo, check=True, capture_output=True
+        ).stdout
+
+    def add_archive_file(self, path, content):
+        worktree = self.repo.parent / "archive-worktree"
+        subprocess.run(
+            ["git", "-C", str(self.repo), "worktree", "add", str(worktree), "mirror-data"],
+            check=True,
+            capture_output=True,
+        )
+        try:
+            destination = worktree / path
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(content)
+            subprocess.run(
+                ["git", "-C", str(worktree), "add", "--", path],
+                check=True,
+                capture_output=True,
+            )
+            subprocess.run(
+                ["git", "-C", str(worktree), "commit", "-m", "Add unrelated archive data"],
+                check=True,
+                capture_output=True,
+            )
+        finally:
+            subprocess.run(
+                ["git", "-C", str(self.repo), "worktree", "remove", "--force", str(worktree)],
+                check=True,
+                capture_output=True,
+            )
+
     def test_cli_archives_article_with_provenance_on_separate_branch_idempotently(self):
         self.run_mirror()
 
@@ -106,6 +160,78 @@ class MirrorCliTests(unittest.TestCase):
         updated = self.git("show", f"mirror-data:{paths[0]}").stdout
         self.assertIn("Updated **article** text.", updated)
         self.assertEqual(self.git("branch", "--show-current").stdout.strip(), "main")
+
+    def test_capture_persists_raw_html_and_provenance_without_changing_posts(self):
+        self.run_mirror()
+        self.add_archive_file("archive-state.json", b"{\"preserve\": true}\n")
+        existing_archive = {
+            path: self.git_bytes("show", f"mirror-data:{path}")
+            for path in self.git("ls-tree", "-r", "--name-only", "mirror-data")
+            .stdout.splitlines()
+        }
+        self.assertIn("archive-state.json", existing_archive)
+
+        self.run_capture()
+        paths = self.git("ls-tree", "-r", "--name-only", "mirror-data").stdout.splitlines()
+        snapshot_paths = [path for path in paths if path.startswith("snapshots/")]
+        self.assertEqual(len(snapshot_paths), 6)
+
+        captured = {}
+        for path in snapshot_paths:
+            if path.endswith(".html"):
+                metadata_path = path.removesuffix(".html") + ".json"
+                raw_html = self.git_bytes("show", f"mirror-data:{path}")
+                metadata = json.loads(self.git_bytes("show", f"mirror-data:{metadata_path}"))
+                captured[metadata["source_url"]] = (path, raw_html, metadata)
+                fetched_at = datetime.fromisoformat(
+                    metadata["fetched_at"].replace("Z", "+00:00")
+                )
+                self.assertEqual(fetched_at.utcoffset().total_seconds(), 0)
+
+        for article_name in ("article.html", "no-date.html", "updated-only.html"):
+            url = (self.fixtures / article_name).as_uri()
+            self.assertEqual(captured[url][1], (self.fixtures / article_name).read_bytes())
+            self.assertEqual(captured[url][2]["source_url"], url)
+
+        first_commit = self.git("rev-parse", "mirror-data").stdout.strip()
+        first_snapshot = {
+            path: self.git_bytes("show", f"mirror-data:{path}") for path in snapshot_paths
+        }
+        self.run_capture()
+        self.assertEqual(self.git("rev-parse", "mirror-data").stdout.strip(), first_commit)
+        self.assertEqual(
+            {
+                path: self.git_bytes("show", f"mirror-data:{path}")
+                for path in snapshot_paths
+            },
+            first_snapshot,
+        )
+
+        article_path = self.fixtures / "article.html"
+        updated_html = article_path.read_bytes().replace(b"Full", b"Updated")
+        article_path.write_bytes(updated_html)
+        self.run_capture()
+        changed_path = captured[(self.fixtures / "article.html").as_uri()][0]
+        self.assertEqual(self.git_bytes("show", f"mirror-data:{changed_path}"), updated_html)
+        metadata_path = changed_path.removesuffix(".html") + ".json"
+        updated_metadata = json.loads(self.git_bytes("show", f"mirror-data:{metadata_path}"))
+        self.assertNotEqual(
+            updated_metadata["fetched_at"],
+            captured[(self.fixtures / "article.html").as_uri()][2]["fetched_at"],
+        )
+        self.assertEqual(
+            self.git_bytes("show", f"mirror-data^:{changed_path}"),
+            first_snapshot[changed_path],
+        )
+
+        remaining_paths = self.git(
+            "ls-tree", "-r", "--name-only", "mirror-data"
+        ).stdout.splitlines()
+        for path, content in existing_archive.items():
+            self.assertIn(path, remaining_paths)
+            self.assertEqual(self.git_bytes("show", f"mirror-data:{path}"), content)
+        self.assertEqual(self.git("branch", "--show-current").stdout.strip(), "main")
+        self.assertEqual(self.git("status", "--porcelain").stdout, "")
 
 
 if __name__ == "__main__":

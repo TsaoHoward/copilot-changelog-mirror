@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
@@ -135,19 +138,52 @@ def collect(feed_url: str, repo: Path, branch: str) -> bool:
     return write_archive_branch(repo, branch, archive)
 
 
+def _snapshot_identity(url: str) -> str:
+    suffix = hashlib.sha256(url.encode("utf-8")).hexdigest()[:12]
+    return f"{_slug(url)}-{suffix}"
+
+
+def capture(feed_url: str, repo: Path, branch: str) -> bool:
+    posts = parse_feed(fetch_url(feed_url), feed_url)
+    files: dict[str, bytes] = {}
+    for post in posts:
+        identity = _snapshot_identity(post.url)
+        html_path = f"snapshots/{identity}.html"
+        metadata_path = f"snapshots/{identity}.json"
+        source_html = fetch_url(post.url)
+        previous_html = _read_branch_file(repo, branch, html_path)
+        previous_metadata = _read_branch_file(repo, branch, metadata_path)
+        if source_html == previous_html and previous_metadata is not None:
+            continue
+
+        provenance = {
+            "source_url": post.url,
+            "fetched_at": datetime.now(timezone.utc).isoformat(timespec="microseconds"),
+        }
+        files[html_path] = source_html
+        files[metadata_path] = (
+            json.dumps(provenance, ensure_ascii=False, indent=2) + "\n"
+        ).encode("utf-8")
+    return write_data_branch(repo, branch, files, "Capture Copilot Changelog snapshots")
+
+
 def _read_archive_file(repo: Path, branch: str, filename: str) -> str | None:
-    branch_ref = _archive_branch_ref(repo, branch)
+    content = _read_branch_file(repo, branch, f"posts/{filename}")
+    return content.decode("utf-8") if content is not None else None
+
+
+def _read_branch_file(repo: Path, branch: str, path: str) -> bytes | None:
+    branch_ref = _data_branch_ref(repo, branch)
     if branch_ref is None:
         return None
     result = subprocess.run(
-        ["git", "-C", str(repo), "show", f"{branch_ref}:posts/{filename}"],
+        ["git", "-C", str(repo), "show", f"{branch_ref}:{path}"],
         capture_output=True,
-        text=True,
     )
     return result.stdout if result.returncode == 0 else None
 
 
-def _archive_branch_ref(repo: Path, branch: str) -> str | None:
+def _data_branch_ref(repo: Path, branch: str) -> str | None:
     for ref in (f"refs/heads/{branch}", f"refs/remotes/origin/{branch}"):
         result = subprocess.run(["git", "-C", str(repo), "show-ref", "--verify", "--quiet", ref])
         if result.returncode == 0:
@@ -161,8 +197,17 @@ def _existing_fetch_time_from_text(content: str) -> str | None:
 
 
 def write_archive_branch(repo: Path, branch: str, archive: dict[str, str]) -> bool:
+    files = {
+        f"posts/{filename}": content.encode("utf-8") for filename, content in archive.items()
+    }
+    return write_data_branch(repo, branch, files, "Mirror Copilot Changelog posts")
+
+
+def write_data_branch(repo: Path, branch: str, files: dict[str, bytes], message: str) -> bool:
+    if not files:
+        return False
     repo = repo.resolve()
-    branch_ref = _archive_branch_ref(repo, branch)
+    branch_ref = _data_branch_ref(repo, branch)
     worktree = Path(tempfile.mkdtemp(prefix="copilot-mirror-"))
     shutil.rmtree(worktree)
     try:
@@ -215,11 +260,11 @@ def write_archive_branch(repo: Path, branch: str, archive: dict[str, str]) -> bo
                 if child.name == ".git":
                     continue
                 shutil.rmtree(child) if child.is_dir() else child.unlink()
-        posts_dir = worktree / "posts"
-        posts_dir.mkdir(exist_ok=True)
-        for filename, content in archive.items():
-            (posts_dir / filename).write_text(content, encoding="utf-8")
-        subprocess.run(["git", "-C", str(worktree), "add", "--all"], check=True)
+        for filename, content in files.items():
+            destination = worktree / filename
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(content)
+        subprocess.run(["git", "-C", str(worktree), "add", "--", *files], check=True)
         changed = (
             subprocess.run(["git", "-C", str(worktree), "diff", "--cached", "--quiet"]).returncode
             != 0
@@ -227,7 +272,7 @@ def write_archive_branch(repo: Path, branch: str, archive: dict[str, str]) -> bo
         if not changed:
             return False
         subprocess.run(
-            ["git", "-C", str(worktree), "commit", "-m", "Mirror Copilot Changelog posts"],
+            ["git", "-C", str(worktree), "commit", "-m", message],
             check=True,
         )
         return True
@@ -238,12 +283,12 @@ def write_archive_branch(repo: Path, branch: str, archive: dict[str, str]) -> bo
         )
 
 
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Mirror Copilot Changelog articles to the mirror-data Git branch."
-    )
+def _cli_parser(description: str, data_branch_help: str) -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
-        "--feed-url", default=FEED_URL, help="RSS feed URL (defaults to the official Copilot feed)."
+        "--feed-url",
+        default=FEED_URL,
+        help="RSS feed URL (defaults to the official Copilot feed).",
     )
     parser.add_argument(
         "--repo",
@@ -251,10 +296,11 @@ def main(argv: list[str] | None = None) -> int:
         default=Path.cwd(),
         help="Git repository receiving the mirror-data branch.",
     )
-    parser.add_argument(
-        "--data-branch", default="mirror-data", help="Branch for collected Markdown articles."
-    )
-    args = parser.parse_args(argv)
+    parser.add_argument("--data-branch", default="mirror-data", help=data_branch_help)
+    return parser
+
+
+def _validate_data_branch(args: argparse.Namespace, parser: argparse.ArgumentParser) -> None:
     current_branch = subprocess.run(
         ["git", "-C", str(args.repo), "branch", "--show-current"],
         check=True,
@@ -263,6 +309,30 @@ def main(argv: list[str] | None = None) -> int:
     ).stdout.strip()
     if args.data_branch in {"main", "master"} or args.data_branch == current_branch:
         parser.error("the archive branch must be separate from the application branch")
+
+
+def capture_main(argv: list[str] | None = None) -> int:
+    parser = _cli_parser(
+        "Capture raw Copilot Changelog source HTML on the mirror-data Git branch.",
+        "Branch for captured source snapshots.",
+    )
+    args = parser.parse_args(argv)
+    _validate_data_branch(args, parser)
+    changed = capture(args.feed_url, args.repo, args.data_branch)
+    print("Snapshots updated." if changed else "Snapshots are already up to date.")
+    return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    command_line = list(sys.argv[1:] if argv is None else argv)
+    if command_line[:1] == ["capture"]:
+        return capture_main(command_line[1:])
+    parser = _cli_parser(
+        "Mirror Copilot Changelog articles to the mirror-data Git branch.",
+        "Branch for collected Markdown articles.",
+    )
+    args = parser.parse_args(argv)
+    _validate_data_branch(args, parser)
     changed = collect(args.feed_url, args.repo, args.data_branch)
     print("Archive updated." if changed else "Archive is already up to date.")
     return 0
