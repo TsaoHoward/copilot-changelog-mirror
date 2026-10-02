@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "copilot-changelog-mirror"
 version = "0.1.0"
-description = "Manually mirror the GitHub Copilot Changelog to Markdown"
+description = "Capture and archive the GitHub Copilot Changelog"
 requires-python = ">=3.11"
 dependencies = [
     "beautifulsoup4>=4.12,<5",

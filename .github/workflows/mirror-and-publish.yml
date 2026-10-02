@@ -1,4 +1,4 @@
-name: Mirror and publish Copilot Changelog
+name: Capture Copilot Changelog snapshots
 
 on:
   schedule:
@@ -10,27 +10,17 @@ permissions:
   contents: read
 
 concurrency:
-  group: mirror-and-publish
+  group: capture-copilot-snapshots
   cancel-in-progress: false
 
 jobs:
-  mirror:
+  capture:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - name: Check out application source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Set up Python and uv
-        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
-        with:
-          python-version: "3.12"
-          enable-cache: true
-          cache-dependency-glob: uv.lock
-
-      - name: Install locked dependencies
-        run: uv sync --locked
 
       - name: Fetch existing archive history
         shell: bash
@@ -46,21 +36,13 @@ jobs:
             fi
           fi
 
-      - name: Configure archive commit identity
+      - name: Configure snapshot commit identity
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Run Copilot mirror
-        run: uv run copilot-mirror
+      - name: Capture raw Copilot Changelog snapshots
+        run: python3 src/copilot_mirror.py capture
 
-      - name: Push archive branch
+      - name: Push snapshot branch
         run: git push origin mirror-data
-
-  publish:
-    needs: mirror
-    uses: ./.github/workflows/publish-pages.yml
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
