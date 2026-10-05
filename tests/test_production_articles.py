@@ -9,11 +9,12 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
+from archive_support import git, initialize_repository, offline_cli
 from bs4 import BeautifulSoup
 
-from copilot_mirror import FeedPost, archive_document_from_html
+from copilot_mirror import FeedPost, archive_document_from_html, write_data_branch
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = PROJECT_ROOT / "tests" / "fixtures" / "production"
@@ -36,13 +37,44 @@ def assert_ordered_blocks(test, text, blocks):
 class ProductionArticleTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        cls.temp = tempfile.TemporaryDirectory()
+        cls.addClassCleanup(cls.temp.cleanup)
+        cls.repo = Path(cls.temp.name) / "repo"
+        initialize_repository(cls.repo)
         cls.corpus = []
+        inputs = {"posts/historical.md": b"An older post without a snapshot.\n"}
+        baselines = []
         for path in sorted(FIXTURES.glob("*.json")):
             baseline = json.loads(path.read_text(encoding="utf-8"))
             raw = path.with_suffix(".html").read_bytes()
+            inputs[f"snapshots/{path.stem}.html"] = raw
+            inputs[f"snapshots/{path.stem}.json"] = json.dumps(
+                {key: baseline[key] for key in ("source_url", "fetched_at")}
+            ).encode()
+            name = urlparse(baseline["source_url"]).path.rstrip("/").split("/")[-1]
+            if "agentic-autofix" not in name and "dynamic-workflows" not in name:
+                inputs[f"posts/{name}.md"] = (
+                    f"---\nsource_url: {baseline['source_url']}\n---\n\nKnown-bad truncated body.\n"
+                ).encode()
+            baselines.append((name, baseline, raw))
+        write_data_branch(
+            cls.repo, "mirror-data", inputs, "Saved production fixtures and bad posts"
+        )
+        result = offline_cli(cls.repo, "render")
+        if result.returncode:
+            raise AssertionError(result.stderr)
+        for name, baseline, raw in baselines:
             post = FeedPost("Discovery fallback title", baseline["source_url"], None)
-            document = archive_document_from_html(post, raw, baseline["fetched_at"])
-            cls.corpus.append((path.stem, baseline, raw, post, document))
+            document = git(cls.repo, "show", f"mirror-data:posts/{name}.md").decode()
+            cls.corpus.append((name, baseline, raw, post, document))
+        for path, content in inputs.items():
+            if not path.startswith("posts/") or path == "posts/historical.md":
+                if git(cls.repo, "show", f"mirror-data:{path}") != content:
+                    raise AssertionError(f"Render changed source or unrelated data: {path}")
+        before = git(cls.repo, "rev-parse", "mirror-data")
+        result = offline_cli(cls.repo, "render")
+        if result.returncode or git(cls.repo, "rev-parse", "mirror-data") != before:
+            raise AssertionError("Production corpus render must be idempotent")
 
     def test_captured_articles_preserve_all_ordered_editorial_blocks_in_archive_documents(self):
         self.assertEqual(len(self.corpus), 6)
@@ -58,9 +90,9 @@ class ProductionArticleTests(unittest.TestCase):
                     f"title: {json.dumps(baseline['title'], ensure_ascii=False)}", frontmatter
                 )
                 self.assertNotRegex(body, r"(?m)^# ")
-                self.assertEqual(
-                    document, archive_document_from_html(post, raw, baseline["fetched_at"])
-                )
+                self.assertIn(f"source_url: {baseline['source_url']}", frontmatter)
+                self.assertIn(f"fetched_at: {baseline['fetched_at']}", frontmatter)
+                self.assertIn("published_at:", frontmatter)
 
     def test_captured_article_without_source_title_uses_discovery_fallback(self):
         _, baseline, raw, post, _ = self.corpus[0]
@@ -80,10 +112,20 @@ class ProductionArticleTests(unittest.TestCase):
                 shutil.copy(PROJECT_ROOT / name, source / name)
             for name in ("_layouts", "_includes", "_plugins"):
                 shutil.copytree(PROJECT_ROOT / name, source / name)
-            archive = source / "_archive"
-            archive.mkdir()
+            archive = source / "archive-source" / "posts"
+            archive.mkdir(parents=True)
             for name, _, _, _, document in self.corpus:
                 (archive / f"{name}.md").write_text(document, encoding="utf-8")
+            subprocess.run(
+                [
+                    "python3",
+                    str(PROJECT_ROOT / "scripts" / "stage_archive.py"),
+                    str(archive),
+                    str(source / "_archive"),
+                ],
+                check=True,
+                capture_output=True,
+            )
             destination = root / "site"
             result = subprocess.run(
                 [
