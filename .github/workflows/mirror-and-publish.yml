@@ -5,44 +5,72 @@ on:
     - cron: "17 6,12 * * *"
       timezone: "Asia/Taipei"
   workflow_dispatch:
+    inputs:
+      advance:
+        description: Advance to downstream stages after success
+        type: boolean
+        default: true
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
-  group: capture-copilot-snapshots
+  group: copilot-archive-production
   cancel-in-progress: false
+  queue: max
 
 jobs:
   capture:
+    if: >-
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
-      - name: Check out application source
+      - name: Check out workflow tools
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: control
 
-      - name: Fetch existing archive history
-        shell: bash
-        run: |
-          if git ls-remote --exit-code --heads origin refs/heads/mirror-data >/dev/null; then
-            git fetch origin mirror-data:refs/remotes/origin/mirror-data
-          else
-            status=$?
-            if [ "$status" -eq 2 ]; then
-              echo "Remote mirror-data branch does not exist yet; the mirror will create it."
-            else
-              exit "$status"
-            fi
-          fi
+      - name: Select stage inputs and exact upstream evidence
+        id: selection
+        run: python3 control/scripts/production_stage.py select --stage capture --repo control --state "$RUNNER_TEMP/stage.json"
 
-      - name: Configure snapshot commit identity
+      - name: Check out selected application source
+        if: steps.selection.outputs.proceed == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ steps.selection.outputs.application }}
+          path: app-source
+
+      - name: Configure archive commit identity
+        if: steps.selection.outputs.proceed == 'true'
+        working-directory: app-source
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Capture raw Copilot Changelog snapshots
-        run: python3 src/copilot_mirror.py capture
+      - name: Capture and persist raw snapshots
+        if: steps.selection.outputs.proceed == 'true'
+        working-directory: app-source
+        run: python3 ../control/scripts/production_stage.py write --repo . --state "$RUNNER_TEMP/stage.json"
 
-      - name: Push snapshot branch
-        run: git push origin mirror-data
+      - name: Summarize stage outcome
+        if: always()
+        env:
+          STAGE_STATUS: ${{ job.status }}
+        run: python3 control/scripts/production_stage.py report --state "$RUNNER_TEMP/stage.json"
+
+      - name: Save stage handoff evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: stage-capture-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/stage.json
+          if-no-files-found: error
+          retention-days: 90

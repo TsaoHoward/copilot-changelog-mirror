@@ -1,44 +1,95 @@
 name: Render archive posts from snapshots
 
 on:
+  workflow_run:
+    workflows: [Capture Copilot Changelog snapshots]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
+    inputs:
+      advance:
+        description: Advance to downstream stages after success
+        type: boolean
+        default: false
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
-  group: render-copilot-posts
+  group: copilot-archive-production
   cancel-in-progress: false
+  queue: max
 
 jobs:
   render:
+    if: >-
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch) &&
+      (github.event_name == 'workflow_dispatch' ||
+       (github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.name == 'Capture Copilot Changelog snapshots' &&
+        github.event.workflow_run.head_branch == github.event.repository.default_branch &&
+        github.event.workflow_run.head_repository.full_name == github.repository))
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
-      - name: Check out application source
+      - name: Check out workflow tools
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: control
 
-      - name: Fetch existing archive history
-        run: git fetch origin mirror-data:refs/remotes/origin/mirror-data
+      - name: Select stage inputs and exact upstream evidence
+        id: selection
+        run: python3 control/scripts/production_stage.py select --stage render --repo control --state "$RUNNER_TEMP/stage.json"
+
+      - name: Check out selected application source
+        if: steps.selection.outputs.proceed == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ steps.selection.outputs.application }}
+          path: app-source
 
       - name: Set up Python dependencies
+        if: steps.selection.outputs.proceed == 'true'
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
           python-version: "3.12"
           enable-cache: true
-          cache-dependency-glob: uv.lock
+          cache-dependency-glob: app-source/uv.lock
 
       - name: Install locked dependencies
+        if: steps.selection.outputs.proceed == 'true'
+        working-directory: app-source
         run: uv sync --locked
 
       - name: Configure archive commit identity
+        if: steps.selection.outputs.proceed == 'true'
+        working-directory: app-source
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Render saved snapshots
-        run: uv run copilot-mirror render
+      - name: Render and persist selected snapshots offline
+        if: steps.selection.outputs.proceed == 'true'
+        working-directory: app-source
+        run: uv run python ../control/scripts/production_stage.py write --repo . --definition-repo ../control --state "$RUNNER_TEMP/stage.json"
 
-      - name: Push archive branch
-        run: git push origin mirror-data
+      - name: Summarize stage outcome
+        if: always()
+        env:
+          STAGE_STATUS: ${{ job.status }}
+        run: python3 control/scripts/production_stage.py report --state "$RUNNER_TEMP/stage.json"
+
+      - name: Save stage handoff evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: stage-render-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/stage.json
+          if-no-files-found: error
+          retention-days: 90

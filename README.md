@@ -1,6 +1,6 @@
 # Copilot Changelog Mirror
 
-A CLI and independent GitHub Actions workflows for mirroring public GitHub Copilot Changelog articles. Capture saves original article HTML as durable snapshots; render derives Markdown from those saved bytes on the separate `mirror-data` Git branch. Capture creates that branch as an orphan on the first run, so it contains archive content without the application files from `main`.
+A CLI and three GitHub Actions workflows for mirroring public GitHub Copilot Changelog articles. Capture saves original article HTML as durable snapshots; render derives Markdown from those saved bytes on the separate `mirror-data` Git branch. Production automatically advances successful stages while retaining independent manual recovery. Capture creates that branch as an orphan on the first run, so it contains archive content without the application files from `main`.
 
 ## Requirements
 
@@ -48,11 +48,11 @@ uv run python -m unittest discover -s tests -v
 
 ## GitHub Pages
 
-The `Capture Copilot Changelog snapshots` workflow captures and pushes raw snapshots at 06:17 and 12:17 in the `Asia/Taipei` timezone. It can also be started manually. It has no parsing or Pages dependency. The workflow fetches existing `mirror-data` history when that branch is present; on the first run, it creates the branch and pushes it.
+The production sequence is **Capture snapshots → Render archive posts → Publish archive to GitHub Pages**, with each stage appearing as a separate Actions run. Capture commits and ordinarily pushes raw snapshots before render can begin. Render consumes that exact persisted revision offline, then commits and pushes posts before Pages can build and deploy. Failed stages stop advancement while preserving earlier remote commits.
 
-The `Render archive posts from snapshots` workflow is manual and fetches existing `mirror-data` history, installs locked Python dependencies, renders saved snapshots, and ordinarily pushes the archive branch. Missing history, render errors, and competing updates fail visibly. Render has no schedule and invokes neither capture nor Pages.
+`Capture Copilot Changelog snapshots` retains its schedule at **06:17 and 12:17 Asia/Taipei**. Scheduled capture and default manual capture advance the chain; manual `advance=false` captures only. `Render archive posts from snapshots` defaults to render-only; `advance=true` resumes through Pages. Pages can be started independently from verified successful render evidence. Render and Pages have no independent schedules.
 
-The `Publish archive to GitHub Pages` workflow is an independent manual publication operation. It builds the Jekyll site from `main` and the Markdown posts on `mirror-data`. The manual production sequence is **Capture snapshots → Render archive posts → Publish archive to GitHub Pages**. Each workflow must be started separately.
+All production operations run on the default branch and share a non-cancelling concurrency queue. Exact run/attempt artifacts carry application and archive SHAs between stages. Outdated archive handoffs are explicitly superseded. Unchanged captures and renders still advance to recover unfinished downstream work; equivalent posts and site/build inputs skip deployment only after a verified successful publication. See [production orchestration and recovery](docs/production-orchestration.md) for manual modes, evidence retention, retry commands, and hosted verification.
 
 To bootstrap the archive locally, acquire source, derive posts, and push the archive:
 

@@ -1,8 +1,6 @@
-import os
 import shutil
 import subprocess
 import tempfile
-import textwrap
 import unittest
 from pathlib import Path
 
@@ -43,190 +41,99 @@ def list_item_blocks(lines, indent):
     return blocks
 
 
-class PagesWorkflowTests(unittest.TestCase):
-    def test_workflow_manually_builds_and_deploys_mirror_data(self):
-        lines = WORKFLOW.read_text(encoding="utf-8").splitlines()
-        triggers = yaml_block(lines, "on:", 0)
-        root_permissions = yaml_block(lines, "permissions:", 0)
-        jobs = yaml_block(lines, "jobs:", 0)
-        build = yaml_block(jobs, "build:", 2)
-        build_steps = yaml_block(build, "steps:", 4)
-        deploy = yaml_block(jobs, "deploy:", 2)
-        deploy_permissions = yaml_block(deploy, "permissions:", 4)
-        deploy_steps = yaml_block(deploy, "steps:", 4)
-        build_step_blocks = ["\n".join(block) for block in list_item_blocks(build_steps, 6)]
-        deploy_step_blocks = ["\n".join(block) for block in list_item_blocks(deploy_steps, 6)]
-        build_commands = [
-            line.strip().removeprefix("run: ")
-            for block in build_step_blocks
-            for line in block.splitlines()
-            if line.strip().startswith("run: ")
-        ]
-        action_refs = [
-            line.strip().split("uses: ", 1)[1].split("@", 1)[1].split()[0]
-            for block in [*build_step_blocks, *deploy_step_blocks]
-            for line in block.splitlines()
-            if "uses: " in line
-        ]
+class ProductionWorkflowContractTests(unittest.TestCase):
+    def test_all_stages_share_a_non_cancelling_multi_pending_production_queue(self):
+        for workflow in (ORCHESTRATION_WORKFLOW, RENDER_WORKFLOW, WORKFLOW):
+            with self.subTest(workflow=workflow.name):
+                text = workflow.read_text()
+                self.assertIn("group: copilot-archive-production", text)
+                self.assertIn("cancel-in-progress: false", text)
+                self.assertIn("queue: max", text)
+                self.assertIn("github.event.repository.default_branch", text)
+                self.assertNotIn("continue-on-error", text)
+                self.assertNotIn("--force", text)
+                for line in text.splitlines():
+                    if "uses:" in line:
+                        self.assertRegex(line.split("@", 1)[1].split()[0], r"^[0-9a-f]{40}$")
 
-        self.assertIn("  workflow_dispatch:", triggers)
-        self.assertFalse(any("schedule:" in line for line in triggers))
-        self.assertIn("  contents: read", root_permissions)
-        self.assertTrue(
-            any(
-                "Check out archive branch" in block and "ref: mirror-data" in block
-                for block in build_step_blocks
-            )
-        )
-        self.assertTrue(
-            any(
-                "scripts/stage_archive.py archive-source/posts _archive" in block
-                for block in build_step_blocks
-            )
-        )
-        self.assertTrue(any("bundle exec jekyll build" in block for block in build_step_blocks))
-        self.assertTrue(action_refs)
-        self.assertTrue(
-            all(
-                len(ref) == 40 and all(char in "0123456789abcdef" for char in ref)
-                for ref in action_refs
-            )
-        )
-        self.assertCountEqual(
-            build_commands,
-            [
-                "python3 scripts/stage_archive.py archive-source/posts _archive",
-                'bundle exec jekyll build --baseurl "/${GITHUB_REPOSITORY#*/}"',
-            ],
-        )
-        self.assertTrue(
-            any(
-                "actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b" in block
-                for block in build_step_blocks
-            )
-        )
-        self.assertIn("      pages: write", deploy_permissions)
-        self.assertIn("      id-token: write", deploy_permissions)
-        self.assertTrue(
-            any(
-                "actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e" in block
-                for block in deploy_step_blocks
-            )
-        )
-
-    def test_workflow_can_be_called_after_mirror_while_remaining_manually_runnable(self):
-        lines = WORKFLOW.read_text(encoding="utf-8").splitlines()
-        triggers = yaml_block(lines, "on:", 0)
-
-        self.assertIn("  workflow_dispatch:", triggers)
-        self.assertIn("  workflow_call:", triggers)
-
-
-class OrchestrationWorkflowTests(unittest.TestCase):
-    def test_schedule_and_manual_trigger_capture_without_parsing_or_publishing(self):
-        lines = ORCHESTRATION_WORKFLOW.read_text(encoding="utf-8").splitlines()
-        triggers = yaml_block(lines, "on:", 0)
-        schedule = yaml_block(triggers, "schedule:", 2)
-        root_permissions = yaml_block(lines, "permissions:", 0)
-        jobs = yaml_block(lines, "jobs:", 0)
-        capture = yaml_block(jobs, "capture:", 2)
-        capture_permissions = yaml_block(capture, "permissions:", 4)
-        capture_steps = yaml_block(capture, "steps:", 4)
-        capture_step_blocks = ["\n".join(block) for block in list_item_blocks(capture_steps, 6)]
-        archive_fetch_step = next(
-            block for block in capture_step_blocks if "Fetch existing archive history" in block
-        )
-        capture_commands = [
-            line.strip().removeprefix("run: ")
-            for block in capture_step_blocks
-            for line in block.splitlines()
-            if line.strip().startswith("run: ")
-        ]
-        schedule_config = [line.strip().removeprefix("- ") for line in schedule]
-        trigger_config = [line.strip() for line in triggers]
-        capture_permission_config = [line.strip() for line in capture_permissions]
-
-        self.assertEqual(
-            [line for line in schedule_config if line.startswith("cron:")],
-            ['cron: "17 6,12 * * *"'],
-        )
-        self.assertIn('timezone: "Asia/Taipei"', schedule_config)
-        self.assertIn("workflow_dispatch:", trigger_config)
-        self.assertNotIn("contents: write", [line.strip() for line in root_permissions])
-        self.assertEqual(capture_permission_config, ["permissions:", "contents: write"])
-        job_names = [
-            line.strip() for line in jobs if line.startswith("  ") and not line.startswith("    ")
-        ]
-        self.assertEqual(
-            job_names,
-            ["capture:"],
-        )
-        self.assertNotIn("publish-pages", "\n".join(lines))
-        self.assertNotIn("render", "\n".join(lines))
-        capture_command = "python3 src/copilot_mirror.py capture"
-        self.assertEqual(capture_commands.count(capture_command), 1)
-        self.assertNotIn("uv run copilot-mirror", "\n".join(lines))
-        self.assertNotIn("uv sync --locked", "\n".join(lines))
-        self.assertNotIn("setup-uv", "\n".join(lines))
-        push_command = "git push origin mirror-data"
-        self.assertIn(
-            "git ls-remote --exit-code --heads origin refs/heads/mirror-data",
-            archive_fetch_step,
-        )
-        self.assertIn('[ "$status" -eq 2 ]', archive_fetch_step)
-        self.assertIn('exit "$status"', archive_fetch_step)
-        self.assertIn(
-            "git fetch origin mirror-data:refs/remotes/origin/mirror-data",
-            archive_fetch_step,
-        )
+    def test_capture_cadence_and_manual_mode_keep_acquisition_isolated(self):
+        text = ORCHESTRATION_WORKFLOW.read_text()
+        self.assertIn('cron: "17 6,12 * * *"', text)
+        self.assertIn('timezone: "Asia/Taipei"', text)
+        self.assertIn("default: true", text)
+        self.assertIn("--stage capture", text)
+        self.assertNotIn("uv sync", text)
+        self.assertNotIn("jekyll", text)
+        self.assertNotIn("pages: write", text)
         self.assertLess(
-            capture_step_blocks.index(archive_fetch_step),
-            next(
-                index for index, block in enumerate(capture_step_blocks) if capture_command in block
-            ),
+            text.index("production_stage.py write"), text.index("Save stage handoff evidence")
         )
+
+    def test_successful_completion_handoffs_have_trusted_identity_and_immutable_checkouts(self):
+        for workflow, upstream, stage in (
+            (RENDER_WORKFLOW, "Capture Copilot Changelog snapshots", "render"),
+            (WORKFLOW, "Render archive posts from snapshots", "publish"),
+        ):
+            with self.subTest(stage=stage):
+                text = workflow.read_text()
+                self.assertIn("workflows: [" + upstream + "]", text)
+                self.assertIn("types: [completed]", text)
+                self.assertIn("branches: [main]", text)
+                self.assertIn("github.event.workflow_run.conclusion == 'success'", text)
+                self.assertIn("github.event.workflow_run.name == '" + upstream + "'", text)
+                self.assertIn(
+                    "github.event.workflow_run.head_repository.full_name == github.repository", text
+                )
+                self.assertIn(
+                    "github.event.workflow_run.head_branch == github.event.repository.default_branch",
+                    text,
+                )
+                self.assertIn("actions: read", text)
+                self.assertNotIn("schedule:", text)
+                self.assertNotIn("workflow_call:", text)
+                self.assertIn("ref: ${{ steps.selection.outputs.application }}", text)
+                self.assertIn("--stage " + stage, text)
+                self.assertIn("github.run_attempt", text)
+                self.assertNotIn("ref: mirror-data", text)
+                self.assertIn("workflow_dispatch:", text)
+
+    def test_render_only_default_uses_locked_offline_derivation(self):
+        text = RENDER_WORKFLOW.read_text()
+        self.assertIn("default: false", text)
+        self.assertIn("uv sync --locked", text)
+        self.assertIn("uv run python ../control/scripts/production_stage.py write", text)
+        self.assertIn("--definition-repo ../control", text)
+        self.assertIn("Render and persist selected snapshots offline", text)
+        self.assertNotIn("pages: write", text)
+        self.assertNotIn("copilot_mirror.py capture", text)
+
+    def test_publication_build_and_deploy_gate_on_selected_revision_and_freshness(self):
+        text = WORKFLOW.read_text()
+        build = "\n".join(yaml_block(text.splitlines(), "build:", 2))
+        deploy = "\n".join(yaml_block(text.splitlines(), "deploy:", 2))
+        self.assertIn("render_run_id:", text)
+        self.assertIn("render_attempt:", text)
+        self.assertIn("force:", text)
+        self.assertIn("ref: ${{ steps.preparation.outputs.archive }}", build)
+        self.assertIn("production_stage.py prepare", build)
+        self.assertIn("--definition-repo control", build)
+        self.assertIn("scripts/stage_archive.py archive-source/posts _archive", build)
+        self.assertIn('bundle exec jekyll build --baseurl "$BASEURL"', build)
+        self.assertNotIn("contents: write", text)
+        self.assertNotIn("production_stage.py write", text)
+        self.assertNotIn("pages: write", build)
+        self.assertIn("needs: build", deploy)
+        self.assertIn("if: needs.build.outputs.deploy == 'true'", deploy)
+        self.assertIn("pages: write", deploy)
+        self.assertIn("id-token: write", deploy)
         self.assertLess(
-            capture_commands.index(capture_command), capture_commands.index(push_command)
+            deploy.index("production_stage.py fresh"), deploy.index("Deploy Pages artifact")
         )
-
-    def test_archive_history_fetch_bootstraps_without_hiding_remote_errors(self):
-        lines = ORCHESTRATION_WORKFLOW.read_text(encoding="utf-8").splitlines()
-        jobs = yaml_block(lines, "jobs:", 0)
-        capture = yaml_block(jobs, "capture:", 2)
-        capture_steps = yaml_block(capture, "steps:", 4)
-        fetch_step = next(
-            "\n".join(block)
-            for block in list_item_blocks(capture_steps, 6)
-            if "Fetch existing archive history" in "\n".join(block)
-        )
-        fetch_script = textwrap.dedent(fetch_step.split("run: |", 1)[1])
-
-        with tempfile.TemporaryDirectory() as temp_dir:
-            fake_git = Path(temp_dir) / "git"
-            for lookup_status, fetch_status, expected_status, should_fetch in (
-                (0, 0, 0, True),
-                (2, 0, 0, False),
-                (128, 0, 128, False),
-                (0, 128, 128, True),
-            ):
-                fake_git.write_text(
-                    "#!/bin/sh\n"
-                    f'if [ "$1" = "ls-remote" ]; then exit {lookup_status}; fi\n'
-                    f'if [ "$1" = "fetch" ]; then printf "fetched\\n"; exit {fetch_status}; fi\n'
-                    "exit 99\n",
-                    encoding="utf-8",
-                )
-                fake_git.chmod(0o755)
-                result = subprocess.run(
-                    ["bash", "-e", "-o", "pipefail", "-c", fetch_script],
-                    env={**os.environ, "PATH": f"{temp_dir}:/usr/bin:/bin"},
-                    check=False,
-                    capture_output=True,
-                    text=True,
-                )
-
-                self.assertEqual(result.returncode, expected_status)
-                self.assertEqual("fetched" in result.stdout, should_fetch)
+        self.assertIn("if: steps.freshness.outputs.deploy == 'true'", deploy)
+        self.assertIn("if: steps.deployment.outcome == 'success'", deploy)
+        self.assertIn("Record verified publication", deploy)
+        self.assertIn("artifact_name: ${{ needs.build.outputs.artifact_name }}", deploy)
+        self.assertIn("ATTEMPT: ${{ needs.build.outputs.preparation_attempt }}", deploy)
 
     def test_ci_installs_locked_jekyll_dependencies_before_running_tests(self):
         lines = CI_WORKFLOW.read_text(encoding="utf-8").splitlines()
@@ -249,73 +156,6 @@ class OrchestrationWorkflowTests(unittest.TestCase):
         )
         self.assertTrue(test_step_index > step_blocks.index(ruby_step))
         self.assertTrue((PROJECT_ROOT / "Gemfile.lock").is_file())
-
-
-class RenderWorkflowTests(unittest.TestCase):
-    def test_manual_render_fetches_history_installs_dependencies_and_pushes_only_posts(self):
-        lines = RENDER_WORKFLOW.read_text().splitlines()
-        self.assertEqual(
-            [line.strip() for line in yaml_block(lines, "on:", 0) if line.strip()],
-            ["on:", "workflow_dispatch:"],
-        )
-        jobs = yaml_block(lines, "jobs:", 0)
-        render = yaml_block(jobs, "render:", 2)
-        self.assertEqual(
-            [line.strip() for line in yaml_block(render, "permissions:", 4) if line.strip()],
-            ["permissions:", "contents: write"],
-        )
-        steps = ["\n".join(block) for block in list_item_blocks(yaml_block(render, "steps:", 4), 6)]
-        required = (
-            "actions/checkout@",
-            "git fetch origin mirror-data:refs/remotes/origin/mirror-data",
-            "astral-sh/setup-uv@",
-            "uv sync --locked",
-            "git config user.name",
-            "uv run copilot-mirror render",
-            "git push origin mirror-data",
-        )
-        indices = [
-            next(index for index, step in enumerate(steps) if command in step)
-            for command in required
-        ]
-        self.assertEqual(indices, sorted(indices))
-        text = "\n".join(lines)
-        for forbidden in (
-            "--force",
-            "continue-on-error",
-            "|| true",
-            "capture",
-            "publish-pages",
-            "pages: write",
-            "id-token:",
-            "workflow_call:",
-        ):
-            self.assertNotIn(forbidden, text)
-        for line in lines:
-            if "uses:" in line:
-                ref = line.split("@", 1)[1].split()[0]
-                self.assertRegex(ref, r"^[0-9a-f]{40}$")
-
-    def test_missing_history_and_push_failures_are_visible(self):
-        lines = RENDER_WORKFLOW.read_text().splitlines()
-        jobs = yaml_block(lines, "jobs:", 0)
-        steps = list_item_blocks(yaml_block(yaml_block(jobs, "render:", 2), "steps:", 4), 6)
-        commands = []
-        for block in steps:
-            text = "\n".join(block)
-            if "git fetch" in text or "git push" in text:
-                commands.append(text.split("run: ", 1)[1])
-        with tempfile.TemporaryDirectory() as root:
-            fake_git = Path(root) / "git"
-            fake_git.write_text("#!/bin/sh\nexit 128\n")
-            fake_git.chmod(0o755)
-            for command in commands:
-                result = subprocess.run(
-                    ["bash", "-e", "-o", "pipefail", "-c", command],
-                    env={**os.environ, "PATH": f"{root}:/usr/bin:/bin"},
-                    capture_output=True,
-                )
-                self.assertEqual(result.returncode, 128)
 
 
 class ArchiveStagingTests(unittest.TestCase):
