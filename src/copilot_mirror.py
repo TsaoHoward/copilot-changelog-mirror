@@ -1,4 +1,4 @@
-"""Collect Copilot Changelog posts into a Markdown archive on mirror-data."""
+"""Capture source snapshots and render them into a Markdown archive on mirror-data."""
 
 from __future__ import annotations
 
@@ -365,24 +365,6 @@ def _fetch_feed_articles(feed_url: str) -> Iterator[tuple[FeedPost, bytes]]:
         yield post, fetch_url(post.url)
 
 
-def collect(feed_url: str, repo: Path, branch: str) -> bool:
-    archive: dict[str, str] = {}
-    for post, source_html in _fetch_feed_articles(feed_url):
-        filename = f"{_slug(post.url)}.md"
-        prior = _read_archive_file(repo, branch, filename)
-        article = normalize_article(source_html, post.title, post.url)
-        fetched_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
-        candidate = _archive_document(post, article, fetched_at)
-        if prior is not None:
-            previous_without_fetch = re.sub(r"(?m)^fetched_at: .+\n", "", prior)
-            candidate_without_fetch = re.sub(r"(?m)^fetched_at: .+\n", "", candidate)
-            if previous_without_fetch == candidate_without_fetch:
-                fetched_at = _existing_fetch_time_from_text(prior) or fetched_at
-                candidate = _archive_document(post, article, fetched_at)
-        archive[filename] = candidate
-    return write_archive_branch(repo, branch, archive)
-
-
 def _snapshot_identity(url: str) -> str:
     suffix = hashlib.sha256(url.encode("utf-8")).hexdigest()[:12]
     return f"{_slug(url)}-{suffix}"
@@ -402,6 +384,8 @@ def capture(feed_url: str, repo: Path, branch: str) -> bool:
         provenance = {
             "source_url": post.url,
             "fetched_at": datetime.now(timezone.utc).isoformat(timespec="microseconds"),
+            "discovery_title": post.title,
+            "published_at": post.published_at,
         }
         files[html_path] = source_html
         files[metadata_path] = (json.dumps(provenance, ensure_ascii=False, indent=2) + "\n").encode(
@@ -410,9 +394,179 @@ def capture(feed_url: str, repo: Path, branch: str) -> bool:
     return write_data_branch(repo, branch, files, "Capture Copilot Changelog snapshots")
 
 
-def _read_archive_file(repo: Path, branch: str, filename: str) -> str | None:
-    content = _read_branch_file(repo, branch, f"posts/{filename}")
-    return content.decode("utf-8") if content is not None else None
+def _structured_publication_time(source_html: bytes, source_url: str) -> str | None:
+    from bs4 import BeautifulSoup
+
+    def records(value):
+        if isinstance(value, list):
+            for item in value:
+                yield from records(item)
+        elif isinstance(value, dict):
+            yield value
+            for item in value.values():
+                if isinstance(item, (dict, list)):
+                    yield from records(item)
+
+    def matches_source(value):
+        if isinstance(value, dict):
+            return any(matches_source(value.get(key)) for key in ("@id", "url"))
+        return isinstance(value, str) and value.rstrip("/") == source_url.rstrip("/")
+
+    dates = set()
+    soup = BeautifulSoup(source_html, "html.parser")
+    for script in soup.find_all("script", type="application/ld+json"):
+        try:
+            metadata = json.loads(script.get_text())
+        except ValueError:
+            continue
+        for record in records(metadata):
+            kinds = record.get("@type", [])
+            kinds = [kinds] if isinstance(kinds, str) else kinds
+            if not isinstance(kinds, list) or not any(
+                kind in {"Article", "TechArticle", "BlogPosting", "WebPage"}
+                for kind in kinds
+                if isinstance(kind, str)
+            ):
+                continue
+            if not any(
+                matches_source(record.get(key)) for key in ("url", "@id", "mainEntityOfPage")
+            ):
+                continue
+            value = record.get("datePublished")
+            date = _normalize_date(value) if isinstance(value, str) else None
+            if date is not None:
+                dates.add(date)
+    if len(dates) > 1:
+        raise ValueError(
+            f"conflicting article-associated datePublished timestamps: {sorted(dates)}"
+        )
+    return next(iter(dates), None)
+
+
+def _persisted_timestamp(value: object, field: str) -> str:
+    try:
+        if not isinstance(value, str) or any(ord(char) < 32 or ord(char) == 127 for char in value):
+            raise ValueError
+        timestamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if timestamp.tzinfo is None:
+            raise ValueError
+        return timestamp.astimezone(timezone.utc).isoformat(timespec="seconds")
+    except (ValueError, OverflowError):
+        raise ValueError(f"{field} must be an ISO timestamp with a timezone") from None
+
+
+def _provenance_post(metadata: object, source_html: bytes) -> tuple[FeedPost, str]:
+    if not isinstance(metadata, dict):
+        raise ValueError("provenance JSON must be an object")
+    url = metadata.get("source_url")
+    if not isinstance(url, str) or any(
+        char.isspace() or ord(char) < 32 or ord(char) == 127 for char in url
+    ):
+        raise ValueError("source_url must be an absolute source URL")
+    parsed = urlparse(url)
+    if parsed.scheme not in {"http", "https", "file"} or not (
+        parsed.netloc if parsed.scheme != "file" else parsed.path.startswith("/")
+    ):
+        raise ValueError("source_url must be an absolute source URL")
+    fetched_at = metadata.get("fetched_at")
+    _persisted_timestamp(fetched_at, "fetched_at")
+    assert isinstance(fetched_at, str)
+    title = metadata.get("discovery_title", url)
+    if not isinstance(title, str):
+        raise ValueError("discovery_title must be a string when present")
+    published_at = metadata.get("published_at")
+    published = None
+    if published_at is not None:
+        published = _persisted_timestamp(published_at, "published_at")
+    if published is None:
+        published = _structured_publication_time(source_html, url)
+    return FeedPost(title.strip() or url, url, published), fetched_at
+
+
+def _existing_source_url(content: bytes) -> str | None:
+    text = content.decode("utf-8")
+    if not text.startswith("---\n"):
+        return None
+    frontmatter = text.split("---\n", 2)[1]
+    match = re.search(r"^source_url:\s*(.+)$", frontmatter, re.MULTILINE)
+    if match is None:
+        return None
+    value = match.group(1).strip()
+    if value.startswith('"'):
+        return json.loads(value)
+    if value.startswith("'") and value.endswith("'"):
+        return value[1:-1].replace("''", "'")
+    return value
+
+
+def render(repo: Path, branch: str) -> bool:
+    branch_ref = _data_branch_ref(repo, branch)
+    if branch_ref is None:
+        raise ValueError("archive branch is missing; run capture first")
+    revision = subprocess.run(
+        ["git", "-C", str(repo), "rev-parse", branch_ref],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    paths = subprocess.run(
+        ["git", "-C", str(repo), "ls-tree", "-rz", revision],
+        check=True,
+        capture_output=True,
+    ).stdout.split(b"\0")
+    entries = {}
+    for entry in paths:
+        if entry:
+            attributes, path = entry.split(b"\t", 1)
+            entries[path.decode("utf-8")] = attributes.split()[0]
+    html_paths = sorted(
+        path for path in entries if path.startswith("snapshots/") and path.endswith(".html")
+    )
+    if not html_paths:
+        raise ValueError("archive has no HTML snapshots; run capture first")
+    archive: dict[str, str] = {}
+    source_urls: dict[str, str] = {}
+    for path in html_paths:
+        try:
+            metadata_path = str(Path(path).with_suffix(".json"))
+            for input_path in (path, metadata_path):
+                if input_path in entries and entries[input_path] not in {b"100644", b"100755"}:
+                    raise ValueError(f"{input_path} must be a regular saved file")
+            try:
+                metadata = json.loads(_read_revision_file(repo, revision, metadata_path))
+            except ValueError as error:
+                raise ValueError(f"invalid provenance JSON in {metadata_path}: {error}") from error
+            source_html = _read_revision_file(repo, revision, path)
+            if not source_html.strip():
+                raise ValueError("saved HTML is empty")
+            post, fetched_at = _provenance_post(metadata, source_html)
+            filename = f"{_slug(post.url)}.md"
+            if filename in source_urls and source_urls[filename] != post.url:
+                raise ValueError(
+                    f"post identity collision at posts/{filename}: {source_urls[filename]} and {post.url}"
+                )
+            target = f"posts/{filename}"
+            if target in entries:
+                if entries[target] not in {b"100644", b"100755"}:
+                    raise ValueError(f"{target} must be a regular archive post")
+                existing_url = _existing_source_url(_read_revision_file(repo, revision, target))
+                if existing_url is not None and existing_url != post.url:
+                    raise ValueError(f"{target} has conflicting source_url: {existing_url}")
+            source_urls[filename] = post.url
+            archive[filename] = archive_document_from_html(post, source_html, fetched_at)
+        except Exception as error:
+            raise ValueError(f"{path}: {error}") from error
+    return write_archive_branch(repo, branch, archive)
+
+
+def _read_revision_file(repo: Path, revision: str, path: str) -> bytes:
+    result = subprocess.run(
+        ["git", "-C", str(repo), "show", f"{revision}:{path}"],
+        capture_output=True,
+    )
+    if result.returncode:
+        raise ValueError(f"cannot read {path} at {revision}")
+    return result.stdout
 
 
 def _read_branch_file(repo: Path, branch: str, path: str) -> bytes | None:
@@ -432,11 +586,6 @@ def _data_branch_ref(repo: Path, branch: str) -> str | None:
         if result.returncode == 0:
             return branch if ref.startswith("refs/heads/") else f"origin/{branch}"
     return None
-
-
-def _existing_fetch_time_from_text(content: str) -> str | None:
-    match = re.search(r"^fetched_at: (.+)$", content, re.MULTILINE)
-    return match.group(1) if match else None
 
 
 def write_archive_branch(repo: Path, branch: str, archive: dict[str, str]) -> bool:
@@ -524,21 +673,14 @@ def write_data_branch(repo: Path, branch: str, files: dict[str, bytes], message:
         )
 
 
-def _cli_parser(description: str, data_branch_help: str) -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description=description)
-    parser.add_argument(
-        "--feed-url",
-        default=FEED_URL,
-        help="RSS feed URL (defaults to the official Copilot feed).",
-    )
+def _archive_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--repo",
         type=Path,
         default=Path.cwd(),
         help="Git repository receiving the mirror-data branch.",
     )
-    parser.add_argument("--data-branch", default="mirror-data", help=data_branch_help)
-    return parser
+    parser.add_argument("--data-branch", default="mirror-data", help="Archive branch.")
 
 
 def _validate_data_branch(args: argparse.Namespace, parser: argparse.ArgumentParser) -> None:
@@ -552,30 +694,28 @@ def _validate_data_branch(args: argparse.Namespace, parser: argparse.ArgumentPar
         parser.error("the archive branch must be separate from the application branch")
 
 
-def capture_main(argv: list[str] | None = None) -> int:
-    parser = _cli_parser(
-        "Capture raw Copilot Changelog source HTML on the mirror-data Git branch.",
-        "Branch for captured source snapshots.",
-    )
-    args = parser.parse_args(argv)
-    _validate_data_branch(args, parser)
-    changed = capture(args.feed_url, args.repo, args.data_branch)
-    print("Snapshots updated." if changed else "Snapshots are already up to date.")
-    return 0
-
-
 def main(argv: list[str] | None = None) -> int:
-    command_line = list(sys.argv[1:] if argv is None else argv)
-    if command_line[:1] == ["capture"]:
-        return capture_main(command_line[1:])
-    parser = _cli_parser(
-        "Mirror Copilot Changelog articles to the mirror-data Git branch.",
-        "Branch for collected Markdown articles.",
+    parser = argparse.ArgumentParser(
+        description="Capture source snapshots or render saved snapshots into archive posts."
     )
+    commands = parser.add_subparsers(dest="command", required=True)
+    capture_parser = commands.add_parser("capture", help="Acquire raw source snapshots.")
+    _archive_options(capture_parser)
+    capture_parser.add_argument("--feed-url", default=FEED_URL, help="RSS feed URL.")
+    render_parser = commands.add_parser("render", help="Render persisted snapshots offline.")
+    _archive_options(render_parser)
     args = parser.parse_args(argv)
     _validate_data_branch(args, parser)
-    changed = collect(args.feed_url, args.repo, args.data_branch)
-    print("Archive updated." if changed else "Archive is already up to date.")
+    try:
+        if args.command == "capture":
+            changed = capture(args.feed_url, args.repo, args.data_branch)
+            print("Snapshots updated." if changed else "Snapshots are already up to date.")
+        else:
+            changed = render(args.repo, args.data_branch)
+            print("Archive updated." if changed else "Archive is already up to date.")
+    except (ValueError, OSError, subprocess.CalledProcessError) as error:
+        print(f"{args.command} failed: {error}", file=sys.stderr)
+        return 1
     return 0
 
 

@@ -56,16 +56,20 @@ class MirrorCliTests(unittest.TestCase):
         )
 
     def run_cli(self, *arguments):
+        command = arguments[0] if arguments else "render"
         return subprocess.run(
             [
                 sys.executable,
                 "-m",
                 "copilot_mirror",
-                *arguments,
+                *(arguments or ("render",)),
                 "--repo",
                 str(self.repo),
-                "--feed-url",
-                (self.fixtures / "feed.xml").as_uri(),
+                *(
+                    ("--feed-url", (self.fixtures / "feed.xml").as_uri())
+                    if command == "capture"
+                    else ()
+                ),
             ],
             cwd=PROJECT_ROOT,
             env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT / "src")},
@@ -106,12 +110,12 @@ class MirrorCliTests(unittest.TestCase):
             )
 
     def test_cli_archives_article_with_provenance_on_separate_branch_idempotently(self):
+        self.run_cli("capture")
         self.run_cli()
 
         self.assertEqual(self.git("branch", "--show-current").stdout.strip(), "main")
         self.assertEqual(self.git("status", "--porcelain").stdout, "")
-        self.assertEqual(self.git("ls-tree", "--name-only", "mirror-data").stdout.strip(), "posts")
-        paths = self.git("ls-tree", "-r", "--name-only", "mirror-data").stdout.splitlines()
+        paths = self.git("ls-tree", "-r", "--name-only", "mirror-data", "posts").stdout.splitlines()
         self.assertEqual(len(paths), 3)
         archived = self.git("show", f"mirror-data:{paths[0]}").stdout
         self.assertIn("source_url: file://", archived)
@@ -134,6 +138,7 @@ class MirrorCliTests(unittest.TestCase):
 
         article_path = self.fixtures / "article.html"
         article_path.write_text(article_path.read_text().replace("Full", "Updated"))
+        self.run_cli("capture")
         self.run_cli()
         updated_commit = self.git("rev-parse", "mirror-data").stdout.strip()
         self.assertNotEqual(updated_commit, first_commit)
@@ -142,11 +147,13 @@ class MirrorCliTests(unittest.TestCase):
         self.assertEqual(self.git("branch", "--show-current").stdout.strip(), "main")
 
     def test_capture_persists_raw_html_and_provenance_without_changing_posts(self):
-        self.run_cli()
+        self.run_cli("capture")
+        self.add_archive_file("posts/older.md", b"Historical post without snapshot.\n")
         self.add_archive_file("archive-state.json", b'{"preserve": true}\n')
         existing_archive = {
             path: self.git_bytes("show", f"mirror-data:{path}")
             for path in self.git("ls-tree", "-r", "--name-only", "mirror-data").stdout.splitlines()
+            if not path.startswith("snapshots/")
         }
         self.assertIn("archive-state.json", existing_archive)
 
@@ -169,6 +176,11 @@ class MirrorCliTests(unittest.TestCase):
             url = (self.fixtures / article_name).as_uri()
             self.assertEqual(captured[url][1], (self.fixtures / article_name).read_bytes())
             self.assertEqual(captured[url][2]["source_url"], url)
+
+        dated = captured[(self.fixtures / "article.html").as_uri()][2]
+        self.assertEqual(dated["discovery_title"], "Copilot fixture update")
+        self.assertEqual(dated["published_at"], "2026-09-29T12:30:00+00:00")
+        self.assertIsNone(captured[(self.fixtures / "no-date.html").as_uri()][2]["published_at"])
 
         first_commit = self.git("rev-parse", "mirror-data").stdout.strip()
         first_snapshot = {
@@ -206,6 +218,38 @@ class MirrorCliTests(unittest.TestCase):
             self.assertEqual(self.git_bytes("show", f"mirror-data:{path}"), content)
         self.assertEqual(self.git("branch", "--show-current").stdout.strip(), "main")
         self.assertEqual(self.git("status", "--porcelain").stdout, "")
+
+    def test_identical_capture_preserves_legacy_provenance_without_normalization(self):
+        self.run_cli("capture")
+        paths = self.git(
+            "ls-tree", "-r", "--name-only", "mirror-data", "snapshots"
+        ).stdout.splitlines()
+        path = next(path for path in paths if path.endswith(".json"))
+        metadata = json.loads(self.git_bytes("show", f"mirror-data:{path}"))
+        legacy = {key: metadata[key] for key in ("source_url", "fetched_at")}
+        self.add_archive_file(path, json.dumps(legacy).encode())
+        before = self.git("rev-parse", "mirror-data").stdout
+        # -S removes site packages; source-only capture must not need normalization dependencies.
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-S",
+                "-m",
+                "copilot_mirror",
+                "capture",
+                "--repo",
+                str(self.repo),
+                "--feed-url",
+                (self.fixtures / "feed.xml").as_uri(),
+            ],
+            cwd=PROJECT_ROOT,
+            env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT / "src")},
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.git("rev-parse", "mirror-data").stdout, before)
+        self.assertEqual(json.loads(self.git_bytes("show", f"mirror-data:{path}")), legacy)
 
 
 if __name__ == "__main__":

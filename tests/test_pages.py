@@ -15,6 +15,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = PROJECT_ROOT / ".github" / "workflows" / "publish-pages.yml"
 ORCHESTRATION_WORKFLOW = PROJECT_ROOT / ".github" / "workflows" / "mirror-and-publish.yml"
 CI_WORKFLOW = PROJECT_ROOT / ".github" / "workflows" / "ci.yml"
+RENDER_WORKFLOW = PROJECT_ROOT / ".github" / "workflows" / "render-posts.yml"
 
 
 def yaml_block(lines, header, indent):
@@ -161,6 +162,7 @@ class OrchestrationWorkflowTests(unittest.TestCase):
             ["capture:"],
         )
         self.assertNotIn("publish-pages", "\n".join(lines))
+        self.assertNotIn("render", "\n".join(lines))
         capture_command = "python3 src/copilot_mirror.py capture"
         self.assertEqual(capture_commands.count(capture_command), 1)
         self.assertNotIn("uv run copilot-mirror", "\n".join(lines))
@@ -247,6 +249,73 @@ class OrchestrationWorkflowTests(unittest.TestCase):
         )
         self.assertTrue(test_step_index > step_blocks.index(ruby_step))
         self.assertTrue((PROJECT_ROOT / "Gemfile.lock").is_file())
+
+
+class RenderWorkflowTests(unittest.TestCase):
+    def test_manual_render_fetches_history_installs_dependencies_and_pushes_only_posts(self):
+        lines = RENDER_WORKFLOW.read_text().splitlines()
+        self.assertEqual(
+            [line.strip() for line in yaml_block(lines, "on:", 0) if line.strip()],
+            ["on:", "workflow_dispatch:"],
+        )
+        jobs = yaml_block(lines, "jobs:", 0)
+        render = yaml_block(jobs, "render:", 2)
+        self.assertEqual(
+            [line.strip() for line in yaml_block(render, "permissions:", 4) if line.strip()],
+            ["permissions:", "contents: write"],
+        )
+        steps = ["\n".join(block) for block in list_item_blocks(yaml_block(render, "steps:", 4), 6)]
+        required = (
+            "actions/checkout@",
+            "git fetch origin mirror-data:refs/remotes/origin/mirror-data",
+            "astral-sh/setup-uv@",
+            "uv sync --locked",
+            "git config user.name",
+            "uv run copilot-mirror render",
+            "git push origin mirror-data",
+        )
+        indices = [
+            next(index for index, step in enumerate(steps) if command in step)
+            for command in required
+        ]
+        self.assertEqual(indices, sorted(indices))
+        text = "\n".join(lines)
+        for forbidden in (
+            "--force",
+            "continue-on-error",
+            "|| true",
+            "capture",
+            "publish-pages",
+            "pages: write",
+            "id-token:",
+            "workflow_call:",
+        ):
+            self.assertNotIn(forbidden, text)
+        for line in lines:
+            if "uses:" in line:
+                ref = line.split("@", 1)[1].split()[0]
+                self.assertRegex(ref, r"^[0-9a-f]{40}$")
+
+    def test_missing_history_and_push_failures_are_visible(self):
+        lines = RENDER_WORKFLOW.read_text().splitlines()
+        jobs = yaml_block(lines, "jobs:", 0)
+        steps = list_item_blocks(yaml_block(yaml_block(jobs, "render:", 2), "steps:", 4), 6)
+        commands = []
+        for block in steps:
+            text = "\n".join(block)
+            if "git fetch" in text or "git push" in text:
+                commands.append(text.split("run: ", 1)[1])
+        with tempfile.TemporaryDirectory() as root:
+            fake_git = Path(root) / "git"
+            fake_git.write_text("#!/bin/sh\nexit 128\n")
+            fake_git.chmod(0o755)
+            for command in commands:
+                result = subprocess.run(
+                    ["bash", "-e", "-o", "pipefail", "-c", command],
+                    env={**os.environ, "PATH": f"{root}:/usr/bin:/bin"},
+                    capture_output=True,
+                )
+                self.assertEqual(result.returncode, 128)
 
 
 class ArchiveStagingTests(unittest.TestCase):
