@@ -2,7 +2,7 @@
 title: "HydraFusion in VS Code and the GitHub Copilot app"
 source_url: https://github.blog/changelog/2026-09-30-hydrafusion-in-vs-code-and-the-github-copilot-app
 published_at: 2026-09-30T14:31:19+00:00
-fetched_at: 2026-10-05T10:01:50.278636+00:00
+fetched_at: 2026-10-05T10:05:10.103692+00:00
 ---
 
 The HydraFusion research preview is now available in Visual Studio Code and the GitHub Copilot app, expanding beyond Copilot CLI.
