@@ -68,7 +68,7 @@ jobs:
       - name: Verify freshness and publication inputs
         if: steps.selection.outputs.proceed == 'true'
         id: preparation
-        run: python3 control/scripts/production_stage.py prepare --repo app-source --state "$RUNNER_TEMP/stage.json"
+        run: python3 control/scripts/production_stage.py prepare --repo app-source --definition-repo control --state "$RUNNER_TEMP/stage.json"
 
       - name: Check out exact rendered archive
         if: steps.preparation.outputs.deploy == 'true'

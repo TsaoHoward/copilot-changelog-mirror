@@ -77,7 +77,7 @@ jobs:
       - name: Render and persist selected snapshots offline
         if: steps.selection.outputs.proceed == 'true'
         working-directory: app-source
-        run: uv run python ../control/scripts/production_stage.py write --repo . --state "$RUNNER_TEMP/stage.json"
+        run: uv run python ../control/scripts/production_stage.py write --repo . --definition-repo ../control --state "$RUNNER_TEMP/stage.json"
 
       - name: Summarize stage outcome
         if: always()

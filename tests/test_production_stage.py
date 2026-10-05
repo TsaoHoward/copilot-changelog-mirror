@@ -13,6 +13,7 @@ import zipfile
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from unittest.mock import patch
+from urllib.parse import parse_qs
 
 from archive_support import PROJECT_ROOT, git, initialize_repository
 
@@ -43,6 +44,12 @@ class HostedEvidenceFixture:
                 fixture.requests.append(self.path)
                 path = self.path.split("?", 1)[0]
                 value = fixture.responses.get(path)
+                if isinstance(value, dict):
+                    query = parse_qs(self.path.partition("?")[2])
+                    page = int(query.get("page", [1])[0])
+                    for key, items in value.items():
+                        if isinstance(items, list):
+                            value = {**value, key: items[(page - 1) * 100 : page * 100]}
                 self.send_response(200 if value is not None else 404)
                 self.end_headers()
                 self.wfile.write(value if isinstance(value, bytes) else json.dumps(value).encode())
@@ -79,6 +86,7 @@ class HostedEvidenceFixture:
             "event": event,
             "path": ".github/workflows/" + filename,
             "conclusion": conclusion,
+            "updated_at": "2026-10-05T04:00:00Z",
         }
         prefix = "/repos/owner/archive"
         self.responses[f"{prefix}/actions/runs/{run_id}/attempts/{attempt}"] = run
@@ -121,6 +129,10 @@ class ProductionStageTests(unittest.TestCase):
             shutil.copytree(PROJECT_ROOT / name, self.repo / name)
         (self.repo / "scripts").mkdir()
         shutil.copy(PROJECT_ROOT / "scripts/stage_archive.py", self.repo / "scripts")
+        (self.repo / ".github/workflows").mkdir(parents=True)
+        shutil.copy(
+            PROJECT_ROOT / ".github/workflows/publish-pages.yml", self.repo / ".github/workflows"
+        )
         git(self.repo, "add", ".")
         git(self.repo, "commit", "-qm", "Fixture application")
         self.application = git(self.repo, "rev-parse", "HEAD").decode().strip()
@@ -592,6 +604,131 @@ class ProductionStageTests(unittest.TestCase):
         self.assertEqual(publication["build_attempt"], 1)
         self.assertTrue(publication["deploy"])
         self.assertEqual(publication["archive_input"], rendered["archive_output"])
+
+    def test_current_render_resolves_success_before_a_failed_rerun(self):
+        rendered = self.render()
+        successful = self.hosted.store(rendered)
+        failed = {**rendered, "attempt": 2, "outcome": "failure", "eligible": False}
+        latest = self.hosted.store(failed, conclusion="failure")
+        self.hosted.responses["/repos/owner/archive/actions/workflows/render-posts.yml/runs"] = {
+            "workflow_runs": [latest]
+        }
+        selected = self.hosted.client.current_render(self.head(), "main")
+        self.assertEqual(selected["attempt"], successful["run_attempt"])
+
+    def test_writer_cli_renders_old_application_using_disjoint_new_definition_checkout(self):
+        captured = self.result("capture")
+        run_writer(self.repo, captured, feed_url=self.feed.as_uri())
+        application = self.clone("old-render-application")
+        definition = self.repo / ".github/workflows/publish-pages.yml"
+        definition.write_text(
+            definition.read_text().replace('ruby-version: "3.3"', 'ruby-version: "3.4"')
+        )
+        git(self.repo, "add", ".")
+        git(self.repo, "commit", "-qm", "New workflow definition after capture")
+        definition_sha = git(self.repo, "rev-parse", "HEAD").decode().strip()
+        absent = subprocess.run(
+            ["git", "-C", str(application), "cat-file", "-e", definition_sha], capture_output=True
+        )
+        self.assertNotEqual(absent.returncode, 0)
+        result = self.result("render", captured["archive_output"])
+        result.update(application_sha=self.application, definition_sha=definition_sha)
+        state = self.root / "stage.json"
+        state.write_text(json.dumps(result))
+        executed = subprocess.run(
+            [
+                sys.executable,
+                str(PROJECT_ROOT / "scripts/production_stage.py"),
+                "write",
+                "--repo",
+                str(application),
+                "--definition-repo",
+                str(self.repo),
+                "--state",
+                str(state),
+            ],
+            env={**os.environ, "GITHUB_REPOSITORY": "owner/archive"},
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(executed.returncode, 0, executed.stdout + executed.stderr)
+        persisted = json.loads(state.read_text())
+        self.assertTrue(persisted["eligible"])
+        self.assertEqual(persisted["archive_output"], self.head())
+        self.assertEqual(persisted["application_sha"], self.application)
+        self.assertEqual(persisted["definition_sha"], definition_sha)
+        self.assertIn(b"Saved bytes.", git(self.remote, "show", "mirror-data:posts/article.md"))
+
+    def test_executing_definition_build_changes_require_publication_with_old_application(self):
+        rendered = self.render()
+        published = self.publication(rendered)
+        prepare_publication(self.repo, published)
+        record_publication(published, "success", 501, 601, "https://owner.github.io/archive/")
+        application = self.clone("old-application")
+        definition = self.repo / ".github/workflows/publish-pages.yml"
+        original = definition.read_text()
+        definition.write_text(original.replace('ruby-version: "3.3"', 'ruby-version: "3.4"'))
+        git(self.repo, "add", ".")
+        git(self.repo, "commit", "-qm", "New executing build definition")
+        newer = self.publication(rendered)
+        newer["application_sha"] = self.application
+        newer["definition_sha"] = git(self.repo, "rev-parse", "HEAD").decode().strip()
+        prepare_publication(application, newer, published, definition_repo=self.repo)
+        self.assertTrue(newer["deploy"])
+        self.assertNotEqual(newer["publication_identity"], published["publication_identity"])
+        # Changing summary text alone is not a build input change.
+        definition.write_text(
+            original.replace(
+                "Summarize publication preparation", "Summarize publication preparation (clearer)"
+            )
+        )
+        git(self.repo, "add", ".")
+        git(self.repo, "commit", "-qm", "Only a reporting change")
+        reporting = self.publication(rendered)
+        reporting["application_sha"] = self.application
+        reporting["definition_sha"] = git(self.repo, "rev-parse", "HEAD").decode().strip()
+        prepare_publication(application, reporting, published, definition_repo=self.repo)
+        self.assertFalse(reporting["deploy"])
+        self.assertEqual(reporting["outcome"], "duplicate")
+
+    def test_baseline_avoids_job_lookups_for_history_older_than_latest_deployment(self):
+        rendered = self.render()
+        published = self.publication(rendered)
+        published.update(run_id=105)
+        prepare_publication(self.repo, published)
+        record_publication(published, "success", 501, 601, "https://owner.github.io/archive/")
+        latest = self.hosted.store(published)
+        latest["updated_at"] = "2026-10-05T02:00:00Z"
+        prefix = "/repos/owner/archive"
+        self.hosted.responses[f"{prefix}/actions/runs/105/attempts/1/jobs"] = {
+            "jobs": [
+                {
+                    "id": 501,
+                    "name": "deploy",
+                    "conclusion": "success",
+                    "steps": [
+                        {
+                            "name": "Deploy Pages artifact",
+                            "conclusion": "success",
+                            "completed_at": "2026-10-05T01:00:00Z",
+                        },
+                        {"name": "Record verified publication", "conclusion": "success"},
+                    ],
+                }
+            ]
+        }
+        old = [
+            {**latest, "id": 200 + index, "updated_at": "2026-10-04T00:00:00Z"}
+            for index in range(150)
+        ]
+        self.hosted.responses[f"{prefix}/actions/workflows/publish-pages.yml/runs"] = {
+            "workflow_runs": [latest, *old]
+        }
+        baseline = self.hosted.client.last_publication("main")
+        self.assertEqual(baseline["run_id"], 105)
+        self.assertEqual(
+            len([request for request in self.hosted.requests if "/jobs?" in request]), 1
+        )
 
     def test_publication_skips_only_verified_same_build_inputs_and_force_keeps_freshness(self):
         rendered = self.render()

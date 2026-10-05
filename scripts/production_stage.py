@@ -87,7 +87,7 @@ def check_fresh(repo: Path, result, expected: str | None) -> bool:
     return True
 
 
-def run_writer(repo: Path, result: dict, feed_url: str | None = None) -> None:
+def run_writer(repo: Path, result: dict, feed_url: str | None = None, definition_repo=None) -> None:
     """Acquire/derive, recheck, push, then declare the remotely verified result eligible."""
     try:
         stage = result["stage"]
@@ -137,7 +137,12 @@ def run_writer(repo: Path, result: dict, feed_url: str | None = None) -> None:
             result["rendered_revision"] = output
             result["posts_tree"] = git(repo, "rev-parse", f"{output}:posts")
             result["publication_identity"] = publication_identity(
-                repo, output, result["application_sha"], "/" + result["repository"].split("/")[1]
+                repo,
+                output,
+                result["application_sha"],
+                "/" + result["repository"].split("/")[1],
+                definition=result["definition_sha"],
+                definition_repo=definition_repo,
             )
     except Exception as error:
         result.update(outcome="failure", eligible=False, diagnostic=str(error))
@@ -313,15 +318,17 @@ class ActionsEvidence:
         return self.pages(f"/actions/workflows/{WORKFLOWS[stage]}/runs?{query}", "workflow_runs")
 
     def current_render(self, revision, branch):
-        for run in self.runs("render", branch):
-            if run["conclusion"] != "success":
-                continue
-            record = self.record(run, "render", optional=True)
-            if record is None:
-                continue  # A run before adoption supplies no current render evidence.
-            validate_handoff(record, run, "render", self.repository, branch)
-            if record["archive_output"] == revision:
-                return record
+        for listed in self.runs("render", branch):
+            for attempt in range(listed["run_attempt"], 0, -1):
+                run = self.run(listed["id"], attempt)
+                if run["conclusion"] != "success":
+                    continue
+                record = self.record(run, "render", optional=True)
+                if record is None:
+                    continue  # Pre-adoption runs have no render evidence.
+                validate_handoff(record, run, "render", self.repository, branch)
+                if record["archive_output"] == revision:
+                    return record
         raise ValueError("No successful render evidence for current archive; run render-only first")
 
     def jobs(self, run):
@@ -331,7 +338,12 @@ class ActionsEvidence:
 
     def last_publication(self, branch):
         candidates = []
-        for listed in self.runs("publish", branch):
+        # updated_at includes old runs that were rerun. A run cannot deploy later than
+        # its last metadata update, so only inspect jobs that could beat the best candidate.
+        runs = sorted(self.runs("publish", branch), key=lambda run: run["updated_at"], reverse=True)
+        for listed in runs:
+            if candidates and listed["updated_at"] < max(item[0] for item in candidates):
+                break
             for attempt in range(listed["run_attempt"], 0, -1):
                 run = self.run(listed["id"], attempt)
                 for job in self.jobs(run):
@@ -350,7 +362,6 @@ class ActionsEvidence:
                     )
                     if deployed:
                         candidates.append((deployed["completed_at"], run, job))
-            # Continue because a rerun of an older run may have deployed more recently.
         if not candidates:
             return None
         _, run, job = max(candidates, key=lambda item: item[0])
@@ -372,16 +383,43 @@ class ActionsEvidence:
         return record
 
 
-def publication_identity(repo, archive, application, baseurl):
+def build_configuration(repo, definition):
+    """Select actual build steps from the executing workflow's immutable revision.
+
+    Known orchestration/reporting steps cannot affect the artifact. Keep all other
+    build steps, including new ones, so a new build command cannot evade the identity.
+    """
+    workflow = git(repo, "show", f"{definition}:.github/workflows/publish-pages.yml")
+    build = workflow.split("\n  build:\n", 1)[1].split("\n  deploy:\n", 1)[0]
+    excluded = {
+        "Check out workflow tools",
+        "Select exact successful render evidence",
+        "Verify freshness and publication inputs",
+        "Save publication preparation",
+    }
+    configuration = []
+    for block in re.split(r"(?m)^      - name: ", build)[1:]:
+        name, _, body = block.partition("\n")
+        if name in excluded or name.startswith("Summarize "):
+            continue
+        for line in body.splitlines():
+            if not line.strip() or line.strip().startswith(("if:", "id:")):
+                continue
+            if "uses:" in line:
+                line = line.split(" #", 1)[0]
+            configuration.append(line)
+    if not configuration:
+        raise ValueError("Executing Pages workflow has no identifiable build configuration")
+    return configuration
+
+
+def publication_identity(
+    repo, archive, application, baseurl, *, definition=None, definition_repo=None
+):
     """Hash the posts tree and tracked Jekyll/build inputs, never run or snapshot evidence."""
     # Match this repository's Jekyll exclusions. Retain files Jekyll copies as static content.
     excluded = {"README.md", "tests", "scripts", "archive-source"}
-    build_files = {
-        "Gemfile",
-        "Gemfile.lock",
-        "scripts/stage_archive.py",
-        ".github/workflows/publish-pages.yml",
-    }
+    build_files = {"Gemfile", "Gemfile.lock", "scripts/stage_archive.py"}
     tree = git(repo, "ls-tree", "-rz", application).split("\0")
     selected = []
     for entry in tree:
@@ -398,15 +436,14 @@ def publication_identity(repo, archive, application, baseurl):
             "posts_tree": posts_tree,
             "site": selected,
             "baseurl": baseurl,
-            "ruby": "3.3",
-            "build": "bundle exec jekyll build",
+            "build": build_configuration(definition_repo or repo, definition or application),
         },
         sort_keys=True,
     ).encode()
     return hashlib.sha256(content).hexdigest()
 
 
-def prepare_publication(repo, result, baseline=None, force=False):
+def prepare_publication(repo, result, baseline=None, force=False, definition_repo=None):
     result["deploy"] = False
     result["force"] = force
     result["build_attempt"] = result["attempt"]
@@ -429,7 +466,12 @@ def prepare_publication(repo, result, baseline=None, force=False):
     result["rendered_revision"] = revision
     result["baseurl"] = "/" + result["repository"].split("/")[1]
     result["publication_identity"] = publication_identity(
-        repo, revision, result["application_sha"], result["baseurl"]
+        repo,
+        revision,
+        result["application_sha"],
+        result["baseurl"],
+        definition=result["definition_sha"],
+        definition_repo=definition_repo,
     )
     if (
         not force
@@ -609,6 +651,7 @@ def main():
     parser.add_argument("--stage", choices=WORKFLOWS)
     parser.add_argument("--state", type=Path, required=True)
     parser.add_argument("--repo", type=Path, default=Path("."))
+    parser.add_argument("--definition-repo", type=Path)
     args = parser.parse_args()
     env = os.environ
     evidence = ActionsEvidence(
@@ -634,12 +677,12 @@ def main():
             result = json.loads(args.state.read_text())
             validate_record(result)
             if args.operation == "write":
-                run_writer(args.repo.resolve(), result)
+                run_writer(args.repo.resolve(), result, definition_repo=args.definition_repo)
             elif args.operation == "prepare":
                 event = json.loads(Path(env["GITHUB_EVENT_PATH"]).read_text())
                 force = event.get("inputs", {}).get("force", "false") in (True, "true")
                 baseline = None if force else evidence.last_publication(result["branch"])
-                prepare_publication(args.repo, result, baseline, force)
+                prepare_publication(args.repo, result, baseline, force, args.definition_repo)
             elif args.operation == "fresh":
                 prepare_deployment(
                     args.repo,
