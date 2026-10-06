@@ -38,7 +38,7 @@ export async function acquire(
             res.destroy();
             if (!location)
               reject(new Error(`HTTP ${status} redirect lacks Location`));
-            else resolve(normalizeSourceUrl(location, url));
+            else resolve(location);
           } else if (status < 200 || status >= 300) {
             res.destroy();
             reject(new Error(`HTTP ${status} acquiring ${url}`));
@@ -63,7 +63,7 @@ export async function acquire(
       });
     });
     if (Buffer.isBuffer(response)) return response;
-    url = response;
+    url = normalizeSourceUrl(response, url);
     if (!["http:", "https:"].includes(new URL(url).protocol))
       throw new Error("HTTP redirects must stay within HTTP(S)");
   }

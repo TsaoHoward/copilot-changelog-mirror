@@ -152,3 +152,28 @@ test("invalid feeds, HTTP errors, timeouts, truncated responses and later articl
     );
   }
 });
+
+test("malformed and unsupported redirect targets return structured failure without advancing the archive", async (t) => {
+  const f = new Fixture(t);
+  const source = f.source("old.html", "older evidence");
+  assert.equal(
+    (await f.cli(f.feed(`<item><link>${source}</link></item>`))).code,
+    0,
+  );
+  const before = f.tip();
+  const base = await serve(t, (req, res) => {
+    if (req.url === "/malformed") res.writeHead(302, { location: "http://[" });
+    else if (req.url === "/unsupported")
+      res.writeHead(302, { location: "ftp://example.com/" });
+    else if (req.url === "/file") res.writeHead(302, { location: source });
+    else res.writeHead(302, { location: "/loop" });
+    res.end();
+  });
+  for (const path of ["/malformed", "/unsupported", "/file", "/loop"]) {
+    const failed = await f.cli(`${base}${path}`);
+    assert.equal(failed.code, 1);
+    assert.equal(failed.result?.outcome, "failure", failed.stderr);
+    assert.equal(failed.result.archive_output, null);
+    assert.equal(f.tip(), before);
+  }
+});

@@ -58,6 +58,56 @@ export class GitArchive {
     const exact = lines.find((line) => line.startsWith(`${ref} `));
     return exact ? exact.slice(ref.length + 1) : null;
   }
+  private remoteRefs(): {
+    branch: string;
+    revision: string;
+    symbolicBranch: string | null;
+  }[] {
+    const names = this.git(["remote"])
+      .toString()
+      .trim()
+      .split("\n")
+      .filter(Boolean)
+      .sort((a, b) => b.length - a.length);
+    const branchName = (ref: string): string => {
+      const relative = ref.slice("refs/remotes/".length);
+      const remote =
+        names.find((name) => relative.startsWith(`${name}/`)) ??
+        relative.split("/")[0]!;
+      return relative.slice(remote.length + 1);
+    };
+    return this.git([
+      "for-each-ref",
+      "--format=%(refname) %(objectname) %(symref)",
+      "refs/remotes",
+    ])
+      .toString()
+      .trim()
+      .split("\n")
+      .filter(Boolean)
+      .map((line) => {
+        const [ref, revision, symbolic] = line.split(" ");
+        return {
+          branch: branchName(ref!),
+          revision: revision!,
+          symbolicBranch: symbolic ? branchName(symbolic) : null,
+        };
+      });
+  }
+  private remoteArchiveRevision(): string | null {
+    const revisions = new Set(
+      this.remoteRefs()
+        .filter(
+          (ref) => ref.branch === this.branch && ref.symbolicBranch === null,
+        )
+        .map((ref) => ref.revision),
+    );
+    if (revisions.size > 1)
+      throw new Error(
+        `Ambiguous remote archive ancestry for ${this.branch}; select a pinned local archive branch.`,
+      );
+    return revisions.values().next().value ?? null;
+  }
   assertSafeTarget(): void {
     this.git(["check-ref-format", this.ref]);
     const worktrees = this.git(["worktree", "list", "--porcelain"]).toString();
@@ -72,15 +122,9 @@ export class GitArchive {
         .toString()
         .trim(),
     ]);
-    const remoteHeads = this.git([
-      "for-each-ref",
-      "--format=%(refname) %(symref)",
-      "refs/remotes",
-    ]).toString();
-    for (const line of remoteHeads.split("\n")) {
-      const [ref, target] = line.split(" ");
-      if (ref?.endsWith("/HEAD") && target)
-        defaults.add(target.split("/").slice(3).join("/"));
+    for (const ref of this.remoteRefs()) {
+      if (ref.branch === "HEAD" && ref.symbolicBranch)
+        defaults.add(ref.symbolicBranch);
     }
     const symbolic = this.git([
       "for-each-ref",
@@ -102,8 +146,7 @@ export class GitArchive {
   read(): ArchiveInput {
     this.assertSafeTarget();
     const localRevision = this.optionalRef(this.ref);
-    const revision =
-      localRevision ?? this.optionalRef(`refs/remotes/origin/${this.branch}`);
+    const revision = localRevision ?? this.remoteArchiveRevision();
     const files: ArchiveFiles = new Map();
     if (revision) {
       for (const entry of this.git(["ls-tree", "-rz", revision])

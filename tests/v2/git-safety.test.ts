@@ -29,7 +29,7 @@ test("a fresh clone continues remote-only archive ancestry and preserves article
   f.git("remote", "add", "origin", origin);
   f.git("push", "origin", "main", f.branch);
   const clone = `${f.dir}/clone`;
-  execFileSync("git", ["clone", "-q", origin, clone]);
+  execFileSync("git", ["clone", "-q", "--origin", "upstream", origin, clone]);
   execFileSync("git", ["-C", clone, "config", "user.name", "Fixture"]);
   execFileSync("git", [
     "-C",
@@ -235,4 +235,51 @@ test("bare invocation requires an explicit subcommand and invalid options return
     assert.equal(result.result.archive_output, null);
     assert.throws(() => f.tip());
   }
+});
+
+test("remote archive selection accepts identical tips and refuses ambiguous ancestry", async (t) => {
+  const f = new Fixture(t);
+  const feed = oneArticle(f);
+  assert.equal((await f.cli(feed)).code, 0);
+  const first = f.tip();
+  f.git("update-ref", `refs/remotes/one/${f.branch}`, first);
+  f.git("update-ref", `refs/remotes/two/${f.branch}`, first);
+  f.git("update-ref", "-d", `refs/heads/${f.branch}`);
+  const same = await f.cli(feed);
+  assert.equal(same.result.outcome, "no-change", same.stderr);
+  assert.equal(same.result.archive_input, first);
+  f.source("article.html", "changed evidence");
+  const changed = await f.cli(feed);
+  assert.equal(changed.result.outcome, "changed", changed.stderr);
+  const second = f.tip();
+  assert.equal(f.text("rev-parse", `${f.branch}^`), first);
+  f.git("update-ref", `refs/remotes/two/${f.branch}`, second);
+  f.git("update-ref", "-d", `refs/heads/${f.branch}`);
+  const ambiguous = await f.cli(f.feed(""));
+  assert.equal(ambiguous.code, 1);
+  assert.equal(ambiguous.result.outcome, "failure");
+  assert.match(ambiguous.stderr, /ambiguous|conflicting/i);
+  assert.throws(() => f.tip());
+  assert.equal(f.text("rev-parse", `refs/remotes/one/${f.branch}`), first);
+  assert.equal(f.text("rev-parse", `refs/remotes/two/${f.branch}`), second);
+});
+
+test("archive branch selection ignores remote branches that only share the final name", async (t) => {
+  const f = new Fixture(t);
+  assert.equal((await f.cli(oneArticle(f))).code, 0);
+  const original = f.tip();
+  f.git("remote", "add", "upstream", f.repo);
+  f.git("update-ref", `refs/remotes/upstream/backup/${f.branch}`, original);
+  f.git("update-ref", "-d", `refs/heads/${f.branch}`);
+  const initialized = await f.cli(f.feed(""));
+  assert.equal(initialized.result.outcome, "changed", initialized.stderr);
+  assert.equal(initialized.result.archive_input, null);
+  assert.deepEqual(f.manifest().articles, {});
+  const empty = f.tip();
+  f.git("update-ref", `refs/remotes/upstream/backup/${f.branch}`, empty);
+  f.git("update-ref", `refs/remotes/upstream/${f.branch}`, original);
+  f.git("update-ref", "-d", `refs/heads/${f.branch}`);
+  const selected = await f.cli(f.feed(""));
+  assert.equal(selected.result.outcome, "no-change", selected.stderr);
+  assert.equal(selected.result.archive_input, original);
 });

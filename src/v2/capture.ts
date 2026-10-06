@@ -61,11 +61,16 @@ export async function capture(options: CaptureOptions): Promise<CaptureResult> {
         discovery_title: article.title,
         discovery_published_at: article.published_at,
       };
+      const candidate = updateCapture(
+        manifest,
+        article.source_url,
+        observation,
+      );
       if (previous && isDeepStrictEqual(previous.capture, observation)) {
         counts.unchanged++;
         continue;
       }
-      manifest = updateCapture(manifest, article.source_url, observation);
+      manifest = candidate;
       const snapshot = `snapshots/${identity.article_id}.html`;
       files.set(snapshot, {
         mode: input.files.get(snapshot)?.mode ?? "100644",
