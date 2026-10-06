@@ -1,0 +1,26 @@
+{
+  "name": "copilot-changelog-mirror",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.22.0 <23"
+  },
+  "scripts": {
+    "capture": "node --import tsx src/v2/cli.ts capture",
+    "cli": "node --import tsx src/v2/cli.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/v2/*.test.ts",
+    "format:check": "prettier --check \"src/v2/**/*.ts\" \"tests/v2/**/*.ts\" package.json tsconfig.json docs/v2-archive.md"
+  },
+  "dependencies": {
+    "jsonc-parser": "3.3.1",
+    "saxes": "6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "prettier": "3.6.2",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}
