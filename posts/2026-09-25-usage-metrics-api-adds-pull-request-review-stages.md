@@ -2,7 +2,7 @@
 title: "Usage metrics API adds pull request review stages"
 source_url: https://github.blog/changelog/2026-09-25-usage-metrics-api-adds-pull-request-review-stages
 published_at: 2026-09-25T21:09:40+00:00
-fetched_at: 2026-10-05T01:00:40.028912+00:00
+fetched_at: 2026-10-06T02:20:31.448180+00:00
 ---
 
 The enterprise and organization [repository-level Copilot usage metrics](https://github.blog/changelog/2026-07-17-repository-level-github-copilot-usage-metrics-generally-available/) reports now break down how long pull requests spend in each stage of review. A new `pull_request_review_times` array on each `repos-1-day` row reports a median and a 90th percentile for the time from ready for review to first review, first review to final review, and final review to merge.
