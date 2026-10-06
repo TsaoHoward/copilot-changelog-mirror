@@ -2,7 +2,7 @@
 title: "GitHub Copilot in VS Code, September 2026 releases"
 source_url: https://github.blog/changelog/2026-10-01-github-copilot-in-vs-code-september-2026-releases
 published_at: 2026-10-01T19:09:10+00:00
-fetched_at: 2026-10-06T02:20:27.680328+00:00
+fetched_at: 2026-10-06T11:19:53.113732+00:00
 ---
 
 This changelog covers VS Code [v1.136 through v1.140](https://aka.ms/VSCode/Release), shipped throughout September 2026.
