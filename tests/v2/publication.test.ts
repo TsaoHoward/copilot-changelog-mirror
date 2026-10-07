@@ -5,6 +5,7 @@ import {
   comparePublications,
   emptyManifest,
   publicationIdentity,
+  publicationPath,
   publicationProjection,
   serializePublicationProjection,
   updateCapture,
@@ -20,6 +21,26 @@ const entry: PublicationEntry = {
   source_url: "https://example.test/article/",
   body: "Body.\n",
 };
+
+test("public source-slug routes remain separate from internal URL-hash identities", () => {
+  assert.equal(
+    publicationPath(
+      "HTTPS://EXAMPLE.TEST:443/Release.html?source=feed#section",
+    ),
+    "/posts/release/",
+  );
+  assert.equal(publicationPath("https://example.test/"), "/posts/article/");
+  assert.equal(
+    publicationPath("https://example.test/%E4%B8%AD.html"),
+    "/posts/article/",
+  );
+  assert.equal(publicationPath("https://example.test/a/same/"), "/posts/same/");
+  assert.equal(publicationPath("https://example.test/b/same/"), "/posts/same/");
+  assert.notEqual(
+    articleIdentity("https://example.test/a/same/").article_id,
+    articleIdentity("https://example.test/b/same/").article_id,
+  );
+});
 
 test("publication format has fixed logical fields and order independent of storage representation", () => {
   assert.equal(

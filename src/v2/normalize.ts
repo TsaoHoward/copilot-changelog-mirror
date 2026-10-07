@@ -3,6 +3,7 @@ import type { Cheerio, CheerioAPI } from "cheerio";
 import type { AnyNode } from "domhandler";
 import TurndownService from "turndown";
 import type { Article, Canonical } from "./domain.js";
+import { publicationPath } from "./domain.js";
 
 const headings = "h2,h3,h4,h5,h6";
 const text = (node: Cheerio<AnyNode>): string =>
@@ -221,7 +222,7 @@ function matchesSource(value: unknown, source: string): boolean {
       matchesSource(record["@id"], source) || matchesSource(record.url, source)
     );
   }
-  if (typeof value !== "string") return false;
+  if (typeof value !== "string" || !value.trim()) return false;
   try {
     const a = new URL(value, source),
       b = new URL(source);
@@ -381,7 +382,7 @@ export function normalizeArticle(
     canonical: {
       title,
       published_at,
-      publication_path: `/posts/${article.article_id.replace(/-[a-f0-9]{12}$/, "")}/`,
+      publication_path: publicationPath(article.source_url),
     },
     body,
   };

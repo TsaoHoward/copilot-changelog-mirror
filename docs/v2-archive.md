@@ -76,7 +76,7 @@ Identical canonical metadata/body bytes preserve the original manifest bytes, in
 
 ## Canonical publication identity
 
-The public domain API adds:
+The public domain API adds `publicationPath(sourceUrl)` for the established source-slug route policy, plus the projection functions:
 
 | Function                                     | Purpose                                                                                                                                                 |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |

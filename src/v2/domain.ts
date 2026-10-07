@@ -43,16 +43,26 @@ export function normalizeSourceUrl(input: string, base?: string): string {
   return url.href;
 }
 
-export function articleIdentity(input: string): Identity {
-  const source_url = normalizeSourceUrl(input);
+function sourceSlug(source_url: string): string {
   const segment =
     new URL(source_url).pathname.split("/").filter(Boolean).at(-1) ?? "";
-  const slug =
+  return (
     decodeURIComponent(segment)
       .replace(/\.[a-zA-Z0-9]{1,8}$/, "")
       .replace(/[^a-zA-Z0-9_-]+/g, "-")
       .replace(/^[-_]+|[-_]+$/g, "")
-      .toLowerCase() || "article";
+      .toLowerCase() || "article"
+  );
+}
+
+/** Public route policy is independent of the internal identity hash suffix. */
+export function publicationPath(sourceUrl: string): string {
+  return `/posts/${sourceSlug(normalizeSourceUrl(sourceUrl))}/`;
+}
+
+export function articleIdentity(input: string): Identity {
+  const source_url = normalizeSourceUrl(input);
+  const slug = sourceSlug(source_url);
   return {
     article_id: `${slug}-${sha256(source_url).slice(0, 12)}`,
     source_url,

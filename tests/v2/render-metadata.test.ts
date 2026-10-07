@@ -35,6 +35,17 @@ test("equivalent associated Article, TechArticle, BlogPosting and WebPage dates 
           url: source,
           datePublished: "2020-01-01T00:00:00Z",
         },
+        { "@type": "WebPage", url: "", datePublished: "2020-01-01T00:00:00Z" },
+        {
+          "@type": "Article",
+          "@id": " ",
+          datePublished: "2020-01-01T00:00:00Z",
+        },
+        {
+          "@type": "BlogPosting",
+          mainEntityOfPage: { "@id": "" },
+          datePublished: "2020-01-01T00:00:00Z",
+        },
       ],
     }) + "<article><h1>HTML title</h1><p>Article body.</p></article>";
   const id = seedArticle(f, html);
@@ -60,6 +71,8 @@ test("metadata fallback ignores malformed, invalid, unrelated and modified-only 
     { "@type": "Article", url: source, datePublished: "2026-10-01" },
     { "@type": "Article", url: source, datePublished: "2026-10-01T12:00:00" },
     { "@type": "Article", url: source, datePublished: "not a date" },
+    { "@type": "Article", url: "", datePublished: "2026-10-01T12:00:00Z" },
+    { "@type": "WebPage", "@id": "  ", datePublished: "2026-10-01T12:00:00Z" },
   ];
   for (const time of ["2026-09-01T00:00:00.000Z", null]) {
     await t.test(`discovery time ${time}`, async (t) => {
