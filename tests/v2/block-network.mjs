@@ -1,3 +1,5 @@
+import childProcess from "node:child_process";
+import { fileURLToPath } from "node:url";
 import http from "node:http";
 import https from "node:https";
 import net from "node:net";
@@ -21,4 +23,16 @@ net.Socket.prototype.connect = function (...args) {
   return blocked();
 };
 globalThis.fetch = blocked;
+// Carry the offline guard into the real Astro subprocess, even with a clean environment.
+const spawn = childProcess.spawn;
+childProcess.spawn = function (command, args, options = {}) {
+  return spawn(command, args, {
+    ...options,
+    env: {
+      ...options.env,
+      COPILOT_NETWORK_LOG: process.env.COPILOT_NETWORK_LOG,
+      NODE_OPTIONS: "--import " + fileURLToPath(import.meta.url),
+    },
+  });
+};
 syncBuiltinESMExports();

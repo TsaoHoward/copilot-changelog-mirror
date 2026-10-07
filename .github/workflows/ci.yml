@@ -37,4 +37,5 @@ jobs:
       - run: npm ci
       - run: npm run format:check
       - run: npm run typecheck
-      - run: npm test
+      - name: Verify v2 contracts and real offline Astro artifacts
+        run: npm test

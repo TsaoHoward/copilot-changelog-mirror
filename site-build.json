@@ -1,0 +1,9 @@
+{
+  "definition_format": 1,
+  "steps": [
+    { "kind": "runtime", "node": "file:.node-version" },
+    { "kind": "install", "command": ["npm", "ci"] },
+    { "kind": "build", "command": ["npm", "run", "site:astro"] }
+  ],
+  "environment": { "TZ": "UTC", "LANG": "C.UTF-8" }
+}

@@ -1,0 +1,38 @@
+---
+import Page from "../../layouts/Page.astro";
+import { articles, articleHtml, dateLabel, sitePath } from "../../data";
+import type { SiteArticle } from "../../data";
+export function getStaticPaths() {
+  return articles.map((article) => ({
+    params: { slug: article.publication_path.slice("/posts/".length, -1) },
+    props: { article },
+  }));
+}
+interface Props {
+  article: SiteArticle;
+}
+const { article } = Astro.props;
+const html = await articleHtml(article.body);
+---
+
+<Page title={article.title}>
+  <nav aria-label="Archive">
+    <a href={sitePath("/")}>← All announcements</a>
+  </nav>
+  <article>
+    <header class="article-header">
+      <h1>{article.title}</h1>
+      <p class="provenance">
+        {article.published_at && (
+          <time datetime={article.published_at}>
+            {dateLabel(article.published_at)}
+          </time>
+        )}
+        <a class="source" href={article.source_url}>
+          Read the original on GitHub Blog
+        </a>
+      </p>
+    </header>
+    <div class="article-body" set:html={html} />
+  </article>
+</Page>
