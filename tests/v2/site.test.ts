@@ -239,7 +239,7 @@ test("evidence-only revisions preserve identities and selected publication, incl
   );
   assert.match(
     readFileSync(join(f.dir, "output/posts/article/index.html"), "utf8"),
-    /<h1>Title<\/h1>/,
+    /<h1[^>]*>Title<\/h1>/,
   );
   assert.deepEqual(f.git("status", "--porcelain=v1"), status);
   assert.deepEqual(readFileSync(join(f.repo, ".git/index")), index);

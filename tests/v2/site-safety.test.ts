@@ -141,3 +141,42 @@ test("Astro compiler failure reports no artifact and preserves selected archive"
   assert.ok(!existsSync(output));
   assert.deepEqual(tree(archive), before);
 });
+
+test("real Pagefind indexing failure withholds the artifact, cleans staging and preserves inputs", async (t) => {
+  const f = new Fixture(t);
+  const source = copySite(join(f.dir, "index-source"));
+  symlinkSync(join(root, "node_modules"), join(source, "node_modules"), "dir");
+  const helper = join(source, "src/v2/presentation/search.ts");
+  writeFileSync(
+    helper,
+    readFileSync(helper, "utf8").replace(
+      "keepIndexUrl: false",
+      'keepIndexUrl: false, rootSelector: "["',
+    ),
+  );
+  seedArticle(f, "<article><h1>Title</h1><p>Body.</p></article>");
+  assert.equal((await f.render()).code, 0);
+  const archive = exportArchive(f);
+  const archiveBefore = tree(archive);
+  const sourceBefore = tree(source);
+  const revision = f.tip();
+  const output = join(f.dir, "failed-index");
+  const built = await siteCommand(f, archive, "build", [
+    "--source",
+    source,
+    "--output",
+    output,
+  ]);
+  assert.notEqual(built.code, 0, built.stderr);
+  assert.equal(built.result.outcome, "failure");
+  assert.equal(built.result.output, undefined);
+  assert.equal(built.result.deployment_identity, undefined);
+  assert.match(built.stderr, /Pagefind|selector/i);
+  assert.ok(!existsSync(output));
+  assert.ok(
+    !readdirSync(f.dir).some((name) => name.startsWith(".copilot-site-")),
+  );
+  assert.deepEqual(tree(archive), archiveBefore);
+  assert.deepEqual(tree(source), sourceBefore);
+  assert.equal(f.tip(), revision);
+});
