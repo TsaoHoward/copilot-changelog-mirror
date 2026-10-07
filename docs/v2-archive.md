@@ -1,6 +1,6 @@
 # V2 capture, offline render, and shared archive contract
 
-Issues #18 and #19 introduce explicit Node.js/TypeScript capture, offline rendering, and the archive-domain API. Astro, remote push coordination, and production cutover are later deliveries. Production `mirror-data` still uses v1; the v2 commands reject that state with a reset/cutover diagnostic. Select a fresh branch or temporary repository for v2 verification.
+Issues #18 and #19 introduce explicit Node.js/TypeScript capture, offline rendering, and the archive-domain API. Issue #20 adds the Astro archive and presentation-owned deployment identity. Remote push coordination and production cutover are later deliveries. Production `mirror-data` still uses v1; the v2 commands reject that state with a reset/cutover diagnostic. Select a fresh branch or temporary repository for v2 verification.
 
 ## Run capture
 
@@ -87,7 +87,7 @@ The public domain API adds `publicationPath(sourceUrl)` for the established sour
 
 Each projection entry contains only `article_id`, `publication_path`, `title`, `published_at` (including explicit null), `source_url`, and canonical Markdown `body`. The source URL is the published attribution and relative-link relationship. An empty archive has a deterministic empty projection. `PublicationArchive` is a logical interface independent of the stored manifest version; accepting it does not relax strict v2 storage validation.
 
-Identity excludes snapshot bytes/hashes, observation time, unused discovery values, manifest layout/schema, Git SHA, run/attempt IDs, stage artifacts, and presentation/build inputs. Equivalent logical projections serialize identically regardless of object insertion order or storage representation. Changes to any selected field or article membership change identity. This is archive-domain publication identity; deployment identity and Pages decisions remain later work.
+Identity excludes snapshot bytes/hashes, observation time, unused discovery values, manifest layout/schema, Git SHA, run/attempt IDs, stage artifacts, and presentation/build inputs. Equivalent logical projections serialize identically regardless of object insertion order or storage representation. Changes to any selected field or article membership change identity. This is archive-domain publication identity; presentation-owned deployment identity is described below; Pages decisions remain later work.
 
 Render reports archive persistence and publication semantics separately:
 
@@ -140,3 +140,182 @@ node --import tsx --test tests/v2/capture.test.ts
 ```
 
 The independent TypeScript CI job runs these checks with the pinned runtime. Existing Python/Jekyll CI and production entry points remain available through the coordinated cutover.
+
+## Build the v2 Astro archive (issue #20)
+
+The website consumes a **selected directory** containing a complete rendered v2
+archive. Export an exact Git revision or supply a checkout of that revision;
+selection and remote freshness belong to orchestration. A valid empty manifest is
+buildable. Missing metadata, incomplete canonical records, missing bodies, legacy
+front matter/sidecars, corrupt snapshot joins, unsafe objects and colliding routes
+fail. Building never captures, renders, commits, switches branches or changes the
+archive. The production Jekyll workflows remain active until #23/#24 cutover.
+
+```sh
+npm ci
+mkdir /tmp/copilot-selected-archive
+git archive <selected-v2-revision> | tar -xf - -C /tmp/copilot-selected-archive
+npm run --silent site:identity -- --archive /tmp/copilot-selected-archive
+npm run --silent site:build -- --archive /tmp/copilot-selected-archive --output /tmp/copilot-site-artifact
+```
+
+Commands run on Linux x64 using the exact `.node-version` pin. Dependencies must
+already be installed with the selected source's `npm ci` and install settings.
+Build checks the installed lock against the selected lock; it never installs
+packages during offline acceptance. Use `--source /selected/application` when
+selecting site inputs independently of the archive. Invoke that application's
+site CLI when its build driver differs from the current application. The build
+snapshots selected source bytes and the logical publication in invocation-owned
+staging, with cache/output outside both source and archive. The output must be a
+fresh directory; existing artifacts are never overwritten or reported as a new
+success. Staging is removed on success/failure and the artifact is published only
+after a successful actual Astro build.
+
+`--base /copilot-changelog-mirror/` is the default; `--base /` supports local root
+fixtures. A missing trailing slash is normalized. Relative paths, dot segments,
+encoded separators, query strings and fragments are rejected. Optional `--site`
+accepts an HTTP(S) origin without credentials/path/query/fragment. Site-owned
+navigation, CSS and favicon use the base exactly once. Source-resolved links and
+external media URLs remain external and are never downloaded during build.
+
+The listing orders canonical publication instants descending, then lexical
+`article_id` ties; null dates sort last with “Date unavailable.” Article pages use
+canonical `publication_path` directly, one editorial H1, body-only Markdown,
+source attribution and the canonical date when known. Body H1 sections become H2 in the derived view, leaving canonical bytes unchanged. Observation/discovery/Git
+times do not appear. The responsive reading layout provides a skip link, visible
+keyboard focus, constrained media and scrollable code. Astro's native Markdown
+pipeline preserves the render stage's explicit `archive-heading-N` anchors and
+substantive TOCs. No backend/database or client framework is required. Search,
+filters and timelines remain later work.
+
+Both commands emit exactly one JSON result on stdout (use silent npm); Astro
+progress/diagnostics go to stderr. Success includes:
+
+```json
+{
+  "outcome": "success",
+  "deployment_format": 1,
+  "publication_identity": "<archive-domain SHA-256>",
+  "deployment_identity": "<presentation-domain SHA-256>",
+  "article_count": 6,
+  "output": "/absolute/artifact/path"
+}
+```
+
+Identity-only results omit `output`. Errors exit nonzero with
+`{ "outcome": "failure", "diagnostic": "..." }`, never a successful output or
+identity. These commands do not claim a hosted Pages deployment.
+
+## Presentation-owned deployment identity contract
+
+`src/v2/site-input.ts` exposes `loadSitePublication(directory)`, a read-only strict
+v2 loader that passes the archive-domain logical publication projection across
+the boundary. It does not redefine canonical field selection or hashing.
+
+`src/v2/site-identity.ts` exposes:
+
+- `selectSiteInputs({ source, publication, definition?, definitionJob?, base?, site? })`:
+  snapshots the deterministic source inputs and returns `{ files, projection }`.
+- `serializeDeploymentProjection(projection)`: stable versioned serialization.
+- `deploymentIdentity(projection)`: full lowercase SHA-256 of that serialization.
+- `normalizeBase(base)`: the same URL-path policy used by the build command.
+
+`src/v2/site-build.ts` exposes
+`buildSelectedSite({ source, archive, output, selected, publication })`. Identity
+and execution consume the **same** selected bytes, normalized configuration and
+publication projection. Publication/input digest mismatches, incompatible
+executing drivers, runtime contradictions and installed-lock mismatches fail.
+
+Deployment format **1** serializes a UTF-8 JSON object followed by one LF, with
+these fixed fields in order:
+
+1. `deployment_format` (1).
+2. `publication_identity`, obtained exclusively from `publicationIdentity`.
+3. `configuration`, ordered `base`, `site` (explicit null when absent), `build`.
+   Build fields are ordered `node`, `runtime_setup` (`action`, `runner`), `install`,
+   `command`, `mode`, `environment` (lexically sorted keys).
+4. `inputs`, sorted lexically by POSIX logical name, each ordered `name`, `mode`,
+   `sha256`. Modes are regular Git-style `100644`/`100755`; content digests use full
+   SHA-256. JSON escaping makes record boundaries unambiguous.
+
+This is input identity, not output equivalence. A relevant input change can alter
+identity even if a particular archive produces the same visible HTML. Format 1
+fixes static Astro execution, Node `--import tsx`, a declared-only subprocess
+environment, `NODE_ENV=production`, disabled Astro telemetry, and Linux x64.
+Changing these execution semantics requires a new deployment format.
+
+Inputs include all regular files recursively under `site/` and
+`src/v2/presentation/`, the website build/CLI drivers, Astro and Markdown
+configuration, TypeScript configuration, `.node-version`, the complete npm
+lockfile, optional supported `.npmrc`, and normalized package module/runtime,
+dependency and `site:astro` script settings. New files/assets, removals, renames
+and executable-mode changes are detected. Package descriptions and capture/test
+script descriptions are excluded. Package dependency key order, runtime pin
+`v` prefixes, base trailing slashes and equivalent supported build-command
+representations normalize. A selected package must agree with its lockfile.
+
+Website helpers must live in the covered presentation roots. Relative imports
+escaping them, absolute/file URL imports, nonliteral dynamic imports, symlinks/nonregular source objects,
+ambient `.env*`, competing runtime pins, shrinkwrap and unsupported npm settings
+fail clearly. Unsupported npm install/build lifecycle hooks and external/aliased TypeScript configuration also fail instead of adding unmodeled phases or helpers. Future website-used shared helpers belong inside these roots;
+archive storage loaders/domain schema code intentionally stay outside. Build
+outputs, caches, installation paths, mtimes, workspace/staging paths, Git SHAs,
+run IDs/attempts, raw snapshots/hashes, observations, unused discovery metadata,
+and storage representation do not enter deployment identity independently.
+Complete empty publication uses the archive API's deterministic empty identity;
+incomplete publication is an error, never a fake empty site.
+
+## Selected build definition and downstream integration
+
+By default `site-build.json` declares the local v2 build, separately from active
+legacy production workflows. `--definition /selected/definition` selects another
+resolved JSON definition **or a supported workflow YAML**. Definition content is
+normalized, not hashed wholesale; source paths/revisions are never hashed.
+`src/v2/site-definition.ts` owns `resolveBuildDefinition` and
+`extractWorkflowBuild`, so Pages must not duplicate extraction/hashing policy.
+
+Resolved format 1 requires exactly runtime/install/build phases in that order.
+Runtime is `file:.node-version` or the equivalent exact Node version; optional
+`setup_action` is a pinned setup-node action and `runner` is a supported Linux
+runner. Install is locked `npm ci` with supported `--ignore-scripts`,
+`--omit=optional`, `--no-audit`, `--no-fund` flags. Build is `npm run site:astro`
+with optional `-- --mode production|testing`. Supported declared environment
+keys are `TZ`, `LANG`, `LC_ALL`, `SOURCE_DATE_EPOCH`; inherited arbitrary environment
+and unresolved expressions cannot influence the subprocess. `.npmrc` supports
+boolean audit/fund/engine-strict/ignore-scripts and `omit=optional`. Operational
+metadata may be placed in `operational` and is excluded.
+
+For YAML, `--definition-job JOB` selects a job (default `site`). The extractor
+accepts pinned checkout/setup-node/upload/deploy actions, exact runtime setup,
+locked install and the supported build command. Workflow/job environment enters
+the same resolved contract. Scheduling, queues, permissions, display names,
+checkout refs, upload artifact names/retention and deployment bookkeeping are
+excluded. Unknown actions, additional run phases, conditionally executed build
+steps, shell programs, working-directory overrides, containers/matrices/defaults,
+unresolved build expressions and unsupported configuration fail. Extending
+supported workflow shapes must happen here, with identity/build agreement tests,
+instead of teaching #23 a second interpretation. The legacy Jekyll workflow is
+intentionally unsupported as a v2 definition.
+
+#23 selects immutable archive/application/definition sources and calls these APIs
+before its deploy/no-op/recovery decision. It may either pass the executing
+supported workflow definition or execute the authoritative resolved build
+contract; it must not silently omit extra build phases or compute another hash.
+The resolved definition is an input to actual building, not a Pages deployment
+ledger. Install/runtime setup occur before offline build; pass their actual
+settings in the definition and install from those locked inputs.
+
+#21 must place new static search code, indexer configuration and assets in the
+covered roots, lock its dependencies, and extend the authoritative effective
+build contract if it adds a phase. No separate search/deployment identity is
+needed. Source and definition commits can differ; their relevant selected content
+is what matters.
+
+The mandatory Node suite now runs real offline Astro builds for the frozen six
+production snapshots (123 ordered blocks), both base paths, supplemental
+code/media/emoji navigation, date/tie/null/empty states, preservation and failure
+cases. Public identity tests independently vary canonical fields, raw/operational
+inputs, components/styles/scripts/assets/helpers, lock/configuration/runtime,
+selected definitions and supported representations. Source HTTP/socket attempts
+are recorded and blocked in both the command and Astro subprocess. No test
+substitutes a mock build or depends on Ruby availability.

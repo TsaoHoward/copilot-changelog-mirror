@@ -1,0 +1,31 @@
+---
+import Page from "../layouts/Page.astro";
+import { articles, dateLabel, sitePath } from "../data";
+---
+
+<Page title="Announcements">
+  <h1>Copilot announcements</h1>
+  <p class="intro">Updates from the GitHub Copilot changelog, newest first.</p>
+  {articles.length ? (
+    <ol class="article-list">
+      {articles.map((article) => (
+        <li>
+          {article.published_at ? (
+            <time datetime={article.published_at}>
+              {dateLabel(article.published_at)}
+            </time>
+          ) : (
+            <span class="undated">Date unavailable</span>
+          )}
+          <h2>
+            <a href={sitePath(article.publication_path)}>{article.title}</a>
+          </h2>
+        </li>
+      ))}
+    </ol>
+  ) : (
+    <p class="empty">
+      No announcements have been archived yet. Check back for updates.
+    </p>
+  )}
+</Page>

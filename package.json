@@ -12,13 +12,20 @@
     "cli": "node --import tsx src/v2/cli.ts",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/v2/*.test.ts",
-    "format:check": "prettier --check \"src/v2/**/*.ts\" \"tests/v2/**/*.ts\" \"tests/v2/**/*.mjs\" package.json tsconfig.json docs/v2-archive.md"
+    "format:check": "prettier --check \"src/v2/**/*.ts\" \"tests/v2/**/*.ts\" \"tests/v2/**/*.mjs\" package.json tsconfig.json docs/v2-archive.md \"site/**/*.{astro,ts,mjs,css,svg}\" site-build.json .prettierrc.json",
+    "site:astro": "node --import tsx src/v2/presentation/astro.ts",
+    "site:build": "node --import tsx src/v2/site-cli.ts build",
+    "site:identity": "node --import tsx src/v2/site-cli.ts identity"
   },
   "dependencies": {
+    "@astrojs/markdown-remark": "7.3.2",
+    "astro": "7.3.6",
     "cheerio": "^1.1.2",
     "jsonc-parser": "3.3.1",
+    "rehype-raw": "7.0.0",
     "saxes": "6.0.0",
-    "turndown": "^7.2.1"
+    "turndown": "^7.2.1",
+    "yaml": "2.9.1"
   },
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",
@@ -26,6 +33,7 @@
     "@types/turndown": "^5.0.5",
     "markdown-it": "^14.3.1",
     "prettier": "3.6.2",
+    "prettier-plugin-astro": "1.1.0",
     "tsx": "^4.20.0",
     "typescript": "^5.9.0"
   }
