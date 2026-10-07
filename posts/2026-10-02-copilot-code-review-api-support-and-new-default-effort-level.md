@@ -2,7 +2,7 @@
 title: "Copilot code review: API support and new default effort level"
 source_url: https://github.blog/changelog/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level
 published_at: 2026-10-02T19:13:50+00:00
-fetched_at: 2026-10-06T02:20:26.879067+00:00
+fetched_at: 2026-10-07T01:36:55.833236+00:00
 ---
 
 ![screenshot of Balanced review effort level default selected in settings](https://github.blog/wp-content/uploads/2026/10/663343489-d0f10d32-3726-4507-9ede-10407ea30715.jpg?resize=2064%2C1096)
