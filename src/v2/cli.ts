@@ -1,5 +1,6 @@
 import { parseArgs } from "node:util";
 import { capture } from "./capture.js";
+import { render } from "./render.js";
 import { DEFAULT_FEED } from "./discovery.js";
 
 try {
@@ -8,31 +9,44 @@ try {
     options: {
       repo: { type: "string", default: process.cwd() },
       "data-branch": { type: "string", default: "mirror-data" },
-      "feed-url": { type: "string", default: DEFAULT_FEED },
-      "timeout-ms": { type: "string", default: "30000" },
+      "feed-url": { type: "string" },
+      "timeout-ms": { type: "string" },
       help: { type: "boolean", short: "h" },
     },
   });
   if (values.help) {
     console.log(
-      "Usage: npm run cli -- capture [--repo PATH] [--data-branch BRANCH] [--feed-url URL] [--timeout-ms MS]",
+      "Usage: npm run cli -- <capture|render> [--repo PATH] [--data-branch BRANCH]\nCapture options: [--feed-url URL] [--timeout-ms MS]\nRender regenerates publication offline from persisted evidence; it accepts no capture options.",
     );
   } else {
-    if (positionals.length !== 1 || positionals[0] !== "capture")
+    if (
+      positionals.length !== 1 ||
+      !["capture", "render"].includes(positionals[0]!)
+    )
       throw new Error(
-        "An explicit capture subcommand is required; use --help for usage.",
+        "An explicit capture or render subcommand is required; use --help for usage.",
       );
-    const timeoutMs = Number(values["timeout-ms"]);
+    if (
+      positionals[0] === "render" &&
+      (values["feed-url"] !== undefined || values["timeout-ms"] !== undefined)
+    )
+      throw new Error(
+        "Render does not accept capture options --feed-url or --timeout-ms",
+      );
+    const timeoutMs = Number(values["timeout-ms"] ?? "30000");
     if (!Number.isSafeInteger(timeoutMs) || timeoutMs <= 0)
       throw new Error("--timeout-ms must be a positive integer");
     const clock = process.env.COPILOT_CAPTURE_NOW;
-    const result = await capture({
-      repo: values.repo!,
-      branch: values["data-branch"]!,
-      feedUrl: values["feed-url"]!,
-      timeoutMs,
-      ...(clock ? { now: () => new Date(clock) } : {}),
-    });
+    const result =
+      positionals[0] === "render"
+        ? await render({ repo: values.repo!, branch: values["data-branch"]! })
+        : await capture({
+            repo: values.repo!,
+            branch: values["data-branch"]!,
+            feedUrl: values["feed-url"] ?? DEFAULT_FEED,
+            timeoutMs,
+            ...(clock ? { now: () => new Date(clock) } : {}),
+          });
     console.log(JSON.stringify(result));
     if (result.outcome === "failure") {
       console.error(result.diagnostic);

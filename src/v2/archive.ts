@@ -143,10 +143,11 @@ export class GitArchive {
         `Cannot target the application/default branch: ${this.branch}`,
       );
   }
-  read(): ArchiveInput {
+  read(onPinned?: (revision: string | null) => void): ArchiveInput {
     this.assertSafeTarget();
     const localRevision = this.optionalRef(this.ref);
     const revision = localRevision ?? this.remoteArchiveRevision();
+    onPinned?.(revision);
     const files: ArchiveFiles = new Map();
     if (revision) {
       for (const entry of this.git(["ls-tree", "-rz", revision])
@@ -172,7 +173,23 @@ export class GitArchive {
     validateArchive(manifest, files);
     return { revision, localRevision, manifest, files };
   }
-  async commit(input: ArchiveInput, files: ArchiveFiles): Promise<string> {
+  /** Confirm no-op results still refer to the selected archive state. */
+  confirm(input: ArchiveInput): void {
+    this.assertSafeTarget();
+    if (
+      this.optionalRef(this.ref) !== input.localRevision ||
+      (input.localRevision === null &&
+        this.remoteArchiveRevision() !== input.revision)
+    )
+      throw new Error(
+        "Competing archive ref update while rendering; retry against the new revision.",
+      );
+  }
+  async commit(
+    input: ArchiveInput,
+    files: ArchiveFiles,
+    message = "Capture v2 raw evidence",
+  ): Promise<string> {
     const temporary = await mkdtemp(join(tmpdir(), "copilot-capture-"));
     const index = join(temporary, "index");
     let revision: string;
@@ -196,12 +213,18 @@ export class GitArchive {
         tree,
         ...(input.revision ? ["-p", input.revision] : []),
         "-m",
-        "Capture v2 raw evidence",
+        message,
       ])
         .toString()
         .trim();
     } finally {
-      await rm(temporary, { recursive: true, force: true });
+      try {
+        await rm(temporary, { recursive: true, force: true });
+      } catch (error) {
+        // Retry transient cleanup once, but retain the failure and never advance the ref.
+        await rm(temporary, { recursive: true, force: true }).catch(() => {});
+        throw error;
+      }
     }
     // Cleanup and validation must succeed before the only visible archive mutation.
     this.assertSafeTarget();

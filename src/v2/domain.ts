@@ -43,16 +43,26 @@ export function normalizeSourceUrl(input: string, base?: string): string {
   return url.href;
 }
 
-export function articleIdentity(input: string): Identity {
-  const source_url = normalizeSourceUrl(input);
+function sourceSlug(source_url: string): string {
   const segment =
     new URL(source_url).pathname.split("/").filter(Boolean).at(-1) ?? "";
-  const slug =
+  return (
     decodeURIComponent(segment)
       .replace(/\.[a-zA-Z0-9]{1,8}$/, "")
       .replace(/[^a-zA-Z0-9_-]+/g, "-")
       .replace(/^[-_]+|[-_]+$/g, "")
-      .toLowerCase() || "article";
+      .toLowerCase() || "article"
+  );
+}
+
+/** Public route policy is independent of the internal identity hash suffix. */
+export function publicationPath(sourceUrl: string): string {
+  return `/posts/${sourceSlug(normalizeSourceUrl(sourceUrl))}/`;
+}
+
+export function articleIdentity(input: string): Identity {
+  const source_url = normalizeSourceUrl(input);
+  const slug = sourceSlug(source_url);
   return {
     article_id: `${slug}-${sha256(source_url).slice(0, 12)}`,
     source_url,
@@ -215,7 +225,104 @@ function validateCanonical(value: unknown): asserts value is Canonical {
   fields(value, ["title", "published_at", "publication_path"], "canonical");
   string(value.title, "canonical.title", true);
   string(value.publication_path, "publication_path", true);
+  if (!/^\/posts\/[a-z0-9_-]+\/$/.test(value.publication_path))
+    throw new Error(`Unsafe publication_path: ${value.publication_path}`);
   instant(value.published_at, "canonical.published_at", true);
+}
+
+/** Logical publication state, deliberately independent of manifest storage version. */
+export interface PublicationArchive {
+  articles: Readonly<
+    Record<string, Identity & { canonical: Canonical | null }>
+  >;
+}
+export interface PublicationEntry extends Identity, Canonical {
+  body: string;
+}
+export type PublicationProjection = readonly PublicationEntry[];
+
+/** Null means there is insufficient derived state to compare publications. */
+export function publicationProjection(
+  archive: PublicationArchive,
+  bodies: ReadonlyMap<string, string>,
+): PublicationProjection | null {
+  const projection: PublicationEntry[] = [];
+  for (const id of Object.keys(archive.articles).sort()) {
+    const article = archive.articles[id]!;
+    const body = bodies.get(id);
+    if (article.canonical === null || body === undefined) return null;
+    projection.push({
+      ...article.canonical,
+      article_id: id,
+      source_url: article.source_url,
+      body,
+    });
+  }
+  return projection;
+}
+
+/** Format 1 is a publication contract, not the v2 storage schema. */
+export function serializePublicationProjection(
+  projection: PublicationProjection,
+): string {
+  const ids = new Set<string>();
+  const paths = new Set<string>();
+  const articles = [...projection]
+    .sort((a, b) =>
+      a.article_id < b.article_id ? -1 : a.article_id > b.article_id ? 1 : 0,
+    )
+    .map((article) => {
+      validateCanonical({
+        title: article.title,
+        published_at: article.published_at,
+        publication_path: article.publication_path,
+      });
+      string(article.article_id, "publication.article_id", true);
+      string(article.source_url, "publication.source_url", true);
+      string(article.body, "publication.body");
+      if (ids.has(article.article_id))
+        throw new Error(
+          `Duplicate publication identity: ${article.article_id}`,
+        );
+      if (paths.has(article.publication_path))
+        throw new Error(
+          `Publication route collision: ${article.publication_path} (${article.article_id})`,
+        );
+      ids.add(article.article_id);
+      paths.add(article.publication_path);
+      return {
+        article_id: article.article_id,
+        publication_path: article.publication_path,
+        title: article.title,
+        published_at: article.published_at,
+        source_url: article.source_url,
+        body: article.body,
+      };
+    });
+  return JSON.stringify({ publication_format: 1, articles }) + "\n";
+}
+
+export function publicationIdentity(projection: PublicationProjection): string {
+  return sha256(serializePublicationProjection(projection));
+}
+
+export function comparePublications(
+  previous: PublicationProjection | null,
+  candidate: PublicationProjection,
+) {
+  const publication_input =
+    previous === null ? null : publicationIdentity(previous);
+  const publication_output = publicationIdentity(candidate);
+  return {
+    publication_input,
+    publication_output,
+    publication_outcome:
+      publication_input === null
+        ? ("initialized" as const)
+        : publication_input === publication_output
+          ? ("no-change" as const)
+          : ("changed" as const),
+  };
 }
 
 export function validateManifest(value: unknown): asserts value is Manifest {
