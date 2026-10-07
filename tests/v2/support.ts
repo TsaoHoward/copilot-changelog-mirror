@@ -1,16 +1,25 @@
 import { execFile, execFileSync } from "node:child_process";
+import assert from "node:assert/strict";
 import {
   mkdtempSync,
   mkdirSync,
   writeFileSync,
   rmSync,
   symlinkSync,
+  existsSync,
+  readFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { promisify } from "node:util";
 import type { TestContext } from "node:test";
+import {
+  emptyManifest,
+  serializeManifest,
+  sha256,
+  updateCapture,
+} from "../../src/v2/domain.js";
 
 const run = promisify(execFile);
 export const root = resolve(import.meta.dirname, "../..");
@@ -63,15 +72,22 @@ export class Fixture {
     feedUrl?: string,
     extra: string[] = [],
     env: NodeJS.ProcessEnv = {},
+    command = "capture",
   ): Promise<{ code: number; stdout: string; stderr: string; result: any }> {
+    const log = join(this.dir, "network-attempts.log");
+    rmSync(log, { force: true });
+    let result;
     try {
       const output = await run(
         process.execPath,
         [
+          ...(command === "render"
+            ? ["--import", join(root, "tests/v2/block-network.mjs")]
+            : []),
           "--import",
           "tsx",
           join(root, "src/v2/cli.ts"),
-          "capture",
+          command,
           "--repo",
           this.repo,
           "--data-branch",
@@ -86,22 +102,33 @@ export class Fixture {
             COPILOT_CAPTURE_NOW: "2026-10-06T12:00:00.000Z",
             TMPDIR: this.temporary,
             ...env,
+            COPILOT_NETWORK_LOG: log,
           },
         },
       );
-      return { code: 0, ...output, result: JSON.parse(output.stdout) };
+      result = { code: 0, ...output, result: JSON.parse(output.stdout) };
     } catch (error: any) {
-      return {
+      result = {
         code: error.code,
         stdout: error.stdout,
         stderr: error.stderr,
         result: error.stdout ? JSON.parse(error.stdout) : null,
       };
     }
+    assert.equal(
+      existsSync(log) ? readFileSync(log, "utf8") : "",
+      "",
+      "Offline render attempted network access, even if caught by the CLI",
+    );
+    return result;
+  }
+  render(extra: string[] = [], env: NodeJS.ProcessEnv = {}) {
+    return this.cli(undefined, extra, env, "render");
   }
   seed(
     files: Record<string, string | Buffer>,
     links: Record<string, string> = {},
+    remove: string[] = [],
   ): void {
     const worktree = join(this.dir, "seed");
     let exists = true;
@@ -123,11 +150,13 @@ export class Fixture {
       });
     try {
       if (!exists) git("switch", "--orphan", this.branch);
+      for (const path of remove) rmSync(join(worktree, path), { force: true });
       for (const [path, bytes] of Object.entries(files)) {
         mkdirSync(resolve(worktree, path, ".."), { recursive: true });
         writeFileSync(join(worktree, path), bytes);
       }
       for (const [path, target] of Object.entries(links)) {
+        mkdirSync(resolve(worktree, path, ".."), { recursive: true });
         rmSync(join(worktree, path), { force: true });
         symlinkSync(target, join(worktree, path));
       }
@@ -137,6 +166,27 @@ export class Fixture {
       this.git("worktree", "remove", worktree);
     }
   }
+}
+
+export function seedArticle(
+  f: Fixture,
+  html: string,
+  source = "https://github.blog/changelog/article/",
+  title = " Feed title ",
+  time: string | null = "2026-09-01T00:00:00.000Z",
+) {
+  const manifest = updateCapture(emptyManifest(), source, {
+    snapshot_sha256: sha256(html),
+    observed_at: "2026-10-01T00:00:00.000Z",
+    discovery_title: title,
+    discovery_published_at: time,
+  });
+  const id = Object.keys(manifest.articles)[0]!;
+  f.seed({
+    "metadata.json": serializeManifest(manifest),
+    [`snapshots/${id}.html`]: html,
+  });
+  return id;
 }
 
 export async function serve(
