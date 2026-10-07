@@ -2,7 +2,7 @@
 title: "GPT-6.1 Sol in GitHub Copilot"
 source_url: https://github.blog/changelog/2026-09-29-gpt-6-1-sol-in-github-copilot
 published_at: 2026-09-29T17:02:27+00:00
-fetched_at: 2026-10-07T01:36:58.357243+00:00
+fetched_at: 2026-10-07T11:07:47.719936+00:00
 ---
 
 ![GPT-6.1 Sol in GitHub Copilot](https://github.blog/wp-content/uploads/2026/09/660696984-44c41ab1-3b3d-4b54-a905-9576d7ac24f5.png?resize=2064%2C600)
