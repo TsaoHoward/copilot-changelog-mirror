@@ -2,7 +2,7 @@
 title: "Update your IDE to restore agent activity in Copilot usage metrics"
 source_url: https://github.blog/changelog/2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics
 published_at: 2026-10-06T23:43:00+00:00
-fetched_at: 2026-10-07T01:36:55.147654+00:00
+fetched_at: 2026-10-08T02:00:51.001969+00:00
 ---
 
 If your Copilot usage metrics have shown agent activity or agent lines of code falling while Copilot usage kept growing, we’ve found the cause, and a fix is rolling out to each IDE. Several IDEs recently moved Copilot agent sessions to the Copilot SDK. Those sessions didn’t identify which IDE they came from, so usage metrics couldn’t attribute them correctly. Most of that activity was left out of reports, and some was counted as Copilot CLI activity. Only IDE versions that use the Copilot SDK for agent mode are affected. Developers on earlier versions are still counted.
