@@ -2,7 +2,7 @@
 title: "Selected models in GitHub Copilot deprecated"
 source_url: https://github.blog/changelog/2026-10-02-selected-models-in-github-copilot-deprecated
 published_at: 2026-10-02T18:24:19+00:00
-fetched_at: 2026-10-10T01:47:24.971838+00:00
+fetched_at: 2026-10-10T10:39:35.067524+00:00
 ---
 
 As of today, October 2, 2026, we have deprecated the following models across all GitHub Copilot experiences (including Copilot Chat, inline edits, ask and agent modes, and code completions).

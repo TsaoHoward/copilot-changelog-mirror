@@ -2,7 +2,7 @@
 title: "Claude Haiku 5.5 in GitHub Copilot"
 source_url: https://github.blog/changelog/2026-10-07-claude-haiku-5-5-in-github-copilot
 published_at: 2026-10-07T20:12:18+00:00
-fetched_at: 2026-10-10T01:47:21.386023+00:00
+fetched_at: 2026-10-10T10:39:29.994994+00:00
 ---
 
 ![The Copilot model picker showing Claude Haiku 5.5](https://github.blog/wp-content/uploads/2026/10/667862451-51645e23-ca14-47fa-a39b-3a383bdea6d9.png?resize=2064%2C600)

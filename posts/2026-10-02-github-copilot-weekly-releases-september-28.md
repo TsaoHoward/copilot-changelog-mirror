@@ -2,7 +2,7 @@
 title: "GitHub Copilot weekly releases — September 28"
 source_url: https://github.blog/changelog/2026-10-02-github-copilot-weekly-releases-september-28
 published_at: 2026-10-02T14:00:30+00:00
-fetched_at: 2026-10-10T01:47:25.823055+00:00
+fetched_at: 2026-10-10T10:39:36.326716+00:00
 ---
 
 ![Small text on the left side that says "GITHUB COPILOT" with larger text underneath it that says "Weekly releases". On the right side is the GitHub Copilot logo.](https://github.blog/wp-content/uploads/2026/10/649772462-cd2b8dcf-4eac-422d-81a2-5e9ef2709240.jpg?resize=2064%2C848)

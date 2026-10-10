@@ -2,7 +2,7 @@
 title: "Purpose-built model for leaked secret detection"
 source_url: https://github.blog/changelog/2026-10-07-purpose-built-model-for-leaked-secret-detection
 published_at: 2026-10-07T16:13:56+00:00
-fetched_at: 2026-10-10T01:47:22.010864+00:00
+fetched_at: 2026-10-10T10:39:30.583919+00:00
 ---
 
 Secret protection should keep pace with the way you build software, whether you write code yourself or work with an AI agent. With our new purpose-built model, we’re bringing context-aware detection into more developer workflows to help you catch secrets before they’re exposed.
