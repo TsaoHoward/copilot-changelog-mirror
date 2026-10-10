@@ -2,7 +2,7 @@
 title: "Copilot code review: API support and new default effort level"
 source_url: https://github.blog/changelog/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level
 published_at: 2026-10-02T19:13:50+00:00
-fetched_at: 2026-10-09T02:14:52.534862+00:00
+fetched_at: 2026-10-10T01:47:24.297107+00:00
 ---
 
 ![](https://github.blog/wp-content/uploads/2026/10/Changelog_Improvement_Headers_CopilotCodeReviewAPISupport_6419ce.jpg?resize=2064%2C1096)

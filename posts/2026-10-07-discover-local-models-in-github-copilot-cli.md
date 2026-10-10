@@ -2,7 +2,7 @@
 title: "Discover local models in GitHub Copilot CLI"
 source_url: https://github.blog/changelog/2026-10-07-discover-local-models-in-github-copilot-cli
 published_at: 2026-10-07T15:46:13+00:00
-fetched_at: 2026-10-09T02:14:51.420948+00:00
+fetched_at: 2026-10-10T01:47:23.128286+00:00
 ---
 
 GitHub Copilot CLI makes it easier to choose a local model without leaving your existing workflow. Starting in CLI version 1.0.94-0, use `/model` to discover supported models from a running local Ollama instance, alongside your configured models and cloud models provided by GitHub Copilot.
