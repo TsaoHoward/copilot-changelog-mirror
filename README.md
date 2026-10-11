@@ -16,6 +16,8 @@ Capture preserves raw response bytes in `snapshots/<article_id>.html` and acquis
 
 Render regenerates body-only Markdown and canonical metadata from persisted evidence with source network access disabled. It reports archive changes separately from canonical publication identity: page chrome and unused discovery changes can preserve publication identity even when capture created a new evidence revision. Missing derived bodies repair offline; invalid evidence, conflicting associated dates, and route collisions fail the entire batch.
 
+Issue #22 adds `npm run stage --` for durable remote capture/render operations and exact Actions handoffs. See [v2 operations and recovery](docs/v2-operations.md). The separate verification workflows use an isolated archive target and queue until #24 activates the coordinated production chain.
+
 See [the v2 command and shared archive contract](docs/v2-archive.md) for fixture acquisition, validation rules, API usage, and verification commands. Issue #20 also provides `site:identity` and `site:build` commands for a selected rendered archive export; see the v2 documentation for the static Astro build and deployment-input contract. The Python/Jekyll commands and production workflows below remain the v1 path until coordinated cutover.
 
 ## Requirements

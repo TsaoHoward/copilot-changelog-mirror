@@ -1,0 +1,108 @@
+# Transitional verification only. Production activation and scheduling belong to #24.
+name: V2 verification render
+
+on:
+  workflow_dispatch:
+    inputs:
+      advance:
+        description: Advance the isolated v2 chain after successful persistence
+        type: boolean
+        default: false
+  workflow_run:
+    workflows: [V2 verification capture]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: copilot-archive-v2-verification
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  render:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+      ARCHIVE_BRANCH: mirror-data-v2-verification
+    steps:
+      - name: Check out workflow tools
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: control
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: control/.node-version
+          cache: npm
+          cache-dependency-path: control/package-lock.json
+
+      - name: Install workflow tools
+        working-directory: control
+        run: npm ci
+
+      - name: Select exact stage inputs
+        id: selection
+        working-directory: control
+        run: >-
+          npm run stage -- select --stage render --repo . --definition-repo .
+          --branch "$DEFAULT_BRANCH" --archive-branch "$ARCHIVE_BRANCH"
+          --state "$RUNNER_TEMP/stage.json"
+
+      - name: Check out selected application
+        if: steps.selection.outputs.proceed == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ steps.selection.outputs.application }}
+          path: app-source
+
+      - name: Install selected application
+        if: steps.selection.outputs.proceed == 'true'
+        working-directory: app-source
+        run: npm ci
+
+      - name: Configure commit identity
+        if: steps.selection.outputs.proceed == 'true'
+        working-directory: app-source
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Persist render output
+        if: steps.selection.outputs.proceed == 'true'
+        working-directory: control
+        run: >-
+          npm run stage -- write --repo ../app-source --definition-repo .
+          --state "$RUNNER_TEMP/stage.json"
+
+      - name: Report attempt before evidence publication
+        if: always()
+        working-directory: control
+        env:
+          STAGE_STATUS: ${{ job.status }}
+        run: npm run stage -- report --state "$RUNNER_TEMP/stage.json"
+
+      - name: Publish exact attempt evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: v2-stage-render-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/stage.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Report evidence publication outcome
+        if: always()
+        working-directory: control
+        env:
+          STAGE_STATUS: ${{ job.status }}
+        run: npm run stage -- report --state "$RUNNER_TEMP/stage.json"
