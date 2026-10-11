@@ -39,3 +39,7 @@ jobs:
       - run: npm run typecheck
       - name: Verify v2 contracts and real offline Astro artifacts
         run: npm test
+      - name: Install Chromium for static search acceptance
+        run: npx playwright install --with-deps chromium
+      - name: Verify shipped static search in Chromium
+        run: npm run test:browser

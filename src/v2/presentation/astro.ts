@@ -1,6 +1,7 @@
 import { build } from "astro";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { indexArticles } from "./search.js";
 
 const configuration = JSON.parse(await readFile(".build.json", "utf8"));
 await build({
@@ -13,3 +14,7 @@ await build({
   mode: configuration.build.mode,
   logLevel: "info",
 });
+await indexArticles(
+  resolve("artifact"),
+  JSON.parse(await readFile("site/src/publication.json", "utf8")),
+);

@@ -85,6 +85,43 @@ test("public deployment API normalizes supported representations and ignores sou
 test("deployment identity covers presentation closure, names, modes, locked dependencies, configuration and selected definition", async (t) => {
   const f = new Fixture(t);
   const cases: Record<string, (source: string) => void> = {
+    "search component": (s) =>
+      writeFileSync(
+        join(s, "site/src/components/Search.astro"),
+        "changed search control",
+      ),
+    "search client": (s) =>
+      writeFileSync(
+        join(s, "site/public/search.mjs"),
+        "changed browser search",
+      ),
+    "indexing helper": (s) =>
+      writeFileSync(
+        join(s, "src/v2/presentation/search.ts"),
+        "changed indexing helper",
+      ),
+    "indexing options": (s) => {
+      const path = join(s, "src/v2/presentation/search.ts");
+      writeFileSync(
+        path,
+        readFileSync(path, "utf8").replace(
+          "keepIndexUrl: false",
+          "keepIndexUrl: true",
+        ),
+      );
+    },
+    "locked indexer dependency": (s) =>
+      changeJson(
+        join(s, "package-lock.json"),
+        (d) => (d.packages["node_modules/pagefind"].integrity += "changed"),
+      ),
+    "locked native indexer": (s) =>
+      changeJson(
+        join(s, "package-lock.json"),
+        (d) =>
+          (d.packages["node_modules/@pagefind/linux-x64"].integrity +=
+            "changed"),
+      ),
     layout: (s) =>
       writeFileSync(join(s, "site/src/layouts/Page.astro"), "changed layout"),
     styles: (s) =>

@@ -1,0 +1,27 @@
+---
+import { sitePath } from "../data";
+---
+
+<section
+  class="archive-search"
+  aria-label="Search"
+  data-search
+  data-base={sitePath("/")}
+>
+  <label for="archive-query">Search announcements</label>
+  <input
+    id="archive-query"
+    type="search"
+    autocomplete="off"
+    aria-describedby="search-status"
+    disabled
+  />
+  <p id="search-status" role="status" aria-live="polite" aria-atomic="true">
+    Search needs JavaScript. You can browse the announcements below.
+  </p>
+  <ol class="search-results" aria-label="Search results"></ol>
+  <button type="button" data-more hidden>
+    Show more results
+  </button>
+</section>
+<script type="module" src={sitePath("/search.mjs")} is:inline></script>

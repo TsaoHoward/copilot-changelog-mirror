@@ -169,7 +169,7 @@ snapshots selected source bytes and the logical publication in invocation-owned
 staging, with cache/output outside both source and archive. The output must be a
 fresh directory; existing artifacts are never overwritten or reported as a new
 success. Staging is removed on success/failure and the artifact is published only
-after a successful actual Astro build.
+after both Astro generation and Pagefind indexing succeed.
 
 `--base /copilot-changelog-mirror/` is the default; `--base /` supports local root
 fixtures. A missing trailing slash is normalized. Relative paths, dot segments,
@@ -185,8 +185,8 @@ source attribution and the canonical date when known. Body H1 sections become H2
 times do not appear. The responsive reading layout provides a skip link, visible
 keyboard focus, constrained media and scrollable code. Astro's native Markdown
 pipeline preserves the render stage's explicit `archive-heading-N` anchors and
-substantive TOCs. No backend/database or client framework is required. Search,
-filters and timelines remain later work.
+substantive TOCs. No backend/database or client framework is required. Static
+full-text search is included; product filters and timelines remain out of scope.
 
 Both commands emit exactly one JSON result on stdout (use silent npm); Astro
 progress/diagnostics go to stderr. Success includes:
@@ -305,11 +305,11 @@ The resolved definition is an input to actual building, not a Pages deployment
 ledger. Install/runtime setup occur before offline build; pass their actual
 settings in the definition and install from those locked inputs.
 
-#21 must place new static search code, indexer configuration and assets in the
-covered roots, lock its dependencies, and extend the authoritative effective
-build contract if it adds a phase. No separate search/deployment identity is
-needed. Source and definition commits can differ; their relevant selected content
-is what matters.
+#21 places static search code, indexing options and assets in the covered roots
+and locks Pagefind and its native binary dependencies. Indexing runs inside the
+existing `site:astro` entry point, so the resolved runtime/install/build phases
+remain unchanged. No separate search/deployment identity is needed. Source and
+definition commits can differ; their relevant selected content is what matters.
 
 The mandatory Node suite now runs real offline Astro builds for the frozen six
 production snapshots (123 ordered blocks), both base paths, supplemental
@@ -319,3 +319,79 @@ inputs, components/styles/scripts/assets/helpers, lock/configuration/runtime,
 selected definitions and supported representations. Source HTTP/socket attempts
 are recorded and blocked in both the command and Astro subprocess. No test
 substitutes a mock build or depends on Ruby availability.
+
+## Static full-text search (issue #21)
+
+The existing `site:build` command generates the complete search-enabled artifact.
+After Astro renders the selected publication, the locked Pagefind Node API indexes
+only those freshly generated article pages and writes its runtime/index into
+`artifact/pagefind/`. Article annotations select the canonical editorial H1 and
+body and exclude source attribution, dates and shared page chrome. The listing,
+search controls, raw snapshots and capture observations are never the search
+corpus. A Pagefind error or missing required runtime asset fails the public build
+command; no partial artifact is exposed and invocation staging is removed.
+
+Use Linux x64 and the exact `.node-version`, and install the selected locked
+dependencies with `npm ci` before building. Nonempty search builds require the
+locked `@pagefind/linux-x64` optional native package: do not omit optional packages
+from that installation. Astro plus indexing do no acquisition or media downloads.
+All index files, caches and runtime bundles are derived output outside the source
+and archive; do not commit them to the archive branch. Every invocation indexes
+its selected corpus afresh, so edited titles/bodies and article additions/removals
+are reflected by a rebuild. Evidence-only changes preserving canonical publication
+leave both existing identities and searchable content unchanged. Search source,
+options and locked dependencies affect deployment identity through the existing
+input contract, without changing publication identity.
+
+The listing's labeled search input finds canonical titles and body terms. Results
+show title links, matching excerpts with safe highlighting, and a “Show more
+results” button for additional matches. The engine loads only when a query is
+entered. Empty/whitespace input resets results; loading, no-match and failure
+states use an accessible status region, and older requests cannot replace the
+current query. Pagefind runs on the main thread so its local asset fetches can be
+observed: network errors and unsuccessful HTTP responses show a reload/browse
+message even when the engine swallows a shard error. This observer leaves unrelated
+fetch responses unchanged. Native inputs/links and visible focus support keyboard navigation;
+long result text wraps on narrow screens. The chronological listing remains
+usable when JavaScript is unavailable or search fails. Empty archives show the
+existing explicit empty message without a search widget or generated index.
+
+Search assets and article destinations use `--base` exactly once, including `/`
+and `/copilot-changelog-mirror/` (the default). Serve the **finished artifact** over
+HTTP for verification; an Astro development server does not generate the index.
+For a local root build:
+
+```sh
+npm run --silent site:build -- --archive /tmp/copilot-selected-archive --output /tmp/copilot-search-artifact --base /
+python3 -m http.server 8080 --directory /tmp/copilot-search-artifact
+```
+
+Open `http://localhost:8080/`. For a repository-base artifact, serve that output
+under its matching URL prefix, rather than changing the already-built base.
+For example, build to `/tmp/copilot-search-preview/copilot-changelog-mirror`, serve
+`/tmp/copilot-search-preview`, and open
+`http://localhost:8080/copilot-changelog-mirror/`. No runtime backend, CDN, external
+query API or telemetry is needed. Optional external article media remains external.
+
+Automated browser acceptance uses locked Playwright tooling and requires Chromium;
+missing browser binaries fail rather than skip checks. Install before verification:
+
+```sh
+npm ci
+npx playwright install --with-deps chromium
+npm run format:check
+npm run typecheck
+npm test
+npm run test:browser
+```
+
+The browser command builds persisted v2 fixtures through the public site CLI under
+the existing offline guard, serves the finished artifacts locally and uses the
+real shipped index/runtime. It covers body-only/title queries, canonical authority,
+excerpts and result navigation, root/repository bases, pagination, whitespace and
+no matches, delayed/failed assets, stale requests, keyboard focus, narrow layouts,
+JavaScript-disabled browsing, empty archives, refresh after edits/additions/removals,
+evidence-only identity invariants and preservation of archive/application work.
+Unrelated browser requests are blocked. CI runs the Node contracts and this browser
+acceptance command; frozen production editorial baselines remain unchanged.
+Hosted Pages activation and deployment suppression remain #23/#24 responsibilities.

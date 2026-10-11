@@ -19,10 +19,10 @@ const html = await articleHtml(article.body);
   <nav aria-label="Archive">
     <a href={sitePath("/")}>← All announcements</a>
   </nav>
-  <article>
+  <article data-pagefind-body>
     <header class="article-header">
-      <h1>{article.title}</h1>
-      <p class="provenance">
+      <h1 data-pagefind-meta="title">{article.title}</h1>
+      <p class="provenance" data-pagefind-ignore="all">
         {article.published_at && (
           <time datetime={article.published_at}>
             {dateLabel(article.published_at)}

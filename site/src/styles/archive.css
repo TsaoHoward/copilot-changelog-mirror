@@ -54,7 +54,9 @@ a {
 a:hover {
   color: #003d78;
 }
-a:focus-visible {
+a:focus-visible,
+input:focus-visible,
+button:focus-visible {
   outline: 3px solid #095dab;
   outline-offset: 4px;
   border-radius: 2px;
@@ -177,6 +179,57 @@ nav {
   margin-block: 2rem;
   padding-block: 1.25rem;
   border-block: 1px solid #d8dce1;
+}
+.archive-search {
+  margin-block: 2rem;
+}
+.archive-search label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.archive-search input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #8a98a8;
+  border-radius: 0.3rem;
+  font: inherit;
+  background: white;
+  color: inherit;
+}
+.archive-search [role="status"] {
+  color: #536172;
+  font-size: 0.85rem;
+}
+.search-results {
+  list-style: none;
+  padding: 0;
+  overflow-wrap: anywhere;
+}
+.search-results li {
+  padding-block: 1rem;
+  border-top: 1px solid #d8dce1;
+}
+.search-results h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+.search-results p {
+  margin: 0;
+}
+.archive-search button {
+  font: inherit;
+  color: #095dab;
+  background: white;
+  border: 1px solid #8a98a8;
+  border-radius: 0.3rem;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+}
+.search-results mark {
+  background: #fff0a8;
+  color: #18232e;
 }
 @media (max-width: 480px) {
   :root {
