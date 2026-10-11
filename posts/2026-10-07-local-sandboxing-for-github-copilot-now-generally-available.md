@@ -2,7 +2,7 @@
 title: "Local sandboxing for GitHub Copilot now generally available"
 source_url: https://github.blog/changelog/2026-10-07-local-sandboxing-for-github-copilot-now-generally-available
 published_at: 2026-10-07T15:46:17+00:00
-fetched_at: 2026-10-11T01:02:26.236842+00:00
+fetched_at: 2026-10-11T10:52:16.294041+00:00
 ---
 
 Local sandboxing for GitHub Copilot is now generally available in GitHub Copilot CLI, the GitHub Copilot app, and VS Code sessions using Agent Host.
