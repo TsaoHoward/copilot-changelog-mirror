@@ -20,6 +20,8 @@ export class StageFixture extends Fixture {
     });
     symlinkSync(join(root, "node_modules"), join(this.repo, "node_modules"));
     cpSync(join(root, "package.json"), join(this.repo, "package.json"));
+    this.git("add", "src/v2", "package.json");
+    this.git("commit", "-qm", "Selected application source");
   }
   remoteTip(branch = this.branch): string | null {
     const value = this.text("ls-remote", "origin", `refs/heads/${branch}`);

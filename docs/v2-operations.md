@@ -38,7 +38,7 @@ The command writes only JSON to stdout and diagnostics to stderr; failure exits 
 
 ## Durability and outcomes
 
-Each invocation prepares its archive in temporary Git state; the application's HEAD, index, work and archive refs stay intact. A conflicting user-owned archive branch is refused rather than reset. A fresh manual stage selects the designated remote head; automatic rendering uses only the capture's validated exact output. Only capture may bootstrap absent input.
+Each invocation prepares its archive and committed application source in temporary Git state; the application's HEAD, index, work and archive refs stay intact. Dirty application work is preserved while the recorded committed source executes. Operational tools require a clean control source checkout; the offline guard is loaded from the committed definition revision. A conflicting user-owned archive branch is refused rather than reset. A fresh manual stage selects the designated remote head; automatic rendering uses only the capture's validated exact output. Only capture may bootstrap absent input.
 
 Freshness is checked after selection/preparation, before the domain writer, before ordinary push, and after persistence. Domain commands validate the full candidate and create at most one archive commit. A local candidate never authorizes a downstream run. Changed results become successful only after the remote contains the exact output. No-change results verify the selected remote revision without a new commit or timestamp churn. Ordinary Git rejections and uncertain transport results are failures; there is no force push, rebase or moving-tip fallback.
 

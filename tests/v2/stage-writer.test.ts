@@ -234,3 +234,37 @@ test("failed derivation leaves capture durable and missing canonical bodies are 
     "Saved body.\n",
   );
 });
+
+test("executed application source matches the recorded commit while dirty source remains intact", async (t) => {
+  const { writeFileSync, readFileSync } = await import("node:fs");
+  const { join } = await import("node:path");
+  const f = new StageFixture(t);
+  const dirty = join(f.repo, "src/v2/cli.ts");
+  const bytes =
+    "throw new Error('Uncommitted application must not execute');\n";
+  writeFileSync(dirty, bytes);
+  const run = await f.stage("capture", ["--feed-url", f.feed("")]);
+  assert.equal(run.code, 0, run.stderr);
+  assert.equal(run.result.application_sha, f.text("rev-parse", "HEAD"));
+  assert.equal(run.result.archive_output, f.remoteTip());
+  assert.equal(readFileSync(dirty, "utf8"), bytes);
+});
+
+test("modified workflow tool source cannot be advertised under a committed definition SHA", async (t) => {
+  const { writeFileSync } = await import("node:fs");
+  const f = new StageFixture(t);
+  writeFileSync(
+    `${f.repo}/src/v2/stage-offline.ts`,
+    "throw new Error('uncommitted guard');\n",
+  );
+  const run = await f.stage("capture", [
+    "--definition-repo",
+    f.repo,
+    "--feed-url",
+    f.feed(""),
+  ]);
+  assert.notEqual(run.code, 0);
+  assert.equal(run.result.eligible, false);
+  assert.match(run.result.diagnostic, /recorded definition revision/);
+  assert.equal(f.remoteTip(), null);
+});

@@ -1,5 +1,5 @@
 import { execFileSync, execFile } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, writeFile, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { promisify } from "node:util";
@@ -82,12 +82,25 @@ export async function writeStage(
       throw new Error(
         "Workflow tools checkout differs from definition revision",
       );
+    if (
+      git(
+        definitionRepo,
+        "status",
+        "--porcelain",
+        "--untracked-files=all",
+        "--",
+        "src/v2",
+        "package.json",
+        "package-lock.json",
+      )
+    )
+      throw new Error(
+        "Workflow tools contain source changes outside the recorded definition revision; use a clean control checkout",
+      );
     if (r.stage === "render" && captureArgs.length)
       throw new Error("Render rejects capture options");
     new GitArchive(repo, r.archive_branch).assertSafeTarget();
-    // Manual selection records current durable input; automatic render keeps its exact handoff.
-    if (!r.upstream && r.archive_input === null)
-      r.archive_input = remoteHead(repo, r.remote, r.archive_branch);
+    // Null is a pinned absence, never permission to substitute a newer remote tip.
     if (!fresh(r.archive_input)) return;
     if (r.stage === "render" && !r.archive_input)
       throw new Error("No persisted v2 evidence; run capture first");
@@ -146,16 +159,33 @@ export async function writeStage(
         repo,
         `${r.archive_input}:refs/heads/${r.archive_branch}`,
       );
+    // Execute committed application source while preserving the user's working tree.
+    const application = join(temporary, "application");
+    git(temporary, "init", "-q", "-b", "selected-application", application);
+    git(application, "fetch", "--no-tags", repo, r.application_sha);
+    git(application, "checkout", "--detach", r.application_sha);
+    await symlink(
+      resolve(repo, "node_modules"),
+      join(application, "node_modules"),
+    );
+    const offlineGuard = join(application, ".stage-offline.ts");
+    if (r.stage === "render")
+      await writeFile(
+        offlineGuard,
+        git(
+          definitionRepo,
+          "show",
+          `${r.definition_sha}:src/v2/stage-offline.ts`,
+        ),
+      );
     if (!fresh(r.archive_input)) return;
     const output = await run(
       process.execPath,
       [
-        ...(r.stage === "render"
-          ? ["--import", resolve(definitionRepo, "src/v2/stage-offline.ts")]
-          : []),
+        ...(r.stage === "render" ? ["--import", offlineGuard] : []),
         "--import",
         "tsx",
-        resolve(repo, "src/v2/cli.ts"),
+        join(application, "src/v2/cli.ts"),
         r.stage,
         "--repo",
         temporary,

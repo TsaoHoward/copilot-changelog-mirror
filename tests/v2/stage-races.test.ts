@@ -134,3 +134,46 @@ test("the exact successful old attempt remains usable after a later failed rerun
     ),
   );
 });
+
+test("an explicitly selected absent archive is superseded if another writer bootstraps it", async (t) => {
+  const f = new StageFixture(t);
+  const event = join(f.dir, "event.json"),
+    selectedState = join(f.dir, "selected.json");
+  writeFileSync(
+    event,
+    JSON.stringify({
+      repository: { full_name: "fixture/archive", default_branch: "main" },
+    }),
+  );
+  const selected = await f.stage(
+    "select",
+    ["--stage", "capture", "--state", selectedState],
+    {
+      GITHUB_EVENT_PATH: event,
+      GITHUB_REPOSITORY: "fixture/archive",
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_SHA: f.text("rev-parse", "HEAD"),
+      GITHUB_RUN_ID: "90",
+      GITHUB_RUN_ATTEMPT: "1",
+      GITHUB_EVENT_NAME: "workflow_dispatch",
+    },
+  );
+  assert.equal(selected.code, 0, selected.stderr);
+  assert.equal(selected.result.archive_input, null);
+  const bootstrap = await f.stage("capture", ["--feed-url", f.feed("")]);
+  assert.equal(bootstrap.code, 0, bootstrap.stderr);
+  const old = await f.stage("write", [
+    "--state",
+    selectedState,
+    "--definition-repo",
+    f.repo,
+    "--feed-url",
+    f.feed(""),
+  ]);
+  assert.equal(old.code, 0, old.stderr);
+  assert.equal(old.result.outcome, "superseded");
+  assert.equal(old.result.archive_input, null);
+  assert.equal(old.result.eligible, false);
+  assert.equal(old.result.candidate_revision, null);
+  assert.equal(f.remoteTip(), bootstrap.result.archive_output);
+});

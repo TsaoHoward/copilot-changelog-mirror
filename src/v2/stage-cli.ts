@@ -3,7 +3,7 @@ import { readFile, writeFile, mkdir, appendFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { newRecord, invalidate, validateRecord } from "./stage-record.js";
 import type { Stage, StageRecord } from "./stage-record.js";
-import { git, isolatedTarget, writeStage } from "./stage-writer.js";
+import { git, isolatedTarget, remoteHead, writeStage } from "./stage-writer.js";
 import { ActionsEvidence } from "./stage-evidence.js";
 import { selectActions, selectUpstream } from "./stage-selection.js";
 let record: StageRecord | undefined;
@@ -85,6 +85,16 @@ try {
       } else await selectUpstream(record, ref, evidence);
     } else if (command === "verify")
       throw new Error("Verify requires an exact upstream run and attempt");
+    if (
+      ["capture", "render"].includes(command) &&
+      v["upstream-run"] === undefined &&
+      v["upstream-attempt"] === undefined
+    )
+      record.archive_input = remoteHead(
+        repo,
+        record.remote,
+        record.archive_branch,
+      );
     validateRecord(record);
   } else {
     if (!state) throw new Error("--state is required");
