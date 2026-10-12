@@ -1,6 +1,6 @@
 # V2 capture, offline render, and shared archive contract
 
-Issues #18 and #19 introduce explicit Node.js/TypeScript capture, offline rendering, and the archive-domain API. Issue #20 adds the Astro archive and presentation-owned deployment identity. Remote push coordination and production cutover are later deliveries. Production `mirror-data` still uses v1; the v2 commands reject that state with a reset/cutover diagnostic. Select a fresh branch or temporary repository for v2 verification.
+Issues #18 and #19 introduce explicit Node.js/TypeScript capture, offline rendering, and the archive-domain API. Issue #20 adds the Astro archive and presentation-owned deployment identity. Issue #22 adds [durable remote coordination and exact stage evidence](v2-operations.md); production cutover remains a later delivery. Production `mirror-data` still uses v1; the v2 commands reject that state with a reset/cutover diagnostic. Select a fresh branch or temporary repository for v2 verification.
 
 ## Run capture
 
