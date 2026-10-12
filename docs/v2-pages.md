@@ -1,20 +1,6 @@
 # v2 Pages publication and recovery
 
-Issue #23 delivers Node Pages orchestration against the v2 archive and the
-presentation-owned deployment identity. The active Python/Jekyll production
-chain remains unchanged. `.github/workflows/v2-pages.yml` joins the isolated
-`copilot-archive-v2-verification` queue and `mirror-data-v2-verification` target.
-It builds and uploads an artifact but has no deployment job or Pages/OIDC write
-permission. It cannot publish to the live site.
-
-`.github/v2-production/v2-pages.yml` is an **inactive activation template**, not
-an Actions workflow. #24 must coordinate its installation, the final v2 archive
-target (the template uses `mirror-data-v2`), capture/render triggers and the v1
-checkpoint/reset/retirement. All production stages must share
-`copilot-archive-production`, `cancel-in-progress: false`, and `queue: max`.
-Completion events start independent runs after the upstream releases the queue;
-no child wait holds the queue. Local tests do not claim hosted deployment,
-production activation or a reset. #24 owns hosted Actions/Pages proof.
+The production Node Pages workflow consumes the v2 archive and presentation-owned deployment identity. `.github/workflows/v2-pages.yml` follows `V2 production render` on the `mirror-data-v2` target. All stages share `copilot-archive-production`, `cancel-in-progress: false`, and `queue: max`. Completion events start independent runs after the upstream releases the queue; no child wait holds it. [Checkpoint/reset activation](v2-cutover.md) and [hosted acceptance](v2-acceptance.md) remain separately recorded; local tests do not establish a live deployment.
 
 ## Two identities and immutable selections
 
@@ -50,14 +36,14 @@ Options common to every operation:
 
 ```sh
 --repo APPLICATION_REPOSITORY --definition-repo CONTROL_REPOSITORY \
---repository OWNER/REPO --branch main --archive-branch ISOLATED_V2_BRANCH \
+--repository OWNER/REPO --branch main --archive-branch mirror-data-v2 \
 --state INVOCATION_OWNED/pages.json --run-id RUN_ID --attempt ATTEMPT
 ```
 
 Hosted execution derives the exact current run/attempt from Actions environment
 and checks event/server/default-branch/definition agreement. Local invocations
 still require server-backed exact attempts; there is no unverified local-deploy
-mode. The currently isolated command protects the legacy `mirror-data` target.
+mode. The production command protects the legacy `mirror-data` target.
 
 Operations, in order:
 
@@ -165,5 +151,5 @@ changes, exact attempts/retries, deployment ordering, trust/artifact failures,
 retention recovery, preservation and acquisition rejection. Presentation's
 existing identity matrix remains authoritative for individual canonical and
 build-input sensitivity. Workflow checks inspect the queue, permissions, exact
-attempt/artifact wiring, retention, build-contract agreement and transition
-isolation. Run `npm run typecheck`, `npm run format:check`, and `npm test`.
+attempt/artifact wiring, retention, build-contract agreement and production
+wiring. Run `npm run typecheck`, `npm run format:check`, and `npm test`.

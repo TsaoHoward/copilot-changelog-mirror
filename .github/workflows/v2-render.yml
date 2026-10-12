@@ -1,15 +1,14 @@
-# Transitional verification only. Production activation and scheduling belong to #24.
-name: V2 verification render
+name: V2 production render
 
 on:
   workflow_dispatch:
     inputs:
       advance:
-        description: Advance the isolated v2 chain after successful persistence
+        description: Advance the v2 production chain after successful persistence
         type: boolean
         default: false
   workflow_run:
-    workflows: [V2 verification capture]
+    workflows: [V2 production capture]
     types: [completed]
     branches: [main]
 
@@ -18,7 +17,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: copilot-archive-v2-verification
+  group: copilot-archive-production
   cancel-in-progress: false
   queue: max
 
@@ -32,7 +31,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-      ARCHIVE_BRANCH: mirror-data-v2-verification
+      ARCHIVE_BRANCH: mirror-data-v2
     steps:
       - name: Check out workflow tools
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

@@ -2,11 +2,9 @@
 
 `npm run stage --` is the Node operational boundary. It uses the selected application's capture/render CLI and shared archive-domain APIs. It owns exact input preparation, ordinary remote pushes, remote freshness, Actions evidence validation and reporting. Execution evidence never enters `metadata.json`, snapshots or canonical bodies. Canonical publication identity comes from the render domain; this command does not define deployment identity or make a Pages decision.
 
-## Transitional operation
+## Production operation
 
-The active Python/Jekyll workflows continue to own production until coordinated #24 cutover. `v2-capture.yml` and `v2-render.yml` use the isolated `mirror-data-v2-verification` branch, distinct completion names and the shared `copilot-archive-v2-verification` queue (`cancel-in-progress: false`, `queue: max`). Capture has no competing schedule. Render has no schedule. Their outputs cannot trigger the existing v1 Pages consumer, and neither workflow has Pages permissions. The Node writer rejects the legacy `mirror-data` target, and domain validation rejects legacy content on any target with an explicit reset/cutover diagnostic.
-
-Use temporary repositories or the isolated target for verification. Do not reset legacy production, dispatch production validation or deploy from this ticket.
+The v2 capture/render/Pages chain shares the `mirror-data-v2` archive and `copilot-archive-production` queue (`cancel-in-progress: false`, `queue: max`). Capture alone owns the schedule at 06:17/12:17 Asia/Taipei. [Checkpoint and activation](v2-cutover.md) precede fresh bootstrap; production writers verify the frozen v1 boundary before mutation. The legacy `mirror-data` target remains protected, and domain validation rejects legacy state on any target.
 
 ## Commands
 
@@ -14,15 +12,15 @@ Install the locked Node dependencies with `npm ci` (Node 22.22). For local opera
 
 ```sh
 npm run stage -- capture --repo /path/to/app --definition-repo /path/to/control \
-  --repository owner/repo --branch main --archive-branch mirror-data-v2-verification \
+  --repository owner/repo --branch main --archive-branch mirror-data-v2 \
   --remote origin --state /tmp/stage.json
 
 npm run stage -- render --repo /path/to/app --definition-repo /path/to/control \
-  --repository owner/repo --branch main --archive-branch mirror-data-v2-verification \
+  --repository owner/repo --branch main --archive-branch mirror-data-v2 \
   --remote origin --state /tmp/stage.json --advance true
 ```
 
-`--archive-branch` is mandatory. Repository and default/application branch identify the trust domain, while remote chooses the Git transport. Capture defaults to advancement; `--advance false` persists capture only. Manual render defaults to render-only; `--advance true` produces evidence eligible for a future v2 consumer. There is no publish-only command in this ticket. Local records default to run ID/attempt 1/1; these local identifiers do not authorize hosted advancement. Hosted records use actual Actions IDs and attempts.
+`--archive-branch` is mandatory. Repository and default/application branch identify the trust domain, while remote chooses the Git transport. Capture defaults to advancement; `--advance false` persists capture only. Manual render defaults to render-only; `--advance true` produces evidence eligible for the production Pages consumer. Publish-only uses the separate [Pages command](v2-pages.md). Local records default to run ID/attempt 1/1; these local identifiers do not authorize hosted advancement. Hosted records use actual Actions IDs and attempts.
 
 Capture alone accepts `--feed-url` and `--timeout-ms` (fixture `file:` acquisition is supported). Render rejects those options and runs the selected application subprocess with source HTTP(S), fetch and socket acquisition disabled. Attempted acquisition fails even if application code catches it. Operational Git and Actions evidence traffic runs outside that subprocess.
 
@@ -30,7 +28,7 @@ To use an exact capture handoff locally, specify both `--upstream-run ID --upstr
 
 Actions uses the same executable:
 
-- `select --stage capture|render --repo control --definition-repo control --branch main --archive-branch mirror-data-v2-verification --state /tmp/stage.json` reads the Actions environment/event, guards the trusted default branch, selects the exact upstream attempt and emits `application` and `proceed` to `GITHUB_OUTPUT`.
+- `select --stage capture|render --repo control --definition-repo control --branch main --archive-branch mirror-data-v2 --state /tmp/stage.json` reads the Actions environment/event, guards the trusted default branch, selects the exact upstream attempt and emits `application` and `proceed` to `GITHUB_OUTPUT`.
 - `write --repo app-source --definition-repo control --state /tmp/stage.json` verifies both checkouts, pins persisted input and performs the writer operation.
 - `report --state /tmp/stage.json` emits JSON and a readable Actions summary. A failed/cancelled `STAGE_STATUS` removes eligibility and successful output claims, retaining verified persistence for diagnostics.
 
@@ -70,19 +68,13 @@ Upload failure after persistence fails the Actions attempt. Any uploaded success
 - Capture acquisition/push failure: start a fresh capture. No locally committed candidate is evidence of remote success.
 - Render derivation/push failure: repair the renderer and start a fresh manual render against saved capture. Recapture is unnecessary.
 - Missing/expired evidence or upload/report failure: rerun the relevant stage. An unchanged capture/render verifies the durable revision and renews evidence.
-- Inspect capture independently with `--advance false`; inspect render independently with its default mode. Opt into render advancement to resume the future v2 publication chain.
+- Inspect capture independently with `--advance false`; inspect render independently with its default mode. Opt into render advancement to resume the production publication chain.
 - No persisted render input: run capture first. Legacy input requires coordinated cutover, never automatic conversion/reset.
 
-## Coordinated production configuration for #24
+## Schedule and coordinated reset
 
-At cutover, replace the active v1 chain as a coordinated unit including the #23 consumer. Remove the transitional legacy-target guard only after checkpoint/reset authorization and set all writer/manual/publication stages to `copilot-archive-production`, `cancel-in-progress: false`, `queue: max`, selecting the new production archive target. Add this schedule only to the v2 capture entry point and remove the old entry point in the same cutover:
+Only capture has a schedule: `17 6,12 * * *` with `Asia/Taipei`. Scheduled and default manual capture advance; capture-only opts out. Render-only is the default manual mode; `advance=true` continues to Pages. No stage waits synchronously for a child while holding the shared queue.
 
-```yaml
-schedule:
-  - cron: "17 6,12 * * *"
-    timezone: "Asia/Taipei"
-```
+The local checkpoint procedure requires equivalent exclusive quiescence: disable legacy workflows, drain all legacy/new-stage work, pin the final remote legacy revision, verify exact restored blobs and reachable history, and preserve the immutable checkpoint before activation. Production writers recheck the checkpoint and legacy boundary before candidate publication. See [the runbook](v2-cutover.md). Never overwrite a conflicting ref or force-push.
 
-This preserves 06:17 and 12:17 Taipei capture, default capture advancement, capture-only override, default manual render-only, optional render advancement and no independent render schedule. Keep the separate completion identities paired with their v2 consumers. No worker waits synchronously for a child while holding the shared production queue.
-
-Local fixture/bare-remote tests validate commands, exact attempt/API/artifact rejection, persistence, offline rendering, no-change recovery, remote races and isolation. Actual hosted event, queue and schedule acceptance is recorded by #24; local tests cannot establish that hosted behavior.
+Local fixture/bare-remote tests establish command, durability, trust, offline and race behavior. [The acceptance record](v2-acceptance.md) separately tracks actual hosted chaining, deployment and scheduled observation.

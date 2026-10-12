@@ -1,9 +1,7 @@
-# Isolated build verification only: this workflow cannot deploy to Pages.
-# The complete production chain is staged in .github/v2-production for #24.
-name: V2 verification Pages
+name: V2 production Pages
 on:
   workflow_run:
-    workflows: [V2 verification render]
+    workflows: [V2 production render]
     types: [completed]
     branches: [main]
   workflow_dispatch:
@@ -28,7 +26,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: copilot-archive-v2-verification
+  group: copilot-archive-production
   cancel-in-progress: false
   queue: max
 jobs:
@@ -46,7 +44,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-      ARCHIVE_BRANCH: mirror-data-v2-verification
+      ARCHIVE_BRANCH: mirror-data-v2
     steps:
       - name: Check out workflow tools
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -108,6 +106,87 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: v2-pages-preparation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pages.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Report evidence publication outcome
+        if: always()
+        working-directory: control
+        env:
+          PAGES_STATUS: ${{ job.status }}
+        run: >-
+          npm run pages -- report --repo . --definition-repo .
+          --branch "$DEFAULT_BRANCH" --archive-branch "$ARCHIVE_BRANCH"
+          --state "$RUNNER_TEMP/pages.json"
+
+  deploy:
+    needs: prepare
+    if: needs.prepare.outputs.deploy == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+      ARCHIVE_BRANCH: mirror-data-v2
+      PREPARATION_ATTEMPT: ${{ needs.prepare.outputs.preparation_attempt }}
+    steps:
+      - name: Check out original workflow tools
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.prepare.outputs.definition }}
+          path: control
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version-file: control/.node-version
+          cache: npm
+          cache-dependency-path: control/package-lock.json
+      - name: Install workflow tools
+        working-directory: control
+        run: npm ci
+      - name: Authorize exact original Pages artifact
+        id: authorization
+        working-directory: control
+        run: >-
+          npm run pages -- authorize --repo . --definition-repo .
+          --branch "$DEFAULT_BRANCH" --archive-branch "$ARCHIVE_BRANCH"
+          --state "$RUNNER_TEMP/pages.json"
+          --preparation-run "$GITHUB_RUN_ID" --preparation-attempt "$PREPARATION_ATTEMPT"
+      - name: Deploy Pages
+        id: deployment
+        if: steps.authorization.outputs.deploy == 'true'
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+        with:
+          artifact_name: ${{ steps.authorization.outputs.artifact_name }}
+      - name: Record deployment
+        if: steps.authorization.outputs.deploy == 'true'
+        working-directory: control
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: >-
+          npm run pages -- report --repo . --definition-repo .
+          --branch "$DEFAULT_BRANCH" --archive-branch "$ARCHIVE_BRANCH"
+          --state "$RUNNER_TEMP/pages.json" --url "$PAGE_URL"
+      - name: Report deployment outcome
+        if: always()
+        working-directory: control
+        env:
+          PAGES_STATUS: ${{ job.status }}
+        run: >-
+          npm run pages -- report --repo . --definition-repo .
+          --branch "$DEFAULT_BRANCH" --archive-branch "$ARCHIVE_BRANCH"
+          --state "$RUNNER_TEMP/pages.json"
+      - name: Publish deployment evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v2-pages-result-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pages.json
           if-no-files-found: error
           retention-days: 90
