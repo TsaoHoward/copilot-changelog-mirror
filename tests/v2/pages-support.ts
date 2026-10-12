@@ -5,6 +5,7 @@ import { join } from "node:path";
 import type { TestContext } from "node:test";
 import { StageFixture, artifactZip } from "./stage-support.js";
 import { root, serve } from "./support.js";
+import { fixtureEnvironment } from "./environment-support.js";
 const run = promisify(execFile);
 export class PagesFixture extends StageFixture {
   records = new Map<number, any>();
@@ -228,13 +229,12 @@ export class PagesFixture extends StageFixture {
           ],
           {
             cwd: root,
-            env: {
-              ...process.env,
+            env: fixtureEnvironment({
               GITHUB_API_URL: this.api,
               GH_TOKEN: "fixture-secret",
               COPILOT_NETWORK_LOG: join(this.dir, "pages-network.log"),
               ...env,
-            },
+            }),
             maxBuffer: 8_000_000,
           },
         )),
