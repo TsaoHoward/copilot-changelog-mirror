@@ -2,7 +2,10 @@ import { parseArgs } from "node:util";
 import { resolve } from "node:path";
 import { loadSitePublication } from "./site-input.js";
 import { deploymentIdentity, selectSiteInputs } from "./site-identity.js";
-import { buildSelectedSite } from "./site-build.js";
+import {
+  installSelectedDependencies,
+  buildSelectedSite,
+} from "./site-build.js";
 
 try {
   const { values, positionals } = parseArgs({
@@ -20,23 +23,23 @@ try {
   });
   if (values.help) {
     console.log(
-      "Usage: site-cli <identity|build> --archive DIRECTORY [--source DIRECTORY] [--definition FILE] [--definition-job JOB] [--base /PATH/] [--site https://HOST] [--output FRESH_DIRECTORY]",
+      "Usage: site-cli <identity|install|build> --archive DIRECTORY [--source DIRECTORY] [--definition FILE] [--definition-job JOB] [--base /PATH/] [--site https://HOST] [--output FRESH_DIRECTORY]",
     );
   } else {
     if (
       positionals.length !== 1 ||
-      !["identity", "build"].includes(positionals[0]!) ||
+      !["identity", "install", "build"].includes(positionals[0]!) ||
       !values.archive
     )
       throw new Error(
-        "An explicit identity or build command and --archive directory are required",
+        "An explicit identity, install or build command and --archive directory are required",
       );
     if (positionals[0] === "build" && !values.output)
       throw new Error(
         "Build requires --output pointing to a fresh directory outside the archive",
       );
-    if (positionals[0] === "identity" && values.output)
-      throw new Error("Identity does not accept --output");
+    if (positionals[0] !== "build" && values.output)
+      throw new Error("Only build accepts --output");
     const source = resolve(values.source!);
     const publication = await loadSitePublication(resolve(values.archive));
     const selected = await selectSiteInputs({
@@ -49,6 +52,8 @@ try {
       ...(values.base ? { base: values.base } : {}),
       ...(values.site ? { site: values.site } : {}),
     });
+    if (positionals[0] === "install")
+      await installSelectedDependencies(source, selected);
     const output =
       positionals[0] === "build"
         ? await buildSelectedSite({

@@ -6,6 +6,7 @@ import type { TestContext } from "node:test";
 import assert from "node:assert/strict";
 import { Fixture, root } from "./support.js";
 
+import { fixtureEnvironment } from "./environment-support.js";
 const run = promisify(execFile);
 export class StageFixture extends Fixture {
   readonly remote = join(this.dir, "remote.git");
@@ -58,12 +59,11 @@ export class StageFixture extends Fixture {
           ],
           {
             cwd: root,
-            env: {
-              ...process.env,
+            env: fixtureEnvironment({
               COPILOT_CAPTURE_NOW: "2026-10-06T12:00:00.000Z",
               COPILOT_NETWORK_LOG: log,
               ...env,
-            },
+            }),
           },
         )),
       };

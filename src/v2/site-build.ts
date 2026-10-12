@@ -15,6 +15,36 @@ import type { SelectedSite } from "./site-identity.js";
 import type { PublicationProjection } from "./domain.js";
 import { publicationIdentity, sha256 } from "./domain.js";
 
+/** Execute exactly the presentation-owned locked install contract. */
+export async function installSelectedDependencies(
+  source: string,
+  selected: SelectedSite,
+) {
+  if (process.versions.node !== selected.projection.configuration.build.node)
+    throw new Error(
+      "Executing Node runtime disagrees with selected install definition",
+    );
+  await rm(join(source, "node_modules"), { recursive: true, force: true });
+  const [command, ...args] = selected.projection.configuration.build.install;
+  await new Promise<void>((accept, reject) => {
+    const child = spawn(command!, args, {
+      cwd: source,
+      env: {
+        PATH: process.env.PATH,
+        ...selected.projection.configuration.build.environment,
+      },
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    child.stdout.pipe(process.stderr, { end: false });
+    child.stderr.pipe(process.stderr, { end: false });
+    child.on("error", reject);
+    child.on("exit", (code) =>
+      code === 0
+        ? accept()
+        : reject(new Error(`Locked dependency install failed (exit ${code})`)),
+    );
+  });
+}
 /** Install beforehand with the selected lock/config; build never installs or mutates source. */
 async function verifyDependencies(source: string, selected: SelectedSite) {
   const lock = JSON.parse(
@@ -159,12 +189,22 @@ export async function buildSelectedSite(options: {
       PATH: process.env.PATH,
       ASTRO_TELEMETRY_DISABLED: "1",
       NODE_ENV: "production",
+      ...(process.env.COPILOT_NETWORK_LOG
+        ? { COPILOT_NETWORK_LOG: process.env.COPILOT_NETWORK_LOG }
+        : {}),
       ...options.selected.projection.configuration.build.environment,
     };
     await new Promise<void>((accept, reject) => {
       const child = spawn(
         process.execPath,
-        ["--import", "tsx", "src/v2/presentation/astro.ts"],
+        [
+          ...(process.env.COPILOT_SITE_OFFLINE_GUARD
+            ? ["--import", process.env.COPILOT_SITE_OFFLINE_GUARD]
+            : []),
+          "--import",
+          "tsx",
+          "src/v2/presentation/astro.ts",
+        ],
         { cwd: staging, env, stdio: ["ignore", "pipe", "pipe"] },
       );
       child.stdout.pipe(process.stderr, { end: false });
