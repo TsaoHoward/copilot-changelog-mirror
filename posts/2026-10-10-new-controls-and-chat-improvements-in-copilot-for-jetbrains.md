@@ -2,7 +2,7 @@
 title: "New controls and chat improvements in Copilot for JetBrains"
 source_url: https://github.blog/changelog/2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains
 published_at: 2026-10-10T18:53:39+00:00
-fetched_at: 2026-10-11T01:02:24.829304+00:00
+fetched_at: 2026-10-12T01:22:53.208536+00:00
 ---
 
 This update brings more control over default models and MCP server in GitHub Copilot for JetBrains. It also makes diagnostics easier to address, improves chat navigation and account controls, and strengthens reliability across agent sessions, customizations, and worktrees.
