@@ -10,7 +10,11 @@
         "discovery_title": "Copilot code review: API support and new default effort level",
         "discovery_published_at": "2026-10-02T19:13:50.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Copilot code review: API support and new default effort level",
+        "published_at": "2026-10-02T19:13:50.000Z",
+        "publication_path": "/posts/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level/"
+      }
     },
     "2026-10-02-selected-models-in-github-copilot-deprecated-705956e4f1fc": {
       "article_id": "2026-10-02-selected-models-in-github-copilot-deprecated-705956e4f1fc",
@@ -21,7 +25,11 @@
         "discovery_title": "Selected models in GitHub Copilot deprecated",
         "discovery_published_at": "2026-10-02T18:24:19.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Selected models in GitHub Copilot deprecated",
+        "published_at": "2026-10-02T18:24:19.000Z",
+        "publication_path": "/posts/2026-10-02-selected-models-in-github-copilot-deprecated/"
+      }
     },
     "2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics-f833eccb65de": {
       "article_id": "2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics-f833eccb65de",
@@ -32,7 +40,11 @@
         "discovery_title": "Update your IDE to restore agent activity in Copilot usage metrics",
         "discovery_published_at": "2026-10-06T23:43:00.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Update your IDE to restore agent activity in Copilot usage metrics",
+        "published_at": "2026-10-06T23:43:00.000Z",
+        "publication_path": "/posts/2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics/"
+      }
     },
     "2026-10-07-claude-haiku-5-5-in-github-copilot-d309be13e53a": {
       "article_id": "2026-10-07-claude-haiku-5-5-in-github-copilot-d309be13e53a",
@@ -43,7 +55,11 @@
         "discovery_title": "Claude Haiku 5.5 in GitHub Copilot",
         "discovery_published_at": "2026-10-07T20:12:18.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Claude Haiku 5.5 in GitHub Copilot",
+        "published_at": "2026-10-07T20:12:18.000Z",
+        "publication_path": "/posts/2026-10-07-claude-haiku-5-5-in-github-copilot/"
+      }
     },
     "2026-10-07-discover-local-models-in-github-copilot-cli-8241d56116d9": {
       "article_id": "2026-10-07-discover-local-models-in-github-copilot-cli-8241d56116d9",
@@ -54,7 +70,11 @@
         "discovery_title": "Discover local models in GitHub Copilot CLI",
         "discovery_published_at": "2026-10-07T15:46:13.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Discover local models in GitHub Copilot CLI",
+        "published_at": "2026-10-07T15:46:13.000Z",
+        "publication_path": "/posts/2026-10-07-discover-local-models-in-github-copilot-cli/"
+      }
     },
     "2026-10-07-local-sandboxing-for-github-copilot-now-generally-available-1e174328109a": {
       "article_id": "2026-10-07-local-sandboxing-for-github-copilot-now-generally-available-1e174328109a",
@@ -65,7 +85,11 @@
         "discovery_title": "Local sandboxing for GitHub Copilot now generally available",
         "discovery_published_at": "2026-10-07T15:46:17.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Local sandboxing for GitHub Copilot now generally available",
+        "published_at": "2026-10-07T15:46:17.000Z",
+        "publication_path": "/posts/2026-10-07-local-sandboxing-for-github-copilot-now-generally-available/"
+      }
     },
     "2026-10-07-purpose-built-model-for-leaked-secret-detection-d6b735286b37": {
       "article_id": "2026-10-07-purpose-built-model-for-leaked-secret-detection-d6b735286b37",
@@ -76,7 +100,11 @@
         "discovery_title": "Purpose-built model for leaked secret detection",
         "discovery_published_at": "2026-10-07T16:13:56.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Purpose-built model for leaked secret detection",
+        "published_at": "2026-10-07T16:13:56.000Z",
+        "publication_path": "/posts/2026-10-07-purpose-built-model-for-leaked-secret-detection/"
+      }
     },
     "2026-10-08-copilot-code-review-new-organization-billing-options-and-controls-24caa334278b": {
       "article_id": "2026-10-08-copilot-code-review-new-organization-billing-options-and-controls-24caa334278b",
@@ -87,7 +115,11 @@
         "discovery_title": "Copilot code review: New organization billing options and controls",
         "discovery_published_at": "2026-10-08T19:43:05.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Copilot code review: New organization billing options and controls",
+        "published_at": "2026-10-08T19:43:05.000Z",
+        "publication_path": "/posts/2026-10-08-copilot-code-review-new-organization-billing-options-and-controls/"
+      }
     },
     "2026-10-09-github-copilot-weekly-releases-october-5-ec899f104655": {
       "article_id": "2026-10-09-github-copilot-weekly-releases-october-5-ec899f104655",
@@ -98,7 +130,11 @@
         "discovery_title": "GitHub Copilot weekly releases — October 5",
         "discovery_published_at": "2026-10-09T22:58:23.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "GitHub Copilot weekly releases — October 5",
+        "published_at": "2026-10-09T22:58:23.000Z",
+        "publication_path": "/posts/2026-10-09-github-copilot-weekly-releases-october-5/"
+      }
     },
     "2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains-a91405951b83": {
       "article_id": "2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains-a91405951b83",
@@ -109,7 +145,11 @@
         "discovery_title": "New controls and chat improvements in Copilot for JetBrains",
         "discovery_published_at": "2026-10-10T18:53:39.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "New controls and chat improvements in Copilot for JetBrains",
+        "published_at": "2026-10-10T18:53:39.000Z",
+        "publication_path": "/posts/2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains/"
+      }
     }
   }
 }
