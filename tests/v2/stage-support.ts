@@ -4,6 +4,7 @@ import { cpSync, symlinkSync, readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import type { TestContext } from "node:test";
 import assert from "node:assert/strict";
+import { deflateRawSync } from "node:zlib";
 import { Fixture, root } from "./support.js";
 
 import { fixtureEnvironment } from "./environment-support.js";
@@ -82,16 +83,60 @@ export class StageFixture extends Fixture {
   }
 }
 
-export function artifactZip(record: unknown, name = "stage.json"): Buffer {
-  return execFileSync(
-    "python3",
-    [
-      "-c",
-      "import sys,zipfile,io; b=io.BytesIO(); z=zipfile.ZipFile(b,'w',zipfile.ZIP_DEFLATED); z.writestr(sys.argv[1],sys.stdin.buffer.read()); z.close(); sys.stdout.buffer.write(b.getvalue())",
-      name,
-    ],
-    { input: typeof record === "string" ? record : JSON.stringify(record) },
+export function artifactZip(
+  record: unknown,
+  name = "stage.json",
+  variant?: "duplicate" | "symlink",
+): Buffer {
+  const bytes = Buffer.from(
+    typeof record === "string" ? record : JSON.stringify(record),
   );
+  const packed = deflateRawSync(bytes);
+  const filename = Buffer.from(name);
+  let crc = 0xffffffff;
+  for (const byte of bytes) {
+    crc ^= byte;
+    for (let i = 0; i < 8; i++) crc = (crc >>> 1) ^ (crc & 1 ? 0xedb88320 : 0);
+  }
+  crc = (crc ^ 0xffffffff) >>> 0;
+  const members: Buffer[] = [],
+    directory: Buffer[] = [];
+  let offset = 0;
+  const count = variant === "duplicate" ? 2 : 1;
+  for (let i = 0; i < count; i++) {
+    const local = Buffer.alloc(30),
+      central = Buffer.alloc(46);
+    local.writeUInt32LE(0x04034b50);
+    local.writeUInt16LE(20, 4);
+    local.writeUInt16LE(8, 8);
+    local.writeUInt32LE(crc, 14);
+    local.writeUInt32LE(packed.length, 18);
+    local.writeUInt32LE(bytes.length, 22);
+    local.writeUInt16LE(filename.length, 26);
+    central.writeUInt32LE(0x02014b50);
+    central.writeUInt16LE(0x0314, 4);
+    central.writeUInt16LE(20, 6);
+    central.writeUInt16LE(8, 10);
+    central.writeUInt32LE(crc, 16);
+    central.writeUInt32LE(packed.length, 20);
+    central.writeUInt32LE(bytes.length, 24);
+    central.writeUInt16LE(filename.length, 28);
+    central.writeUInt32LE(
+      ((variant === "symlink" ? 0o120777 : 0o100644) << 16) >>> 0,
+      38,
+    );
+    central.writeUInt32LE(offset, 42);
+    members.push(local, filename, packed);
+    directory.push(central, filename);
+    offset += local.length + filename.length + packed.length;
+  }
+  const end = Buffer.alloc(22);
+  end.writeUInt32LE(0x06054b50);
+  end.writeUInt16LE(count, 8);
+  end.writeUInt16LE(count, 10);
+  end.writeUInt32LE(Buffer.concat(directory).length, 12);
+  end.writeUInt32LE(offset, 16);
+  return Buffer.concat([...members, ...directory, end]);
 }
 export async function evidenceServer(
   t: TestContext,

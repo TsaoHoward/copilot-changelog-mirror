@@ -75,6 +75,33 @@ test("raw chrome, unused discovery and capture observations persist without anot
   const f = new PagesFixture(t);
   const original = await f.init(t);
   const first = await f.deploy();
+  const metadataBefore = f.git(
+    "show",
+    `${original.archive_output}:metadata.json`,
+  );
+  const historyBefore = f.text("rev-list", "--count", original.archive_output);
+  const unchangedSource = f.source(
+    "article.html",
+    "<article><h1>Saved article</h1><p>Publication body.</p></article>",
+  );
+  const unchanged = await f.stage(
+    "capture",
+    [
+      "--definition-repo",
+      f.repo,
+      "--feed-url",
+      f.feed(`<item><link>${unchangedSource}</link></item>`),
+    ],
+    { COPILOT_CAPTURE_NOW: "2026-10-12T11:00:00.000Z" },
+  );
+  assert.equal(unchanged.code, 0, unchanged.stderr);
+  assert.equal(unchanged.result.outcome, "no-change");
+  assert.equal(f.remoteTip(), original.archive_output);
+  assert.deepEqual(
+    f.git("show", `${f.remoteTip()}:metadata.json`),
+    metadataBefore,
+  );
+  assert.equal(f.text("rev-list", "--count", f.remoteTip()!), historyBefore);
   const bodyBefore = f
     .git(
       "show",
@@ -93,9 +120,7 @@ test("raw chrome, unused discovery and capture observations persist without anot
       "--run-id",
       "3",
       "--feed-url",
-      f.feed(
-        `<item><link>${source}</link><title>Unused discovery change</title></item>`,
-      ),
+      f.feed(`<item><link>${source}</link></item>`),
     ],
     { COPILOT_CAPTURE_NOW: "2026-10-12T12:00:00.000Z" },
   );
@@ -136,6 +161,105 @@ test("raw chrome, unused discovery and capture observations persist without anot
     f.artifacts.filter((a) => a.name.startsWith("v2-pages-build-")).length,
     1,
   );
+  assert.equal(f.deploymentCalls.length, 1);
+  const discovery = await f.stage("capture", [
+    "--definition-repo",
+    f.repo,
+    "--feed-url",
+    f.feed(
+      `<item><link>${source}</link><title>Unused discovery change</title></item>`,
+    ),
+  ]);
+  assert.equal(discovery.code, 0, discovery.stderr);
+  assert.notEqual(
+    discovery.result.archive_output,
+    rendered.result.archive_output,
+  );
+  const renewed = await f.stage("render", [
+    "--definition-repo",
+    f.repo,
+    "--run-id",
+    "5",
+  ]);
+  assert.equal(renewed.code, 0, renewed.stderr);
+  assert.equal(renewed.result.publication_output, original.publication_output);
+  f.addStage(renewed.result);
+  f.current = { run_id: 72, attempt: 1 };
+  f.addCurrent();
+  const discoveryDuplicate = await f.pages("select", [
+    "--render-run",
+    "5",
+    "--render-attempt",
+    "1",
+  ]);
+  assert.equal(discoveryDuplicate.code, 0, discoveryDuplicate.stderr);
+  assert.equal(discoveryDuplicate.result.outcome, "duplicate");
+  assert.equal(
+    discoveryDuplicate.result.deployment_identity,
+    first.deployment_identity,
+  );
+  assert.equal(f.deploymentCalls.length, 1);
+});
+
+test("canonical body, title and publication-time edits change both identities and rebuild pages and search", async (t) => {
+  const f = new PagesFixture(t);
+  const original = await f.init(t);
+  const first = await f.deploy();
+  const source = f.source(
+    "article.html",
+    "<article><h1>Revised canonical title</h1><p>Newest bodies contain galaxiesentinel.</p></article>",
+  );
+  const captured = await f.stage("capture", [
+    "--definition-repo",
+    f.repo,
+    "--feed-url",
+    f.feed(
+      `<item><link>${source}</link><pubDate>Mon, 12 Oct 2026 04:17:00 GMT</pubDate></item>`,
+    ),
+  ]);
+  assert.equal(captured.code, 0, captured.stderr);
+  const rendered = await f.stage("render", [
+    "--definition-repo",
+    f.repo,
+    "--run-id",
+    "3",
+    "--advance",
+    "true",
+  ]);
+  assert.equal(rendered.code, 0, rendered.stderr);
+  assert.notEqual(
+    rendered.result.publication_output,
+    original.publication_output,
+  );
+  f.addStage(rendered.result);
+  f.current = { run_id: 71, attempt: 1 };
+  f.addCurrent();
+  const second = await f.deploy("2026-10-13T00:00:00Z", [
+    "--render-run",
+    "3",
+    "--render-attempt",
+    "1",
+  ]);
+  assert.notEqual(second.publication_identity, first.publication_identity);
+  assert.notEqual(second.deployment_identity, first.deployment_identity);
+  const manifest = JSON.parse(
+    f.git("show", `${f.remoteTip()}:metadata.json`).toString(),
+  );
+  const article = Object.values(manifest.articles)[0] as any;
+  assert.equal(article.canonical.published_at, "2026-10-12T04:17:00.000Z");
+  const output = join(f.dir, "output-71-1");
+  const html = readFileSync(
+    join(output, article.canonical.publication_path, "index.html"),
+    "utf8",
+  );
+  assert.match(html, /Revised canonical title/);
+  assert.match(html, /galaxiesentinel/);
+  assert.match(
+    readFileSync(join(output, "index.html"), "utf8"),
+    /Revised canonical title/,
+  );
+  assert.ok(existsSync(join(output, "pagefind/pagefind.js")));
+  assert.equal(f.deploymentCalls.length, 2);
 });
 
 test("deployment-only retry retains original preparation/artifact and advances only deployment attempt; expiry requires rebuild", async (t) => {
@@ -539,43 +663,26 @@ test("failed hosted result never replaces baseline; source acquisition even caug
   assert.equal(f.remoteTip(), prep.archive_revision);
 });
 
-test("workflow contracts keep verification isolated, production queue shared, exact attempt wiring and build execution aligned", async () => {
+test("production Pages preserves shared queue, least permissions, exact attempt wiring and build execution agreement", async () => {
   const { parse } = await import("yaml");
   const { root } = await import("./support.js");
-  const verification = parse(
-    readFileSync(join(root, ".github/workflows/v2-pages.yml"), "utf8"),
-  );
   const production = parse(
-    readFileSync(join(root, ".github/v2-production/v2-pages.yml"), "utf8"),
+    readFileSync(join(root, ".github/workflows/v2-pages.yml"), "utf8"),
   );
   const definition = JSON.parse(
     readFileSync(join(root, ".github/v2-pages-build.json"), "utf8"),
   );
-  const legacy = parse(
-    readFileSync(join(root, ".github/workflows/publish-pages.yml"), "utf8"),
-  );
-  assert.deepEqual(verification.concurrency, {
-    group: "copilot-archive-v2-verification",
-    "cancel-in-progress": false,
-    queue: "max",
-  });
-  assert.equal(
-    verification.jobs.prepare.env.ARCHIVE_BRANCH,
-    "mirror-data-v2-verification",
-  );
-  assert.equal(verification.jobs.deploy, undefined);
+  assert.equal(production.jobs.prepare.env.ARCHIVE_BRANCH, "mirror-data-v2");
+  assert.equal(production.jobs.deploy.env.ARCHIVE_BRANCH, "mirror-data-v2");
   assert.deepEqual(production.concurrency, {
     group: "copilot-archive-production",
     "cancel-in-progress": false,
     queue: "max",
   });
-  assert.deepEqual(legacy.on.workflow_run.workflows, [
-    "Render archive posts from snapshots",
+  assert.deepEqual(production.on.workflow_run.workflows, [
+    "V2 production render",
   ]);
-  assert.deepEqual(verification.on.workflow_run.workflows, [
-    "V2 verification render",
-  ]);
-  for (const workflow of [verification, production]) {
+  for (const workflow of [production]) {
     assert.equal(workflow.on.schedule, undefined);
     assert.equal(workflow.on.workflow_dispatch.inputs.force.default, false);
     assert.equal(

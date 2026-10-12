@@ -44,7 +44,7 @@ try {
       throw new Error("Select an explicit capture or render stage");
     if (!v["archive-branch"])
       throw new Error(
-        "--archive-branch must explicitly select an isolated v2 target",
+        "--archive-branch must explicitly select mirror-data-v2 or an isolated v2 target",
       );
     isolatedTarget(v["archive-branch"]);
     if (v.advance !== undefined && !["true", "false"].includes(v.advance))

@@ -8,7 +8,7 @@ try {
     allowPositionals: true,
     options: {
       repo: { type: "string", default: process.cwd() },
-      "data-branch": { type: "string", default: "mirror-data" },
+      "data-branch": { type: "string", default: "mirror-data-v2" },
       "feed-url": { type: "string" },
       "timeout-ms": { type: "string" },
       help: { type: "boolean", short: "h" },

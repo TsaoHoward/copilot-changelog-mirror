@@ -268,7 +268,6 @@ test("automatic render evidence proves inherited application and archive input t
 test("artifact redirects strip API credentials, and unsafe ZIP members fail without extraction", async (t) => {
   const { serve } = await import("./support.js");
   const { artifactZip } = await import("./stage-support.js");
-  const { execFileSync } = await import("node:child_process");
   const f = new StageFixture(t);
   const capture = (await f.stage("capture", ["--feed-url", f.feed("")])).result;
   capture.definition_sha = capture.application_sha;
@@ -325,24 +324,7 @@ test("artifact redirects strip API credentials, and unsafe ZIP members fail with
       const zip =
         mode === "crc"
           ? artifactZip(capture)
-          : execFileSync(
-              "python3",
-              [
-                "-c",
-                `import sys,io,zipfile
-b=io.BytesIO(); z=zipfile.ZipFile(b,'w'); data=sys.stdin.buffer.read()
-if sys.argv[1]=='duplicate':
- z.writestr('stage.json',data); z.writestr('stage.json',data)
-else:
- i=zipfile.ZipInfo('stage.json'); i.create_system=3; i.external_attr=(0o120777<<16); z.writestr(i,data)
-z.close();sys.stdout.buffer.write(b.getvalue())`,
-                mode,
-              ],
-              {
-                input: JSON.stringify(capture),
-                stdio: ["pipe", "pipe", "pipe"],
-              },
-            );
+          : artifactZip(capture, "stage.json", mode as "duplicate" | "symlink");
       if (mode === "crc") zip[14] = zip[14]! ^ 1;
       const server = await evidenceServer(child, capture, { payload: zip });
       const invalid = await f.stage(

@@ -51,7 +51,7 @@ export function remoteHead(
 export function isolatedTarget(branch: string): void {
   if (branch === "mirror-data")
     throw new Error(
-      "Legacy production archive is protected until coordinated #24 cutover; select an isolated v2 target",
+      "Legacy production archive is permanently protected by #24 cutover; select mirror-data-v2 or an isolated v2 target",
     );
 }
 export async function writeStage(
@@ -76,6 +76,22 @@ export async function writeStage(
   };
   try {
     isolatedTarget(r.archive_branch);
+    const cutover = async () => {
+      if (r.archive_branch === "mirror-data-v2") {
+        const { verifyCutover } = await import("./cutover.js");
+        return await verifyCutover({
+          repo,
+          repository: r.repository,
+          remote: r.remote,
+          branch: r.branch,
+        });
+      }
+    };
+    const production = await cutover();
+    if (production && !production.bootstrap_revision && r.stage !== "capture")
+      throw new Error(
+        "First production operation must be fresh capture, never render of imported evidence",
+      );
     if (git(repo, "rev-parse", "HEAD") !== r.application_sha)
       throw new Error("Application checkout differs from selected revision");
     if (git(definitionRepo, "rev-parse", "HEAD") !== r.definition_sha)
@@ -208,6 +224,7 @@ export async function writeStage(
       );
     r.candidate_revision = result.archive_output;
     r.counts = result.counts;
+    const beforePush = await cutover();
     if (!fresh(r.archive_input)) return;
     if (result.outcome === "changed") {
       // Push using the application's authenticated remote configuration; no user refs move.
@@ -222,12 +239,17 @@ export async function writeStage(
       git(
         repo,
         "push",
+        ...(beforePush && !beforePush.bootstrap_revision ? ["--atomic"] : []),
         r.remote,
         `${result.archive_output}:refs/heads/${r.archive_branch}`,
+        ...(beforePush && !beforePush.bootstrap_revision
+          ? [`${result.archive_output}:refs/tags/v2-initial-capture`]
+          : []),
       );
     }
     if (!fresh(result.archive_output)) return;
     r.persisted_revision = result.archive_output;
+    await cutover();
     Object.assign(r, result, { eligible: r.advance });
     validateRecord(r);
   } catch (error) {

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { execFileSync } from "node:child_process";
 import { parse } from "yaml";
@@ -122,48 +122,62 @@ test("Actions guards reject foreign/default-branch/event contradictions before a
   }
 });
 
-test("v2 workflows preserve isolated queues, upload failures, manual modes and separate completion identities", () => {
+test("production workflows share the queue, target, schedule and exact v2 completion chain", () => {
   const capture = parse(
     readFileSync(join(root, ".github/workflows/v2-capture.yml"), "utf8"),
   );
   const render = parse(
     readFileSync(join(root, ".github/workflows/v2-render.yml"), "utf8"),
   );
-  const legacy = parse(
-    readFileSync(
-      join(root, ".github/workflows/mirror-and-publish.yml"),
-      "utf8",
-    ),
-  );
   const pages = parse(
-    readFileSync(join(root, ".github/workflows/publish-pages.yml"), "utf8"),
+    readFileSync(join(root, ".github/workflows/v2-pages.yml"), "utf8"),
   );
-  assert.deepEqual(legacy.on.schedule, [
+  assert.deepEqual(capture.on.schedule, [
     { cron: "17 6,12 * * *", timezone: "Asia/Taipei" },
   ]);
-  assert.deepEqual(legacy.concurrency, {
+  assert.deepEqual(pages.concurrency, {
     group: "copilot-archive-production",
     "cancel-in-progress": false,
     queue: "max",
   });
-  assert.equal(capture.on.schedule, undefined);
   assert.equal(render.on.schedule, undefined);
   assert.equal(capture.on.workflow_dispatch.inputs.advance.default, true);
   assert.equal(render.on.workflow_dispatch.inputs.advance.default, false);
   assert.deepEqual(render.on.workflow_run.workflows, [capture.name]);
-  assert.ok(!pages.on.workflow_run.workflows.includes(render.name));
+  assert.deepEqual(pages.on.workflow_run.workflows, [render.name]);
+  assert.deepEqual(readdirSync(join(root, ".github/workflows")).sort(), [
+    "ci.yml",
+    "v2-capture.yml",
+    "v2-pages.yml",
+    "v2-render.yml",
+  ]);
+  const ci = parse(
+    readFileSync(join(root, ".github/workflows/ci.yml"), "utf8"),
+  );
+  assert.deepEqual(Object.keys(ci.jobs), ["typescript"]);
+  const commands = ci.jobs.typescript.steps
+    .map((s: any) => s.run)
+    .filter(Boolean);
+  for (const command of [
+    "npm ci",
+    "npm run format:check",
+    "npm run typecheck",
+    "npm test",
+    "npm run test:browser",
+  ])
+    assert.ok(commands.includes(command));
   for (const [stage, workflow] of [
     ["capture", capture],
     ["render", render],
   ] as const) {
     assert.deepEqual(workflow.concurrency, {
-      group: "copilot-archive-v2-verification",
+      group: "copilot-archive-production",
       "cancel-in-progress": false,
       queue: "max",
     });
     const job = workflow.jobs[stage];
     assert.match(job.if, /default_branch/);
-    assert.equal(job.env.ARCHIVE_BRANCH, "mirror-data-v2-verification");
+    assert.equal(job.env.ARCHIVE_BRANCH, "mirror-data-v2");
     assert.deepEqual(job.permissions, { contents: "write", actions: "read" });
     const upload = job.steps.find((step: any) =>
       step.uses?.startsWith("actions/upload-artifact@"),

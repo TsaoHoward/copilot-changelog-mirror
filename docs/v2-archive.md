@@ -1,6 +1,6 @@
 # V2 capture, offline render, and shared archive contract
 
-Issues #18 and #19 introduce explicit Node.js/TypeScript capture, offline rendering, and the archive-domain API. Issue #20 adds the Astro archive and presentation-owned deployment identity. Issue #22 adds [durable remote coordination and exact stage evidence](v2-operations.md); production cutover remains a later delivery. Production `mirror-data` still uses v1; the v2 commands reject that state with a reset/cutover diagnostic. Select a fresh branch or temporary repository for v2 verification.
+The supported production chain uses Node.js/TypeScript capture, offline rendering, the shared archive-domain API, Astro and Pagefind. [Durable operations](v2-operations.md) and [Pages recovery](v2-pages.md) target `mirror-data-v2`. The v1 `mirror-data` history remains protected; [checkpoint and activation](v2-cutover.md) precede the fresh reset. Select a separate target for local fixture experiments.
 
 ## Run capture
 
@@ -12,7 +12,9 @@ npm run --silent capture -- --repo /path/to/repository --data-branch mirror-data
 npm run --silent capture -- --repo /path/to/repository --data-branch mirror-data-v2 --feed-url file:///path/to/feed.xml
 ```
 
-The default feed is `https://github.blog/changelog/label/copilot/feed/`. The CLI defaults to the current repository and `mirror-data`, which must already be v2 or genuinely empty. An absent archive bootstraps as independent orphan ancestry; an existing empty archive is initialized on its existing ancestry. Bare `npm run --silent cli` fails without acquisition. `npm run --silent cli -- --help` describes the options. Use the silent npm flag or invoke `node --import tsx src/v2/cli.ts` directly to keep stdout exclusively the command's JSON.
+The default feed is `https://github.blog/changelog/label/copilot/feed/`. The CLI defaults to the current repository and `mirror-data-v2`, which must already be v2 or genuinely empty. An absent archive bootstraps as independent orphan ancestry; an existing empty archive is initialized on its existing ancestry. Bare `npm run --silent cli` fails without acquisition. `npm run --silent cli -- --help` describes the options. Use the silent npm flag or invoke `node --import tsx src/v2/cli.ts` directly to keep stdout exclusively the command's JSON.
+
+These low-level commands manage local Git archive refs. Durable production remote operations use [the stage command](v2-operations.md), which enforces checkpoint/reset provenance, exact selections and verified remote persistence.
 
 RSS items and Atom entries are supported. Links resolve against the discovery URL and fragments are discarded. Titles fall back to the normalized source URL. `pubDate`/`published` provide publication evidence; `updated` does not. Absent/unparseable dates become null; valid publication instants use UTC milliseconds. Equivalent duplicate observations are deduplicated; conflicting duplicates fail the batch. Discovery covers the selected feed's current window, with no historical crawl or pruning of previously captured articles.
 
@@ -139,7 +141,7 @@ npm test
 node --import tsx --test tests/v2/capture.test.ts
 ```
 
-The independent TypeScript CI job runs these checks with the pinned runtime. Existing Python/Jekyll CI and production entry points remain available through the coordinated cutover.
+The Node CI job runs these checks with the pinned runtime. Retired v1 sources and harnesses live under `legacy/v1/`; production and CI require no Python/Ruby.
 
 ## Build the v2 Astro archive (issue #20)
 
@@ -149,7 +151,7 @@ selection and remote freshness belong to orchestration. A valid empty manifest i
 buildable. Missing metadata, incomplete canonical records, missing bodies, legacy
 front matter/sidecars, corrupt snapshot joins, unsafe objects and colliding routes
 fail. Building never captures, renders, commits, switches branches or changes the
-archive. The production Jekyll workflows remain active until #23/#24 cutover.
+archive. Production Pages builds only the v2 Astro output.
 
 ```sh
 npm ci
@@ -267,8 +269,7 @@ incomplete publication is an error, never a fake empty site.
 
 ## Selected build definition and downstream integration
 
-By default `site-build.json` declares the local v2 build, separately from active
-legacy production workflows. `--definition /selected/definition` selects another
+By default `site-build.json` declares the local v2 build, with production selecting `.github/v2-pages-build.json`. `--definition /selected/definition` selects another
 resolved JSON definition **or a supported workflow YAML**. Definition content is
 normalized, not hashed wholesale; source paths/revisions are never hashed.
 `src/v2/site-definition.ts` owns `resolveBuildDefinition` and
@@ -363,13 +364,13 @@ For a local root build:
 
 ```sh
 npm run --silent site:build -- --archive /tmp/copilot-selected-archive --output /tmp/copilot-search-artifact --base /
-python3 -m http.server 8080 --directory /tmp/copilot-search-artifact
+npm exec -- astro preview --root site --outDir /tmp/copilot-search-artifact --base / --port 8080 --host 127.0.0.1 --ignore-lock
 ```
 
 Open `http://localhost:8080/`. For a repository-base artifact, serve that output
 under its matching URL prefix, rather than changing the already-built base.
-For example, build to `/tmp/copilot-search-preview/copilot-changelog-mirror`, serve
-`/tmp/copilot-search-preview`, and open
+For example, build to `/tmp/copilot-search-artifact`, preview with
+`--base /copilot-changelog-mirror/` instead of `--base /`, and open
 `http://localhost:8080/copilot-changelog-mirror/`. No runtime backend, CDN, external
 query API or telemetry is needed. Optional external article media remains external.
 
