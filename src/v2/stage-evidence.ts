@@ -12,10 +12,10 @@ function crc32(bytes: Buffer): number {
   return (crc ^ 0xffffffff) >>> 0;
 }
 /** Read a single bounded regular member in memory; never extract artifact paths. */
-function unzipRecord(zip: Buffer): unknown {
+export function unzipRecord(zip: Buffer, member = "stage.json"): unknown {
   const fail = (): never => {
     throw new Error(
-      "Unsafe or malformed stage artifact; expected only bounded regular stage.json",
+      `Unsafe or malformed stage artifact; expected only bounded regular ${member}`,
     );
   };
   let end = -1;
@@ -59,7 +59,7 @@ function unzipRecord(zip: Buffer): unknown {
     .subarray(central + 46, central + 46 + nameLength)
     .toString("utf8");
   if (
-    name !== "stage.json" ||
+    name !== member ||
     centralSize !== 46 + nameLength + extraLength + commentLength ||
     size > MAX_RECORD ||
     packed > MAX_RESPONSE ||
@@ -115,7 +115,7 @@ function unzipRecord(zip: Buffer): unknown {
   if (bytes.length !== size || crc32(bytes) !== crc) fail();
   return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
 }
-interface ActionsRun {
+export interface ActionsRun {
   id: number;
   run_attempt: number;
   status: string;
@@ -147,7 +147,7 @@ export class ActionsEvidence {
       throw new Error("Invalid Actions API URL");
     this.base = `${api.replace(/\/$/, "")}/repos/${repository}`;
   }
-  private async request(path: string, binary = false): Promise<any> {
+  async request(path: string, binary = false): Promise<any> {
     let url = this.base + path;
     let authorized = true;
     for (let redirect = 0; redirect <= 5; redirect++) {

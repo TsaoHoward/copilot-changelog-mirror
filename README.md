@@ -83,3 +83,8 @@ git push origin mirror-data
 Then set the repository's Pages build and deployment source to **GitHub Actions** under **Settings → Pages**, and run the workflow from **Actions → Publish archive to GitHub Pages → Run workflow**.
 
 Before publishing the first repairs from issue #13, complete the production verification in [docs/render-verification.md](docs/render-verification.md).
+
+The isolated v2 Pages command and inactive production activation template are
+specified in [v2 Pages publication and recovery](docs/v2-pages.md). They consume
+verified render attempts, use the presentation-owned deployment identity and
+support exact artifact retry and retention-qualified manual baseline recovery.
