@@ -14,7 +14,7 @@ Prepare and validate the whole application/workflow change on the issue branch b
      --legacy-revision EXACT_FINAL_V1_SHA --state /tmp/v1-checkpoint.json
    ```
 
-   The command checks server workflow/run inventory, restores the exact selected v1 revision into a disposable checkout, checks original file modes and blob hashes, front matter and reachable history with Git fsck, then ordinarily pushes the immutable lightweight `v1-final-before-v2` tag. It verifies remote resolution and rereads both legacy and fresh-target state. Caller HEAD, index, uncommitted work and local refs remain intact. No force push occurs.
+   The command checks server workflow/run inventory, restores the exact selected v1 revision into a disposable checkout, checks original file modes and blob hashes, front matter and reachable history with Git fsck, then atomically pushes the immutable lightweight `v1-final-before-v2` tag and an annotated `v2-reset-input` proof bound to that same v1 revision. The latter records the selected absent/empty production input outside the archive manifest. It verifies remote resolution and rereads both legacy and fresh-target state. Caller HEAD, index, uncommitted work and local refs remain intact. No force push occurs.
 
 4. Export `/tmp/v1-checkpoint.json` to the #24 acceptance comment. Record the SHA/tag/tree inventory, raw HTML/sidecar/Markdown counts, history count, exact UTC/Taipei observation times and verification result. Keep a durable copy of the report beyond ephemeral Actions artifacts.
 
@@ -31,7 +31,7 @@ npm run --silent cutover -- verify \
 gh workflow run v2-capture.yml --ref main -f advance=true
 ```
 
-Each production writer independently verifies the remote checkpoint, restored v1 evidence, quiescence and unchanged legacy boundary before mutation. Successful fresh capture persists raw evidence before independent offline render begins. Render persists body-only Markdown/canonical metadata before independent Pages begins. Actions/API/artifact upload failures stop advancement. GitHub's default `GITHUB_TOKEN` branch push is not the stage trigger; exact successful `workflow_run` attempts are.
+Each production writer independently verifies the remote checkpoint, restored v1 evidence, quiescence and unchanged legacy boundary before mutation. Before the first capture, the target must still equal the immutable reset input. First capture atomically publishes its archive revision and the immutable `v2-initial-capture` witness; a marker push failure leaves both absent. Later writers require archive ancestry descended from that witness. Copying a valid verification corpus into the target after checkpoint is rejected, never silently continued. Successful fresh capture persists raw evidence before independent offline render begins. Render persists body-only Markdown/canonical metadata before independent Pages begins. Actions/API/artifact upload failures stop advancement. GitHub's default `GITHUB_TOKEN` branch push is not the stage trigger; exact successful `workflow_run` attempts are.
 
 Record the three distinct run URLs/attempts, application/definition/input/candidate/persisted/output archive SHAs, persistence order, both identities, preparation/build artifact association and completed deployment job/step/results. Check the public [archive](https://tsaohoward.github.io/copilot-changelog-mirror/): chronological listing, article routing, attribution, fragments/media, title/body search and repository base paths. The prior site remains until a new actual deployment succeeds.
 

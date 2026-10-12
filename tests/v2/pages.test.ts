@@ -234,7 +234,12 @@ test("canonical body, title and publication-time edits change both identities an
   f.addStage(rendered.result);
   f.current = { run_id: 71, attempt: 1 };
   f.addCurrent();
-  const second = await f.deploy("2026-10-13T00:00:00Z");
+  const second = await f.deploy("2026-10-13T00:00:00Z", [
+    "--render-run",
+    "3",
+    "--render-attempt",
+    "1",
+  ]);
   assert.notEqual(second.publication_identity, first.publication_identity);
   assert.notEqual(second.deployment_identity, first.deployment_identity);
   const manifest = JSON.parse(

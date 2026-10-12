@@ -381,3 +381,80 @@ test("a genuinely empty target keeps its own ancestry; a competing bootstrap blo
       },
     );
 });
+
+test("valid verification state copied after checkpoint cannot seed the first production capture", async (t) => {
+  const { f, api, cutover } = await setup(t);
+  assert.equal((await cutover()).code, 0);
+  const source = f.source(
+    "verification.html",
+    "<article><h1>Verification only</h1><p>Imported corpus.</p></article>",
+  );
+  const isolated = await f.stage("capture", [
+    "--definition-repo",
+    f.repo,
+    "--archive-branch",
+    "isolated-verification",
+    "--feed-url",
+    f.feed(`<item><link>${source}</link></item>`),
+  ]);
+  assert.equal(isolated.code, 0, isolated.stderr);
+  f.git(
+    "push",
+    "-q",
+    "origin",
+    `${isolated.result.archive_output}:refs/heads/mirror-data-v2`,
+  );
+  const verify = await cutover("verify");
+  assert.notEqual(verify.code, 0);
+  assert.match(
+    verify.result.diagnostic,
+    /Unexplained production archive.*never promote/,
+  );
+  const capture = await f.stage(
+    "capture",
+    [
+      "--definition-repo",
+      f.repo,
+      "--archive-branch",
+      "mirror-data-v2",
+      "--feed-url",
+      f.feed(""),
+    ],
+    { GITHUB_API_URL: api },
+  );
+  assert.notEqual(capture.code, 0);
+  assert.equal(f.remoteTip("mirror-data-v2"), isolated.result.archive_output);
+  assert.equal(
+    f.text("ls-remote", "origin", "refs/tags/v2-initial-capture"),
+    "",
+  );
+});
+
+test("initial capture and immutable bootstrap witness persist atomically; rejection leaves both absent", async (t) => {
+  const { f, api, cutover } = await setup(t);
+  assert.equal((await cutover()).code, 0);
+  writeFileSync(
+    join(f.remote, "hooks/pre-receive"),
+    '#!/bin/sh\nwhile read old new ref; do\n if [ "$ref" = refs/tags/v2-initial-capture ]; then exit 1; fi\ndone\n',
+    { mode: 0o755 },
+  );
+  const capture = await f.stage(
+    "capture",
+    [
+      "--definition-repo",
+      f.repo,
+      "--archive-branch",
+      "mirror-data-v2",
+      "--feed-url",
+      f.feed(""),
+    ],
+    { GITHUB_API_URL: api },
+  );
+  assert.notEqual(capture.code, 0);
+  assert.equal(capture.result.archive_output, null);
+  assert.equal(f.remoteTip("mirror-data-v2"), null);
+  assert.equal(
+    f.text("ls-remote", "origin", "refs/tags/v2-initial-capture"),
+    "",
+  );
+});
