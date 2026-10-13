@@ -5,8 +5,8 @@
       "article_id": "2026-10-02-copilot-code-review-api-support-and-new-default-effort-level-be3b1d341079",
       "source_url": "https://github.blog/changelog/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level",
       "capture": {
-        "snapshot_sha256": "4899d9c2a889449402f83b2edd1671aee6798a4a2505cc13e624b738738543ec",
-        "observed_at": "2026-10-12T11:26:31.080Z",
+        "snapshot_sha256": "bc8d4282bbcf77f63f38c64b80bd2e78329594d71442edc23905930b55c35138",
+        "observed_at": "2026-10-13T03:04:48.072Z",
         "discovery_title": "Copilot code review: API support and new default effort level",
         "discovery_published_at": "2026-10-02T19:13:50.000Z"
       },
@@ -35,8 +35,8 @@
       "article_id": "2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics-f833eccb65de",
       "source_url": "https://github.blog/changelog/2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics",
       "capture": {
-        "snapshot_sha256": "eb77bf916c6dcf9dda7ad77849137e480a7c0182bef1bfa5309c750eabdc94b3",
-        "observed_at": "2026-10-12T11:26:31.605Z",
+        "snapshot_sha256": "50f96a17458d5797c7fe205d9d147cf8ca3b61b207506e407e405590f1b9a33d",
+        "observed_at": "2026-10-13T03:04:48.653Z",
         "discovery_title": "Update your IDE to restore agent activity in Copilot usage metrics",
         "discovery_published_at": "2026-10-06T23:43:00.000Z"
       },
@@ -50,8 +50,8 @@
       "article_id": "2026-10-07-claude-haiku-5-5-in-github-copilot-d309be13e53a",
       "source_url": "https://github.blog/changelog/2026-10-07-claude-haiku-5-5-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "f6e30d124d7dda5005e8270009354e6335207ddcc4d61e8faa4040d90a1cee5b",
-        "observed_at": "2026-10-12T11:26:32.014Z",
+        "snapshot_sha256": "dfa741c29a71a11f8335dc7b710df0c9dd0c09ff6cf050e04fe3d5273a25dd74",
+        "observed_at": "2026-10-13T03:04:49.260Z",
         "discovery_title": "Claude Haiku 5.5 in GitHub Copilot",
         "discovery_published_at": "2026-10-07T20:12:18.000Z"
       },
@@ -65,8 +65,8 @@
       "article_id": "2026-10-07-discover-local-models-in-github-copilot-cli-8241d56116d9",
       "source_url": "https://github.blog/changelog/2026-10-07-discover-local-models-in-github-copilot-cli",
       "capture": {
-        "snapshot_sha256": "62309373935ffacf86dbed762173d484b33ab583855e9a54cf4e96313efef072",
-        "observed_at": "2026-10-12T11:26:32.447Z",
+        "snapshot_sha256": "f4cdd19c8a8acfe3adaf139e80403c74e0dac0a884abe354392318ff7af423fa",
+        "observed_at": "2026-10-13T03:04:49.829Z",
         "discovery_title": "Discover local models in GitHub Copilot CLI",
         "discovery_published_at": "2026-10-07T15:46:13.000Z"
       },
@@ -80,8 +80,8 @@
       "article_id": "2026-10-07-local-sandboxing-for-github-copilot-now-generally-available-1e174328109a",
       "source_url": "https://github.blog/changelog/2026-10-07-local-sandboxing-for-github-copilot-now-generally-available",
       "capture": {
-        "snapshot_sha256": "7f973e282e7422e4a08348717820daeb8a1d5a4dc646f2fc6b0c27da4e86e152",
-        "observed_at": "2026-10-12T11:26:32.826Z",
+        "snapshot_sha256": "7c03b0cac85d47bf7efb257677a82b8a0a53f33b5497c47aec7fe496f0debd51",
+        "observed_at": "2026-10-13T03:04:50.521Z",
         "discovery_title": "Local sandboxing for GitHub Copilot now generally available",
         "discovery_published_at": "2026-10-07T15:46:17.000Z"
       },
@@ -95,8 +95,8 @@
       "article_id": "2026-10-07-purpose-built-model-for-leaked-secret-detection-d6b735286b37",
       "source_url": "https://github.blog/changelog/2026-10-07-purpose-built-model-for-leaked-secret-detection",
       "capture": {
-        "snapshot_sha256": "be05f5934b8bd019dab816e597fdeb649d89885644986d877f124fe809b8e568",
-        "observed_at": "2026-10-12T11:26:32.908Z",
+        "snapshot_sha256": "a922397d366a1e6f9ce757fd6e2ad776560cf3cbcd5a2a3f5466be1f3e63c32e",
+        "observed_at": "2026-10-13T03:04:51.151Z",
         "discovery_title": "Purpose-built model for leaked secret detection",
         "discovery_published_at": "2026-10-07T16:13:56.000Z"
       },
@@ -110,8 +110,8 @@
       "article_id": "2026-10-08-copilot-code-review-new-organization-billing-options-and-controls-24caa334278b",
       "source_url": "https://github.blog/changelog/2026-10-08-copilot-code-review-new-organization-billing-options-and-controls",
       "capture": {
-        "snapshot_sha256": "d2012f1a4354aac144055bd342434ce705d34e0d48204784ca4bb9d2dd83fa51",
-        "observed_at": "2026-10-12T11:26:32.973Z",
+        "snapshot_sha256": "1a4a02ad22562633c39b3032ca77384c99565f1f88f7d622fbb93b3daabf1959",
+        "observed_at": "2026-10-13T03:04:51.677Z",
         "discovery_title": "Copilot code review: New organization billing options and controls",
         "discovery_published_at": "2026-10-08T19:43:05.000Z"
       },
@@ -125,8 +125,8 @@
       "article_id": "2026-10-09-github-copilot-weekly-releases-october-5-ec899f104655",
       "source_url": "https://github.blog/changelog/2026-10-09-github-copilot-weekly-releases-october-5",
       "capture": {
-        "snapshot_sha256": "2c73801a883cb6a4e51f67477ac9e31121cc129802aa26ac833c4ef430ecfc44",
-        "observed_at": "2026-10-12T11:26:33.415Z",
+        "snapshot_sha256": "82628ac4375a8a18c82d5044ca615a38625b5b5556a99da62b9dff21eca3fe89",
+        "observed_at": "2026-10-13T03:04:52.294Z",
         "discovery_title": "GitHub Copilot weekly releases — October 5",
         "discovery_published_at": "2026-10-09T22:58:23.000Z"
       },
@@ -140,8 +140,8 @@
       "article_id": "2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains-a91405951b83",
       "source_url": "https://github.blog/changelog/2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains",
       "capture": {
-        "snapshot_sha256": "a130ec04caa232d91a8c2d81d640a65f3fce84aaf410fe8acd2880ebeeacb0a3",
-        "observed_at": "2026-10-12T11:26:33.796Z",
+        "snapshot_sha256": "bc5b21902c6d07654bd2041168dc05a2f566bec00b7ad456d644bba44e9d7fcd",
+        "observed_at": "2026-10-13T03:04:52.839Z",
         "discovery_title": "New controls and chat improvements in Copilot for JetBrains",
         "discovery_published_at": "2026-10-10T18:53:39.000Z"
       },
@@ -150,6 +150,17 @@
         "published_at": "2026-10-10T18:53:39.000Z",
         "publication_path": "/posts/2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains/"
       }
+    },
+    "2026-10-12-client-telemetry-user-attribution-and-configurable-capture-9d90bbd97b85": {
+      "article_id": "2026-10-12-client-telemetry-user-attribution-and-configurable-capture-9d90bbd97b85",
+      "source_url": "https://github.blog/changelog/2026-10-12-client-telemetry-user-attribution-and-configurable-capture",
+      "capture": {
+        "snapshot_sha256": "0365c171b74d183b1370a24a7e41ac0ce7ebfbc2106dd452e4ed9331ed581bca",
+        "observed_at": "2026-10-13T03:04:52.925Z",
+        "discovery_title": "Client telemetry user attribution and configurable capture",
+        "discovery_published_at": "2026-10-12T22:38:00.000Z"
+      },
+      "canonical": null
     }
   }
 }
