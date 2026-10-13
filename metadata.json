@@ -160,7 +160,11 @@
         "discovery_title": "Client telemetry user attribution and configurable capture",
         "discovery_published_at": "2026-10-12T22:38:00.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Client telemetry user attribution and configurable capture",
+        "published_at": "2026-10-12T22:38:00.000Z",
+        "publication_path": "/posts/2026-10-12-client-telemetry-user-attribution-and-configurable-capture/"
+      }
     }
   }
 }
