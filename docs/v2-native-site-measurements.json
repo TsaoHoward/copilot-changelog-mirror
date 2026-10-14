@@ -12,7 +12,10 @@
     "repetitions": 1
   },
   "baseline_ref": "9c5c95ad050a992b29e0f3aaaa476e8059b92698",
-  "implementation": "Issue #34 working tree atop baseline_ref; final commit recorded in review document",
+  "implementation": {
+    "measured_successful_code_snapshot": "b2258aecd7ea512dd87262b0a7901646f904dec5",
+    "reviewed_cleanup_fix_and_failure_contract": "97a63cb0dab33bb9cd858de08abbf9338c693c15"
+  },
   "setup": {
     "locked_dependency_install": {
       "milliseconds": 3650.593475,
@@ -48,11 +51,21 @@
     }
   },
   "routine_replacement": {
-    "source": "Final serial browser suite measurement appended after review; preceding shared artifact passed 13 checks and observed 3 Astro/3 Pagefind starts",
+    "source": "Actual shared-artifact diagnostics from the accepted serial browser run with isolated Vite cache",
     "primary_setups": 1,
     "changed_corpora": 1,
     "empty_corpora": 1,
-    "tool_count_method": "native-site-observer.mjs records actual child spawn events at the two tool entry points, including offline-guarded builds; no tool substitution"
+    "tool_count_method": "native-site-observer.mjs records actual child spawn events at the two tool entry points, including offline-guarded builds; no tool substitution",
+    "observed": {
+      "setup_ms": 1800.142613,
+      "adapter_ms": 21.332638000000003,
+      "astro_ms": 1489.7503649999999,
+      "pagefind_ms": 67.59925399999997,
+      "browser_ms": 8330.597306,
+      "astro_invocations": 3,
+      "pagefind_invocations": 3,
+      "shared_primary_setups": 1
+    }
   },
   "coexistence": {
     "old_gates": "Retained; their costs remain additive until caller migration",
@@ -63,6 +76,52 @@
     "Single repetitions; report wall times, no medians or ranges",
     "Warm npm-cache offline install; existing Chromium setup; cold network install/download and hosted runner unmeasured",
     "Baseline API stage timers and replacement subprocess stage timers have different boundaries; total command wall times are comparable",
-    "Independent saved-source/difference review complete; final regression evidence appended after clean-tree run"
-  ]
+    "Independent saved-source/difference review and final clean committed regression complete; see v2-native-site-review.md"
+  ],
+  "final_verification": {
+    "full_contract_suite": {
+      "group": "clean_full_contract_suite",
+      "seconds": 340.45213657571,
+      "exit": 0,
+      "test_concurrency": 1,
+      "repetitions": 1,
+      "code_revision": "97a63cb0dab33bb9cd858de08abbf9338c693c15",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/v2/*.test.ts"
+      ],
+      "tests": 326,
+      "passed": 326,
+      "failed": 0
+    },
+    "both_browser_suites": {
+      "group": "both_browser_suites",
+      "seconds": 42.7764043668285,
+      "exit": 0,
+      "test_concurrency": 1,
+      "repetitions": 1,
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/v2/native-site.browser.ts",
+        "tests/v2/search.browser.ts"
+      ],
+      "tests": 31,
+      "passed": 31,
+      "failed": 0
+    },
+    "first_attempt": {
+      "seconds": 321.8243923741393,
+      "exit": 1,
+      "failed": 23,
+      "reason": "Review source edits during execution caused retained stage control-source checks to reject the dirty recorded checkout. Clean committed rerun passed; no operational guard was weakened."
+    }
+  }
 }

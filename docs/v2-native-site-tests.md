@@ -128,3 +128,20 @@ installation, cold browser download and hosted runner timings were not measured.
 Warm-cache offline installation and already-installed browser setup are measured
 separately. API-versus-subprocess timing boundaries are explicit; one sample is
 not a median, range or promised saving.
+
+## Final verification
+
+On code revision `97a63cb0dab33bb9cd858de08abbf9338c693c15`, the clean serial full contract suite
+passed **326/326** tests in 340.45 seconds. Both serial Chromium suites
+passed **31/31** checks in 42.78 seconds. Formatting and type checking passed.
+
+The first full run applied review source edits while operational tests were still
+running; their control-source revision gates correctly rejected that dirty
+checkout. Review fixes were committed and the entire suite rerun cleanly. No
+production guard was changed to accommodate the test environment.
+
+The routine native browser group observed 3 Astro and 3 Pagefind starts,
+with one primary artifact shared across checks plus small refresh/empty corpora.
+The accepted original-corpus sample measured 2.406 seconds for the old command and
+1.930 seconds for the replacement under the stated comparable conditions.
+These are single measurements, without a savings target or median/range claim.
