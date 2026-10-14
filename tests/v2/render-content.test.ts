@@ -4,10 +4,10 @@ import { join } from "node:path";
 import { test } from "node:test";
 import { load } from "cheerio";
 import MarkdownIt from "markdown-it";
-import { Fixture, root, seedArticle } from "./support.js";
+import { root } from "./support.js";
+import { savedNormalization } from "./normalization-support.js";
 
 test("offline content conversion preserves code, relative media, useful TOC and punctuation/emoji section links", async (t) => {
-  const f = new Fixture(t);
   const source = "https://github.blog/changelog/copilot-debugging-fixture/";
   const fixture = readFileSync(
     join(root, "tests/fixtures/github_changelog_article.html"),
@@ -17,14 +17,8 @@ test("offline content conversion preserves code, relative media, useful TOC and 
     "</article>",
     '<p>Shared organization and enterprise skills remain useful.</p><h2>Share your feedback</h2><p>Use <code>value_1 * 2</code> inline.</p><img hidden src="/hidden.png"><img aria-hidden="true" src="/decorative.png"><img src="data:image/svg+xml,placeholder"><img src="/placeholder.svg"><video src="/demo.mp4" poster="/poster.png"><source src="/demo.webm"></video><iframe src="/embed/demo"></iframe></article>',
   );
-  const id = seedArticle(f, html, source);
-  const result = await f.render();
-  assert.equal(result.code, 0, result.stderr);
-  const body = f.git("show", `${f.branch}:posts/${id}.md`).toString();
-  assert.equal(
-    f.manifest().articles[id].canonical.title,
-    "Improved debugging with Copilot Chat",
-  );
+  const { canonical, body } = savedNormalization(html, source);
+  assert.equal(canonical.title, "Improved debugging with Copilot Chat");
   assert.ok(!body.includes("# Improved debugging"));
   assert.equal(body.match(/Table of Contents/g)?.length, 1);
   assert.ok(
@@ -76,21 +70,11 @@ test("offline content conversion preserves code, relative media, useful TOC and 
 test("a usable article H1 wins over page chrome and blank editorial H1 uses a usable page H1", async (t) => {
   for (const title of ["Editorial title", ""]) {
     await t.test(title || "blank", async (t) => {
-      const f = new Fixture(t);
-      const id = seedArticle(
-        f,
+      const { canonical, body } = savedNormalization(
         `<h1>Page fallback</h1><article><h1>${title}</h1><p>Body.</p></article>`,
       );
-      const result = await f.render();
-      assert.equal(result.code, 0, result.stderr);
-      assert.equal(
-        f.manifest().articles[id].canonical.title,
-        title || "Page fallback",
-      );
-      assert.equal(
-        f.git("show", `${f.branch}:posts/${id}.md`).toString(),
-        "Body.\n",
-      );
+      assert.equal(canonical.title, title || "Page fallback");
+      assert.equal(body, "Body.\n");
     });
   }
 });

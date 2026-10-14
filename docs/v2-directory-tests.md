@@ -4,9 +4,11 @@ The replacement consolidates product assertions into inexpensive discovery,
 domain and normalization seams plus focused directory CLI acceptance. All
 existing gates in this inventory remain required by active `capture`/`render`
 callers (`cli.ts`, stage writer, operational workflows and downstream site/Pages
-paths). Their retirement is **deferred until those callers migrate**; additive
-coverage alone is not authorization to remove them. No operational production
-gates are retired in this delivery. Directory commands do not consume custom
+paths). Operational-gate retirement is **deferred until those callers migrate**; additive
+coverage alone is not authorization to remove those gates. Metadata/content
+product cases now run directly at the shared normalization seam, preserving
+every source expectation while removing seven unnecessary Git fixture setups.
+No operational production gates are retired in this delivery. Directory commands do not consume custom
 Git/archive/publication protocols.
 
 The shared acquisition and Render candidate construction is now in
@@ -20,8 +22,10 @@ an unchanged frozen oracle with the migration-only comparison.
 ## Every affected historical case
 
 Each row identifies its current guarantee through the original test name.
-**Disposition for every row:** retain for its active production/shared caller;
-use replacement coverage below for new commands; defer deletion/relocation of
+**Disposition:** retain guarantees for every active production/shared caller;
+relocate the two metadata authority/fallback cases and both content cases to the
+shared saved-input normalizer; retain the conflicting-date CLI batch gate. For
+all remaining rows, retain the existing test and use replacement coverage below for new commands; defer deletion/relocation of
 the old case until that caller migrates. Production-only private-index,
 publication-identity, remote-ref-selection and cleanup/ref-advance assertions
 are not new directory guarantees. They remain old-caller gates, not replacement
@@ -59,11 +63,11 @@ requirements. Nested case matrices are listed after the table.
 | `render.test.ts` — selected discovery fallbacks change publication and title/time never rename the public route                       | Production Render      | directory-normalization: canonical stability/fallbacks; directory: derived repair/empty/offline                  |
 | `render.test.ts` — missing derived bodies repair offline and unrelated articles remain byte-for-byte intact                           | Production Render      | directory-normalization: canonical stability/fallbacks; directory: derived repair/empty/offline                  |
 | `render.test.ts` — absent capture input fails; a persisted empty v2 archive renders an unchanged empty publication set                | Production Render      | directory-normalization: canonical stability/fallbacks; directory: derived repair/empty/offline                  |
-| `render-metadata.test.ts` — equivalent associated Article, TechArticle, BlogPosting and WebPage dates normalize to one UTC instant    | Production Render      | directory-normalization: title/date authority and conflicts                                                      |
-| `render-metadata.test.ts` — metadata fallback ignores malformed, invalid, unrelated and modified-only structured dates                | Production Render      | directory-normalization: title/date authority and conflicts                                                      |
-| `render-metadata.test.ts` — conflicting associated publication instants fail the entire batch with identity and dates                 | Production Render      | directory-normalization: title/date authority and conflicts                                                      |
-| `render-content.test.ts` — offline content conversion preserves code, relative media, useful TOC and punctuation/emoji section links  | Production Render      | directory-normalization: authentic extracts and synthetic gap fixture                                            |
-| `render-content.test.ts` — a usable article H1 wins over page chrome and blank editorial H1 uses a usable page H1                     | Production Render      | directory-normalization: authentic extracts and synthetic gap fixture                                            |
+| `render-metadata.test.ts` — equivalent associated Article, TechArticle, BlogPosting and WebPage dates normalize to one UTC instant    | Production Render      | shared render-metadata: relocated authority/fallback; retained production CLI conflict gate                      |
+| `render-metadata.test.ts` — metadata fallback ignores malformed, invalid, unrelated and modified-only structured dates                | Production Render      | shared render-metadata: relocated authority/fallback; retained production CLI conflict gate                      |
+| `render-metadata.test.ts` — conflicting associated publication instants fail the entire batch with identity and dates                 | Production Render      | shared render-metadata: relocated authority/fallback; retained production CLI conflict gate                      |
+| `render-content.test.ts` — offline content conversion preserves code, relative media, useful TOC and punctuation/emoji section links  | Production Render      | directory-normalization: authentic extracts; shared render-content: relocated synthetic/media/anchor cases       |
+| `render-content.test.ts` — a usable article H1 wins over page chrome and blank editorial H1 uses a usable page H1                     | Production Render      | directory-normalization: authentic extracts; shared render-content: relocated synthetic/media/anchor cases       |
 | `render-safety.test.ts` — invalid input and late normalization failures never partially commit canonical state                        | Production Render      | directory-contracts: invalid data/routes; directory: late Render, safety and promotion failures                  |
 | `render-safety.test.ts` — route collisions reject the whole batch without inventing a hash suffix                                     | Production Render      | directory-contracts: invalid data/routes; directory: late Render, safety and promotion failures                  |
 | `render-safety.test.ts` — render preserves staged/unstaged/untracked application work and ignores inherited Git overrides             | Production Render      | directory-contracts: invalid data/routes; directory: late Render, safety and promotion failures                  |
@@ -91,11 +95,11 @@ The matrices inside those cases remain covered:
   snapshot, snapshot/body symlink, legacy frontmatter, empty/unusable HTML and
   invalid UTF-8. Directory validation shares domain checks; normalization uses
   strict saved-byte contracts and one late full-batch failure.
-- Metadata: associated Article/TechArticle/BlogPosting/WebPage, equivalent
+- Metadata (relocated saved-input cases, retained CLI conflict): associated Article/TechArticle/BlogPosting/WebPage, equivalent
   timezone instants, malformed/unrelated/modified-only/invalid dates, null
-  discovery fallback and conflicting associated instants. Existing type/date
-  matrices remain the comprehensive shared-normalizer gate; cheap replacement
-  checks exercise authority/fallback/conflict without Git.
+  discovery fallback and conflicting associated instants. Type/date
+  matrices now exercise the comprehensive shared-normalizer gate without Git.
+  The conflicting-date production CLI case still proves whole-batch rejection.
 - Git: production-only orphan bootstrap, remote-only/ambiguous ancestry,
   symbolic/default/checked-out branches, private index writes/commit-tree and
   cleanup/ref races retain old callers. Directory acceptance instead requires
@@ -128,54 +132,73 @@ this migration comparison; the replacement contracts use minimal conditions.
 ## Fresh measurements
 
 Measured 2026-10-14 (Asia/Taipei) on local WSL2 x86_64, Linux
-6.6.87.2-microsoft-standard-WSL2, Node v22.22.0 and npm 10.9.4. Baseline source
-is `eef5ebb57db4c96717d08e4859da66ebbd86c45b`. Implementation source was copied
-from this branch into a disposable snapshot based on that revision; its local
-measurement snapshot is `8089598e2eb1b366457750714fdceb6a36bcea6c` (includes temporary
-fixture-constructor instrumentation). Those measurement-only copies do not land
-in the application. The checked-in [raw measurement record](v2-directory-measurements.json)
-contains every repetition, environment and lockfile digest.
+6.6.87.2-microsoft-standard-WSL2, Node v22.22.0 and npm 10.9.4. Baseline application
+source is `eef5ebb57db4c96717d08e4859da66ebbd86c45b`; implemented application
+code is `0ae673a5dbeaae34656f13da27b7e61d94a8313e`. Final relocated tests were
+measured in disposable snapshot `bbb399c6591724bfdea43326535f59ffc24ea5a8` based on
+that code, with temporary constructor instrumentation. No measurement-only
+instrumentation lands in the application. The [raw measurement record](v2-directory-measurements.json)
+contains every corrected repetition, environment, source revisions and lockfile digest.
 
-Both copies use the same existing `node_modules` and lockfile (SHA-256
+Both copies use the same installed `node_modules` and lockfile (SHA-256
 `7062f8445365011714769409b0b94c574894960773e23ae2aba2c474f514e8dd`).
 Dependencies are warm; OS filesystem/page caches are uncontrolled. Three serial
 runs per group use `node --import tsx --test --test-concurrency=1`.
-The local machine also hosted this interactive implementation session; these
-are observed local costs, not dedicated CI-runner or cold-install benchmarks.
+The local machine also hosted this interactive session; these are observed
+local costs, not dedicated CI-runner or cold-install benchmarks. Corrected
+comparisons ran without concurrent full-suite execution.
 
-| Group                 | Wall seconds median (range) | Git processes/run | Fixture constructors/run | Constructor milliseconds total median (range) | Git initializations/run |
-| --------------------- | --------------------------: | ----------------: | -----------------------: | --------------------------------------------: | ----------------------: |
-| before-core           |      50.037 (49.379–50.501) |              1631 |                       71 |                        1371.1 (1322.1–1384.4) |                      73 |
-| after-production-core |      50.340 (50.283–52.074) |              1631 |                       71 |                        1340.3 (1308.2–1369.7) |                      73 |
-| after-cheap           |         0.695 (0.662–0.753) |                 0 |                        0 |                                 0.0 (0.0–0.0) |                       0 |
-| after-directory       |         9.101 (9.086–9.125) |               220 |                       12 |                           182.1 (179.5–190.3) |                      17 |
+| Group                                    | Wall seconds median (range) | Git processes/run | Fixture constructors/run | Constructor milliseconds total median (range) | Git initializations/run |
+| ---------------------------------------- | --------------------------: | ----------------: | -----------------------: | --------------------------------------------: | ----------------------: |
+| Baseline production core                 |      47.687 (47.455–48.554) |              3563 |                       71 |                        1039.6 (1021.3–1049.7) |                      73 |
+| Final retained/relocated production core |      48.925 (46.429–50.095) |              3306 |                       64 |                          999.1 (930.4–1041.4) |                      66 |
+| Final cheap product contracts            |         1.189 (1.170–1.223) |                 0 |                        0 |                                 0.0 (0.0–0.0) |                       0 |
+| Additive directory acceptance            |       10.305 (9.992–10.616) |               512 |                       12 |                           175.2 (168.7–195.1) |                      17 |
 
-The before/after production core groups contain acquisition, capture, domain,
+Before/after production core groups contain acquisition, capture, domain,
 invalid-state, git-safety, render, render-metadata, render-content, render-safety
-and production-render files. The after-cheap group is shared domain plus
-`directory-contracts` and `directory-normalization`; it replaces the product
-assertion approach, not every old operational guarantee. After-directory is
-`directory.test.ts`, including bare remotes and dirty-target cases. Git counts
-come from `GIT_TRACE2_EVENT` start events, including child Git commands and
-caller-owned persistence. Setup times bracket each Fixture/DirectoryFixture
-constructor, including directories and initial Git commits; separately-created
-bare repositories and application/competitor checkouts appear in initialization
-counts but are not constructor times.
+and production-render files. The final cheap group includes shared domain,
+directory contracts/normalization and relocated render-content/metadata product
+cases. The retained conflicting-date CLI case is excluded with the explicit
+product-case name filter below; it remains in the production core group.
+Directory acceptance is `directory.test.ts`, including bare remotes and
+user-work safety. Counts/times compare the same cases before/after relocation;
+additive tests are reported separately and do not replace operational gates.
 
-Checked-in saved fixture bytes consumed by the baseline core are 672063
-(production HTML and frozen JSON plus the synthetic gap HTML). The cheap
-replacement normalization group consumes 13514 bytes (three minimal
-HTML extracts plus the synthetic gap HTML). README provenance is excluded.
-Generated buffers and local-server responses are not checked-in fixture bytes;
-no cumulative temporary working-tree size or whole-suite setup cost is claimed.
+```sh
+node --import tsx --test --test-concurrency=1 \
+  --test-name-pattern='cheap|directory candidate|discovery-only|minimal authentic|strict directory|raw-only|a capture creates|shared API|stage APIs|equivalent maps|archive validation|offline content|usable article H1|equivalent associated|metadata fallback' \
+  tests/v2/domain.test.ts tests/v2/directory-contracts.test.ts \
+  tests/v2/directory-normalization.test.ts tests/v2/render-content.test.ts \
+  tests/v2/render-metadata.test.ts
+```
 
-The standalone migration-only comparison took 4.086 seconds and 15 Git
-processes in one observed run, using one archive constructor and the original
-saved corpus. This separate cost was observed while the final full suite was
-also running, so it is not a controlled before/after timing comparison. It is
-excluded from the permanent replacement test group.
+Git-process counts use a temporary `git` executable shim on PATH: append its PID
+to a counter file, then `exec` the real Git with unchanged arguments. This
+includes CLI subprocesses that deliberately sanitize inherited `GIT_*`
+environment variables. Injected failure wrappers that return before executing
+real Git are excluded. Earlier trace-only counts omitted sanitized children
+and are superseded by this record. Every corrected group uses the same shim;
+its shell/log overhead is included. Initialization counts use trace events;
+initialization is caller-owned in these groups. Fixture constructor timers
+include directories and initial commits. Separately-created bare repositories
+and competitor/application checkouts count as initializations, but are not
+constructor timings.
 
-All measured groups passed. The retained production group remains about 50
-seconds and 1631 Git processes; this additive delivery **does not claim an
-overall CI speedup**. The cheap contracts avoid Git setup, and new directory
-acceptance adds its own measured cost while old production gates remain active.
+Checked-in saved fixture bytes consumed by baseline core: 672063
+(production HTML and frozen JSON plus synthetic gap HTML). Cheap replacement
+normalization consumes 13514 bytes (three minimal HTML extracts plus
+the shared synthetic gap HTML). Provenance README files, generated buffers and
+local-server responses are excluded; no cumulative temporary checkout size or
+whole-suite setup cost is claimed.
+
+The migration-only comparison took 1.014 seconds and 40 Git executions in one
+standalone corrected-counter run, with one archive constructor and the original
+saved corpus. It is excluded from permanent replacement contracts. All corrected
+measured groups passed.
+
+Relocation removes seven Git fixture constructors and 257 real Git executions
+from the retained core group. Its wall-time ranges overlap and its median is
+slightly higher in this local sample, so **no runtime speedup is claimed**.
+The new cheap product group uses no Git; directory acceptance adds its own
+measured cost. This additive delivery does not claim an overall CI speedup.

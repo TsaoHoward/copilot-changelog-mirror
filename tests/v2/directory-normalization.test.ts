@@ -106,66 +106,7 @@ test("minimal authentic nested editorial roots retain skills, feedback, ordered 
   );
 });
 
-test("synthetic gap fixture retains code, emoji and useful in-body TOC while resolving relative media", () => {
-  const result = convert(
-    readFileSync(join(root, "tests/fixtures/github_changelog_article.html")),
-    "https://github.blog/changelog/copilot-debugging-fixture/",
-  );
-  assert.match(
-    result.body,
-    /```python\ndef first_frame\(lines\):\n    return next\(iter\(lines\), None\)\n```/,
-  );
-  assert.equal(result.body.match(/Table of Contents/g)?.length, 1);
-  assert.match(result.body, /🚀 Try it out/);
-  assert.match(result.body, /\*\*clearer debugging steps\*\*/);
-  assert.match(
-    result.body,
-    /https:\/\/github.blog\/wp-content\/uploads\/debugging.png/,
-  );
-  const $ = load(new MarkdownIt({ html: true }).render(result.body));
-  $("a[href^='#']").each((_, el) =>
-    assert.equal($(`[id='${$(el).attr("href")!.slice(1)}']`).length, 1),
-  );
-});
-
-test("saved title and date authority honor fallbacks and reject conflicting associated instants", () => {
-  const source = "https://github.blog/changelog/release/";
-  const schema = (date: string, url = source) =>
-    `<script type='application/ld+json'>${JSON.stringify({ "@type": "Article", url, datePublished: date })}</script>`;
-  const html = Buffer.from(
-    `<h1>Page fallback</h1><article><h1>Editorial title</h1><p>Body.</p></article>${schema("2026-10-01T08:00:00+08:00")}${schema("2026-10-01T00:00:00Z")}`,
-  );
-  assert.deepEqual(convert(html).canonical, {
-    title: "Editorial title",
-    published_at: "2026-10-01T00:00:00.000Z",
-    publication_path: "/posts/release/",
-  });
-  assert.equal(
-    convert(
-      Buffer.from(
-        "<h1>Page fallback</h1><article><h1> </h1><p>Body.</p></article>",
-      ),
-    ).canonical.title,
-    "Page fallback",
-  );
-  const fallback = Buffer.from(
-    `<article><p>Body.</p></article>${schema("2026-02-30T00:00:00Z")}${schema("2026-10-01T00:00:00Z", "https://other.invalid/")}`,
-  );
-  assert.equal(
-    convert(fallback, source, " Feed fallback ", "2026-09-01T00:00:00.000Z")
-      .canonical.title,
-    "Feed fallback",
-  );
-  assert.equal(convert(fallback, source, "", null).canonical.title, source);
-  assert.equal(
-    convert(fallback, source, "", null).canonical.published_at,
-    null,
-  );
-  assert.throws(
-    () =>
-      convert(Buffer.from(html.toString() + schema("2026-10-02T00:00:00Z"))),
-    /Conflicting.*datePublished/,
-  );
+test("strict directory normalization rejects unsupported layouts and invalid saved UTF-8", () => {
   assert.throws(
     () =>
       convert(

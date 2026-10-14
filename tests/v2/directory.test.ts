@@ -431,6 +431,9 @@ test("Capture starts with renderer unavailable; Render runs with acquisition una
   assert.equal(captured.code, 0, captured.stderr);
   assert.equal(existsSync(isolationLog), false);
   f.persist("Capture");
+  const { rmSync } = await import("node:fs");
+  rmSync(new URL(source));
+  rmSync(join(f.dir, "feed.xml"));
   const rendered = await f.cli(
     "render",
     [],

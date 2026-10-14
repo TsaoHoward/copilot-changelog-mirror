@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Fixture, seedArticle } from "./support.js";
+import { savedNormalization } from "./normalization-support.js";
 const script = (record: unknown) =>
   `<script type="application/ld+json">${JSON.stringify(record)}</script>`;
 
 test("equivalent associated Article, TechArticle, BlogPosting and WebPage dates normalize to one UTC instant", async (t) => {
-  const f = new Fixture(t);
   const source = "https://github.blog/changelog/article/";
   const html =
     script({
@@ -48,10 +48,8 @@ test("equivalent associated Article, TechArticle, BlogPosting and WebPage dates 
         },
       ],
     }) + "<article><h1>HTML title</h1><p>Article body.</p></article>";
-  const id = seedArticle(f, html);
-  const result = await f.render();
-  assert.equal(result.code, 0, result.stderr);
-  assert.deepEqual(f.manifest().articles[id].canonical, {
+  const result = savedNormalization(html);
+  assert.deepEqual(result.canonical, {
     title: "HTML title",
     published_at: "2026-10-01T12:30:00.000Z",
     publication_path: "/posts/article/",
@@ -76,21 +74,21 @@ test("metadata fallback ignores malformed, invalid, unrelated and modified-only 
   ];
   for (const time of ["2026-09-01T00:00:00.000Z", null]) {
     await t.test(`discovery time ${time}`, async (t) => {
-      const f = new Fixture(t);
       const html =
         script(cases) +
         '<script type="application/ld+json">{bad json</script><title>Browser suffix</title><article><p>Still a usable body.</p></article>';
-      const id = seedArticle(f, html, source, "  Saved fallback  ", time);
-      const result = await f.render();
-      assert.equal(result.code, 0, result.stderr);
-      assert.equal(f.manifest().articles[id].canonical.title, "Saved fallback");
-      assert.equal(f.manifest().articles[id].canonical.published_at, time);
+      const result = savedNormalization(
+        html,
+        source,
+        "  Saved fallback  ",
+        time,
+      );
+      assert.equal(result.canonical.title, "Saved fallback");
+      assert.equal(result.canonical.published_at, time);
     });
   }
-  const f = new Fixture(t);
-  const id = seedArticle(f, "<p>Usable body.</p>", source, "  ", null);
-  assert.equal((await f.render()).code, 0);
-  assert.equal(f.manifest().articles[id].canonical.title, source);
+  const result = savedNormalization("<p>Usable body.</p>", source, "  ", null);
+  assert.equal(result.canonical.title, source);
 });
 
 test("conflicting associated publication instants fail the entire batch with identity and dates", async (t) => {
