@@ -43,3 +43,7 @@ Published articles retain `/posts/<slug>/` under `/copilot-changelog-mirror/`, s
 The additive [directory Capture and offline Render workflow](docs/v2-directory.md)
 uses a dedicated archive checkout and ordinary Git persistence (`capture:directory`
 and `render:directory`). Production entry points remain available.
+
+The additive [saved-archive site build](docs/v2-native-site.md) uses
+`site:build:directory` to build/index fresh static output with native Astro and
+Pagefind, independently of capture, Git persistence and deployment.

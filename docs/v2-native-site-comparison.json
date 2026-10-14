@@ -1,0 +1,49 @@
+{
+  "baseline_ref": "9c5c95ad050a992b29e0f3aaaa476e8059b92698",
+  "application_revision": "9c5c95ad050a992b29e0f3aaaa476e8059b92698",
+  "environment": {
+    "date": "2026-10-14 Asia/Taipei",
+    "node": "v22.22.0",
+    "npm": "10.9.4",
+    "os": "linux 6.6.87.2-microsoft-standard-WSL2 x64",
+    "lockfile_sha256": "7062f8445365011714769409b0b94c574894960773e23ae2aba2c474f514e8dd",
+    "chromium": "153.0.8010.12",
+    "dependencies": "Same preinstalled locked node_modules, no install during either build",
+    "cache": "Fresh per-invocation Astro and Vite cache and output for both paths; warm dependencies/browser; uncontrolled OS page cache",
+    "concurrency": 1,
+    "repetitions": 1
+  },
+  "corpus": "Original six saved authentic production articles, one offline Render setup shared by both builds; frozen source-reviewed editorial expectations",
+  "fixture_setup_ms": 632.205963,
+  "measurements": {
+    "baseline": {
+      "total_ms": 2406.350989,
+      "astro_api_ms": 805.5939870000001,
+      "pagefind_api_ms": 36.176205999999866,
+      "astro_invocations": 1,
+      "pagefind_invocations": 1,
+      "install_invocations": 0,
+      "browser_smoke_ms": 264.4477119999992
+    },
+    "replacement": {
+      "total_ms": 1930.0591609999997,
+      "adapter_ms": 12.96530100000001,
+      "astro_ms": 1699.473817,
+      "pagefind_ms": 57.29498899999999,
+      "astro_invocations": 1,
+      "pagefind_invocations": 1,
+      "install_invocations": 0,
+      "browser_smoke_ms": 1724.2515979999998
+    }
+  },
+  "differences": [],
+  "intentional_ui_differences": [
+    "Pagefind maintained UI supplies native five-result continuation and section subresults; old UI uses ten-result batches",
+    "Visible input label, live status and local-asset failure fallback supplied by small adapter; titles/excerpts otherwise use maintained UI",
+    "No JavaScript displays browse fallback without an unusable input",
+    "Heading slugs that duplicate explicit archive anchors receive a suffix; original fragments remain unchanged"
+  ],
+  "independence": "Complete: independent spec_review checked all six saved sources/frozen expectations, minimized fixtures, both artifacts and both real indexes. See v2-native-site-review.md.",
+  "timing_boundaries": "Totals comparable end-to-end. Baseline stage numbers are in-process API elapsed times from timing-only worker instrumentation; replacement stage numbers include separate subprocess/CLI startup. Do not compare these boundaries as equivalent API timings.",
+  "source_comparison_limits": "Equality covers established canonical presentation; existing Render maps raw self-links to archive-heading-N targets. It does not claim raw-source fragment-ID byte identity."
+}

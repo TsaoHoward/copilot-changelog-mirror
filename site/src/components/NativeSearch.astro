@@ -1,0 +1,25 @@
+---
+import { sitePath } from "../data";
+---
+
+<section
+  class="archive-search native-search"
+  aria-label="Search announcements"
+  data-native-search
+  data-base={sitePath("/")}
+>
+  <link rel="stylesheet" href={sitePath("/pagefind/pagefind-ui.css")} />
+  <label for="announcement-query">Search announcements</label>
+  <div id="announcement-search"></div>
+  <span
+    class="sr-only"
+    data-search-feedback
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+  ></span>
+  <p data-search-fallback role="status" aria-live="polite">
+    Search needs JavaScript. You can browse the announcements below.
+  </p>
+</section>
+<script type="module" src={sitePath("/native-search.mjs")} is:inline></script>

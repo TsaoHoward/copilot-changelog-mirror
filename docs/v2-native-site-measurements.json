@@ -1,0 +1,127 @@
+{
+  "environment": {
+    "date": "2026-10-14 Asia/Taipei",
+    "node": "v22.22.0",
+    "npm": "10.9.4",
+    "os": "linux 6.6.87.2-microsoft-standard-WSL2 x64",
+    "lockfile_sha256": "7062f8445365011714769409b0b94c574894960773e23ae2aba2c474f514e8dd",
+    "chromium": "153.0.8010.12",
+    "dependencies": "Same preinstalled locked node_modules, no install during either build",
+    "cache": "Fresh per-invocation Astro and Vite cache and output for both paths; warm dependencies/browser; uncontrolled OS page cache",
+    "concurrency": 1,
+    "repetitions": 1
+  },
+  "baseline_ref": "9c5c95ad050a992b29e0f3aaaa476e8059b92698",
+  "implementation": {
+    "measured_successful_code_snapshot": "b2258aecd7ea512dd87262b0a7901646f904dec5",
+    "reviewed_cleanup_fix_and_failure_contract": "97a63cb0dab33bb9cd858de08abbf9338c693c15"
+  },
+  "setup": {
+    "locked_dependency_install": {
+      "milliseconds": 3650.593475,
+      "exit": 0,
+      "conditions": "Fresh target; warm npm cache; offline; ignore-scripts; same lockfile as both builds"
+    },
+    "installed_chromium_setup": {
+      "milliseconds": 287.625262,
+      "exit": 0,
+      "conditions": "Existing cached Playwright Chromium; verifies setup, not a cold browser download"
+    }
+  },
+  "original_corpus_comparison": {
+    "fixture_setup_ms": 632.205963,
+    "baseline": {
+      "total_ms": 2406.350989,
+      "astro_api_ms": 805.5939870000001,
+      "pagefind_api_ms": 36.176205999999866,
+      "astro_invocations": 1,
+      "pagefind_invocations": 1,
+      "install_invocations": 0,
+      "browser_smoke_ms": 264.4477119999992
+    },
+    "replacement": {
+      "total_ms": 1930.0591609999997,
+      "adapter_ms": 12.96530100000001,
+      "astro_ms": 1699.473817,
+      "pagefind_ms": 57.29498899999999,
+      "astro_invocations": 1,
+      "pagefind_invocations": 1,
+      "install_invocations": 0,
+      "browser_smoke_ms": 1724.2515979999998
+    }
+  },
+  "routine_replacement": {
+    "source": "Actual shared-artifact diagnostics from the accepted serial browser run with isolated Vite cache",
+    "primary_setups": 1,
+    "changed_corpora": 1,
+    "empty_corpora": 1,
+    "tool_count_method": "native-site-observer.mjs records actual child spawn events at the two tool entry points, including offline-guarded builds; no tool substitution",
+    "observed": {
+      "setup_ms": 1800.142613,
+      "adapter_ms": 21.332638000000003,
+      "astro_ms": 1489.7503649999999,
+      "pagefind_ms": 67.59925399999997,
+      "browser_ms": 8330.597306,
+      "astro_invocations": 3,
+      "pagefind_invocations": 3,
+      "shared_primary_setups": 1
+    }
+  },
+  "coexistence": {
+    "old_gates": "Retained; their costs remain additive until caller migration",
+    "migration": "One accepted original-corpus comparison; two locator/sentinel development attempts and one superseded shared-Vite-cache measurement each also built old/new once",
+    "dependency_installs_in_build": 0
+  },
+  "limitations": [
+    "Single repetitions; report wall times, no medians or ranges",
+    "Warm npm-cache offline install; existing Chromium setup; cold network install/download and hosted runner unmeasured",
+    "Baseline API stage timers and replacement subprocess stage timers have different boundaries; total command wall times are comparable",
+    "Independent saved-source/difference review and final clean committed regression complete; see v2-native-site-review.md"
+  ],
+  "final_verification": {
+    "full_contract_suite": {
+      "group": "clean_full_contract_suite",
+      "seconds": 340.45213657571,
+      "exit": 0,
+      "test_concurrency": 1,
+      "repetitions": 1,
+      "code_revision": "97a63cb0dab33bb9cd858de08abbf9338c693c15",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/v2/*.test.ts"
+      ],
+      "tests": 326,
+      "passed": 326,
+      "failed": 0
+    },
+    "both_browser_suites": {
+      "group": "both_browser_suites",
+      "seconds": 42.7764043668285,
+      "exit": 0,
+      "test_concurrency": 1,
+      "repetitions": 1,
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/v2/native-site.browser.ts",
+        "tests/v2/search.browser.ts"
+      ],
+      "tests": 31,
+      "passed": 31,
+      "failed": 0
+    },
+    "first_attempt": {
+      "seconds": 321.8243923741393,
+      "exit": 1,
+      "failed": 23,
+      "reason": "Review source edits during execution caused retained stage control-source checks to reject the dirty recorded checkout. Clean committed rerun passed; no operational guard was weakened."
+    }
+  }
+}
