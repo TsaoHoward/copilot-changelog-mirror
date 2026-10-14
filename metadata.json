@@ -175,7 +175,11 @@
         "discovery_title": "Enterprise managed settings enforcement updates",
         "discovery_published_at": "2026-10-13T15:20:10.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Enterprise managed settings enforcement updates",
+        "published_at": "2026-10-13T15:20:10.000Z",
+        "publication_path": "/posts/2026-10-13-enterprise-managed-settings-enforcement-updates/"
+      }
     },
     "2026-10-13-gemini-4-argon-in-github-copilot-23347420601c": {
       "article_id": "2026-10-13-gemini-4-argon-in-github-copilot-23347420601c",
@@ -186,7 +190,11 @@
         "discovery_title": "Gemini 4 Argon in GitHub Copilot",
         "discovery_published_at": "2026-10-13T18:39:56.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Gemini 4 Argon in GitHub Copilot",
+        "published_at": "2026-10-13T18:39:56.000Z",
+        "publication_path": "/posts/2026-10-13-gemini-4-argon-in-github-copilot/"
+      }
     }
   }
 }
