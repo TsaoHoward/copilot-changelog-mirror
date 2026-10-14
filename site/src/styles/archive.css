@@ -244,3 +244,36 @@ nav {
     padding-inline: 1rem;
   }
 }
+
+.native-search {
+  --pagefind-ui-primary: #095dab;
+  --pagefind-ui-text: #202a36;
+  --pagefind-ui-background: #faf9f6;
+  --pagefind-ui-border: #8a98a8;
+  --pagefind-ui-font: inherit;
+}
+.native-search .pagefind-ui__result {
+  overflow-wrap: anywhere;
+}
+.native-search .pagefind-ui__search-input {
+  padding-left: 3rem;
+}
+.native-search .pagefind-ui__button {
+  width: 100%;
+}
+
+.native-search .pagefind-ui__search-clear {
+  min-width: 44px;
+  min-height: 44px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
