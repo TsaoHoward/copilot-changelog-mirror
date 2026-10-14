@@ -50,8 +50,8 @@
       "article_id": "2026-10-07-claude-haiku-5-5-in-github-copilot-d309be13e53a",
       "source_url": "https://github.blog/changelog/2026-10-07-claude-haiku-5-5-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "011e4badc01495dc63be376e4730ba0dfa4d184592a8934d7fa10b36c9c2a126",
-        "observed_at": "2026-10-14T01:16:52.763Z",
+        "snapshot_sha256": "ef95a11916e5cf53fac96a46a653543e02b51e398097fd320b6670d879ae7537",
+        "observed_at": "2026-10-14T09:35:43.675Z",
         "discovery_title": "Claude Haiku 5.5 in GitHub Copilot",
         "discovery_published_at": "2026-10-07T20:12:18.000Z"
       },
@@ -80,8 +80,8 @@
       "article_id": "2026-10-07-local-sandboxing-for-github-copilot-now-generally-available-1e174328109a",
       "source_url": "https://github.blog/changelog/2026-10-07-local-sandboxing-for-github-copilot-now-generally-available",
       "capture": {
-        "snapshot_sha256": "166c7ff03b5c73203e9862c3c53c4ed3e1490b6e926f52f8a6024d1439b7f539",
-        "observed_at": "2026-10-14T01:16:53.935Z",
+        "snapshot_sha256": "169224e52cd98323db173808d5fb60e93391eb2d6a2b7d345b74cc6ff0b6bded",
+        "observed_at": "2026-10-14T09:35:45.175Z",
         "discovery_title": "Local sandboxing for GitHub Copilot now generally available",
         "discovery_published_at": "2026-10-07T15:46:17.000Z"
       },
@@ -110,8 +110,8 @@
       "article_id": "2026-10-08-copilot-code-review-new-organization-billing-options-and-controls-24caa334278b",
       "source_url": "https://github.blog/changelog/2026-10-08-copilot-code-review-new-organization-billing-options-and-controls",
       "capture": {
-        "snapshot_sha256": "ef8d5c951c2c8d8584b8eb759102ea8c281c146d37a3e2c7a55fd5f7ded0d5bb",
-        "observed_at": "2026-10-14T01:16:55.720Z",
+        "snapshot_sha256": "1a1baebdd2b70152d17fbda189274eb3a385bde3957ec65c8b96f4d12332d19e",
+        "observed_at": "2026-10-14T09:35:46.397Z",
         "discovery_title": "Copilot code review: New organization billing options and controls",
         "discovery_published_at": "2026-10-08T19:43:05.000Z"
       },
@@ -125,8 +125,8 @@
       "article_id": "2026-10-09-github-copilot-weekly-releases-october-5-ec899f104655",
       "source_url": "https://github.blog/changelog/2026-10-09-github-copilot-weekly-releases-october-5",
       "capture": {
-        "snapshot_sha256": "44d92ed56dcd10d67d80ab32f653238713cc23788e6d037b66010718deec628d",
-        "observed_at": "2026-10-14T01:16:56.317Z",
+        "snapshot_sha256": "d9465ace7d03439e92081e636fdacfa59286984a25be9aab7ad614f1c0bf4117",
+        "observed_at": "2026-10-14T09:35:46.942Z",
         "discovery_title": "GitHub Copilot weekly releases — October 5",
         "discovery_published_at": "2026-10-09T22:58:23.000Z"
       },
@@ -140,8 +140,8 @@
       "article_id": "2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains-a91405951b83",
       "source_url": "https://github.blog/changelog/2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains",
       "capture": {
-        "snapshot_sha256": "925202a6b44cbbedd57bdeab276fba3a23c4123abeaf7b7ecef0c1e156a08884",
-        "observed_at": "2026-10-14T01:16:57.798Z",
+        "snapshot_sha256": "494fa7ddfd2c3a93545d03536f56300aa983c23a2d0962ff2b3f18ed2e902926",
+        "observed_at": "2026-10-14T09:35:47.381Z",
         "discovery_title": "New controls and chat improvements in Copilot for JetBrains",
         "discovery_published_at": "2026-10-10T18:53:39.000Z"
       },
@@ -170,8 +170,8 @@
       "article_id": "2026-10-13-enterprise-managed-settings-enforcement-updates-bca5e0416551",
       "source_url": "https://github.blog/changelog/2026-10-13-enterprise-managed-settings-enforcement-updates",
       "capture": {
-        "snapshot_sha256": "cdbcd9f73636a07bedac56bd1583a44f94c73f056d8b9c8e42ed261cb23f888b",
-        "observed_at": "2026-10-14T01:16:58.705Z",
+        "snapshot_sha256": "f40e3a7186e808843cf8b2a6bf73faf81b36fc29057738c99e626e35026cd9b6",
+        "observed_at": "2026-10-14T09:35:47.895Z",
         "discovery_title": "Enterprise managed settings enforcement updates",
         "discovery_published_at": "2026-10-13T15:20:10.000Z"
       },
