@@ -19,7 +19,9 @@
     "site:identity": "node --import tsx src/v2/site-cli.ts identity",
     "stage": "node --import tsx src/v2/stage-cli.ts",
     "pages": "node --import tsx src/v2/pages-cli.ts",
-    "cutover": "node --import tsx src/v2/cutover-cli.ts"
+    "cutover": "node --import tsx src/v2/cutover-cli.ts",
+    "capture:directory": "node --import tsx src/v2/capture-directory-cli.ts",
+    "render:directory": "node --import tsx src/v2/render-directory-cli.ts"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "7.3.2",
