@@ -1,0 +1,160 @@
+{
+  "base": "eef5ebb57db4c96717d08e4859da66ebbd86c45b",
+  "application_code_revision": "0ae673a5dbeaae34656f13da27b7e61d94a8313e",
+  "implementation_test_snapshot": "bbb399c6591724bfdea43326535f59ffc24ea5a8",
+  "environment": {
+    "date": "2026-10-14 Asia/Taipei",
+    "node": "v22.22.0",
+    "npm": "10.9.4",
+    "os": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "runner": "local WSL2 x86_64; warm installed node_modules; uncontrolled OS caches; serial measured groups; interactive session, no concurrent full-suite run during corrected comparisons",
+    "lockfile_sha256": "7062f8445365011714769409b0b94c574894960773e23ae2aba2c474f514e8dd",
+    "test_concurrency": 1,
+    "repetitions": 3,
+    "baseline_fixture_bytes": 672063,
+    "minimal_fixture_bytes": 13514,
+    "counter_overhead": "All corrected groups use the same PATH shim (one shell/log append before exec Git). Fixture constructors instrumented only in disposable source copies."
+  },
+  "git_counter": "PATH shim logs actual Git executions, including children whose Git environment variables are sanitized; injected wrappers that return before executing Git are excluded. Previous trace-only Git counts counted callers, not sanitized CLI children.",
+  "rows": [
+    {
+      "group": "before-core-complete-counter",
+      "repetition": 0,
+      "seconds": 48.55447294237092,
+      "exit": 0,
+      "git_processes": 3563,
+      "git_initializations": 73,
+      "fixture_setups": 71,
+      "setup_ms": 1049.654225000005,
+      "setup_range_ms": [12.658821999999418, 19.849863999999798]
+    },
+    {
+      "group": "before-core-complete-counter",
+      "repetition": 1,
+      "seconds": 47.686592881102115,
+      "exit": 0,
+      "git_processes": 3563,
+      "git_initializations": 73,
+      "fixture_setups": 71,
+      "setup_ms": 1021.3323050000012,
+      "setup_range_ms": [12.646691999999803, 22.723752999999988]
+    },
+    {
+      "group": "before-core-complete-counter",
+      "repetition": 2,
+      "seconds": 47.45456980494782,
+      "exit": 0,
+      "git_processes": 3563,
+      "git_initializations": 73,
+      "fixture_setups": 71,
+      "setup_ms": 1039.6069759999993,
+      "setup_range_ms": [12.590268999999807, 21.65528800000004]
+    },
+    {
+      "group": "after-relocated-core-complete-counter",
+      "repetition": 0,
+      "seconds": 46.4288788381964,
+      "exit": 0,
+      "git_processes": 3306,
+      "git_initializations": 66,
+      "fixture_setups": 64,
+      "setup_ms": 930.3957359999995,
+      "setup_range_ms": [12.574058999999579, 19.248819000000367]
+    },
+    {
+      "group": "after-relocated-core-complete-counter",
+      "repetition": 1,
+      "seconds": 48.92520385608077,
+      "exit": 0,
+      "git_processes": 3306,
+      "git_initializations": 66,
+      "fixture_setups": 64,
+      "setup_ms": 999.1155189999972,
+      "setup_range_ms": [13.182550999999876, 25.850453000000016]
+    },
+    {
+      "group": "after-relocated-core-complete-counter",
+      "repetition": 2,
+      "seconds": 50.094953132327646,
+      "exit": 0,
+      "git_processes": 3306,
+      "git_initializations": 66,
+      "fixture_setups": 64,
+      "setup_ms": 1041.4339109999974,
+      "setup_range_ms": [13.14655300000004, 27.26296000000002]
+    },
+    {
+      "group": "after-directory-complete-counter",
+      "repetition": 0,
+      "seconds": 9.992121760733426,
+      "exit": 0,
+      "git_processes": 512,
+      "git_initializations": 17,
+      "fixture_setups": 12,
+      "setup_ms": 168.68264000000102,
+      "setup_range_ms": [11.813498999999865, 20.946911999999998]
+    },
+    {
+      "group": "after-directory-complete-counter",
+      "repetition": 1,
+      "seconds": 10.615946158766747,
+      "exit": 0,
+      "git_processes": 512,
+      "git_initializations": 17,
+      "fixture_setups": 12,
+      "setup_ms": 195.0983100000005,
+      "setup_range_ms": [13.324257999999986, 24.745012999999744]
+    },
+    {
+      "group": "after-directory-complete-counter",
+      "repetition": 2,
+      "seconds": 10.305273727979511,
+      "exit": 0,
+      "git_processes": 512,
+      "git_initializations": 17,
+      "fixture_setups": 12,
+      "setup_ms": 175.22885399999984,
+      "setup_range_ms": [12.560574000000088, 16.99688100000003]
+    },
+    {
+      "group": "after-product-contracts-complete-counter",
+      "repetition": 0,
+      "seconds": 1.2227088753134012,
+      "exit": 0,
+      "git_processes": 0,
+      "git_initializations": 0,
+      "fixture_setups": 0,
+      "setup_ms": 0,
+      "setup_range_ms": []
+    },
+    {
+      "group": "after-product-contracts-complete-counter",
+      "repetition": 1,
+      "seconds": 1.1893827836029232,
+      "exit": 0,
+      "git_processes": 0,
+      "git_initializations": 0,
+      "fixture_setups": 0,
+      "setup_ms": 0,
+      "setup_range_ms": []
+    },
+    {
+      "group": "after-product-contracts-complete-counter",
+      "repetition": 2,
+      "seconds": 1.1695170081220567,
+      "exit": 0,
+      "git_processes": 0,
+      "git_initializations": 0,
+      "fixture_setups": 0,
+      "setup_ms": 0,
+      "setup_range_ms": []
+    }
+  ],
+  "migration": {
+    "seconds": 1.0142266070470214,
+    "git_processes": 40,
+    "exit": 0,
+    "fixture_setups": 1,
+    "repetitions": 1
+  }
+}

@@ -38,7 +38,10 @@ function tocMenu(node: Cheerio<AnyNode>): boolean {
 }
 
 /** Saved production pages can contain nested HTML/body wrappers. htmlparser2 retains them. */
-function editorialRoot($: CheerioAPI): Cheerio<AnyNode> {
+function editorialRoot(
+  $: CheerioAPI,
+  requireRecognized: boolean,
+): Cheerio<AnyNode> {
   const content = $(".PostContent-main.editorial-content-block").first();
   if (content.length) {
     const root = $("<div></div>");
@@ -54,11 +57,13 @@ function editorialRoot($: CheerioAPI): Cheerio<AnyNode> {
     ".changelog-entry__content",
     ".entry-content",
     ".wp-block-post-content",
-    "body",
+    ...(requireRecognized ? [] : ["body"]),
   ]) {
     const root = $(selector).first();
     if (root.length) return root;
   }
+  if (requireRecognized)
+    throw new Error("Unsupported editorial layout: no recognized article body");
   return $.root();
 }
 
@@ -353,6 +358,7 @@ function markdown(
 export function normalizeArticle(
   bytes: Buffer,
   article: Article,
+  options: { requireEditorialRoot?: boolean } = {},
 ): { canonical: Canonical; body: string } {
   const html = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
   const $ = load(html, { xml: { xmlMode: false } });
@@ -373,7 +379,7 @@ export function normalizeArticle(
   const published_at =
     structuredPublicationTime($, article) ??
     article.capture.discovery_published_at;
-  const root = editorialRoot($);
+  const root = editorialRoot($, options.requireEditorialRoot ?? false);
   removeChrome($, root);
   headingFragments($, root, article.source_url);
   const body = markdown($, root, article.source_url);

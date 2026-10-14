@@ -39,3 +39,7 @@ Complete [the checkpoint and activation procedure](docs/v2-cutover.md) before th
 Capture alone runs at **06:17 and 12:17 Asia/Taipei** (`17 6,12 * * *`, `timezone: Asia/Taipei`). Scheduled and default manual capture advance; `advance=false` captures only. Manual render defaults to render-only; `advance=true` renders and publishes. Pages supports publish-only, exact failed deployment retries, force limited to duplicate suppression, and explicit retention-qualified baseline re-establishment. Render and Pages have no independent schedules.
 
 Published articles retain `/posts/<slug>/` under `/copilot-changelog-mirror/`, source attribution, section anchors and media. The listing uses canonical publication time. Search indexes body text and titles at build time; index/build output is derived, never archive state. The site needs no runtime backend or database.
+
+The additive [directory Capture and offline Render workflow](docs/v2-directory.md)
+uses a dedicated archive checkout and ordinary Git persistence (`capture:directory`
+and `render:directory`). Production entry points remain available.
