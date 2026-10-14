@@ -39,10 +39,11 @@
   "differences": [],
   "intentional_ui_differences": [
     "Pagefind maintained UI supplies native five-result continuation and section subresults; old UI uses ten-result batches",
-    "Visible input label and local-asset failure fallback supplied by small adapter; titles/excerpts otherwise use maintained UI",
+    "Visible input label, live status and local-asset failure fallback supplied by small adapter; titles/excerpts otherwise use maintained UI",
     "No JavaScript displays browse fallback without an unusable input",
     "Heading slugs that duplicate explicit archive anchors receive a suffix; original fragments remain unchanged"
   ],
-  "independence": "Pending independent saved-source/difference review; record reviewer findings separately",
-  "timing_boundaries": "Totals comparable end-to-end. Baseline stage numbers are in-process API elapsed times from timing-only worker instrumentation; replacement stage numbers include separate subprocess/CLI startup. Do not compare these boundaries as equivalent API timings."
+  "independence": "Complete: independent spec_review checked all six saved sources/frozen expectations, minimized fixtures, both artifacts and both real indexes. See v2-native-site-review.md.",
+  "timing_boundaries": "Totals comparable end-to-end. Baseline stage numbers are in-process API elapsed times from timing-only worker instrumentation; replacement stage numbers include separate subprocess/CLI startup. Do not compare these boundaries as equivalent API timings.",
+  "source_comparison_limits": "Equality covers established canonical presentation; existing Render maps raw self-links to archive-heading-N targets. It does not claim raw-source fragment-ID byte identity."
 }

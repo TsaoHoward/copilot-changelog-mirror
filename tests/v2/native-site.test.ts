@@ -249,6 +249,19 @@ test("actual Astro and Pagefind failures withhold completed output and preserve 
           ),
         );
       }
+      const cleanupGuard = join(f.dir, "cleanup-failure.mjs");
+      if (stage === "Astro")
+        writeFileSync(
+          cleanupGuard,
+          `
+        import fs from "node:fs/promises";
+        import { syncBuiltinESMExports } from "node:module";
+        const rm = fs.rm;
+        fs.rm = (path, options) => String(path).includes(".copilot-native-incomplete-")
+          ? Promise.reject(new Error("controlled cleanup failure")) : rm(path, options);
+        syncBuiltinESMExports();
+      `,
+        );
       const before = tree(f.archive);
       const output = join(f.dir, "output");
       let result;
@@ -256,6 +269,7 @@ test("actual Astro and Pagefind failures withhold completed output and preserve 
         await promisify(execFile)(
           process.execPath,
           [
+            ...(stage === "Astro" ? ["--import", cleanupGuard] : []),
             "--import",
             join(root, "node_modules/tsx/dist/loader.mjs"),
             join(application, "src/v2/native-site-cli.ts"),
@@ -270,6 +284,8 @@ test("actual Astro and Pagefind failures withhold completed output and preserve 
       } catch (error: any) {
         assert.equal(error.code, 1, error.stderr);
         result = JSON.parse(error.stdout);
+        if (stage === "Astro")
+          assert.match(error.stderr, /controlled cleanup failure/);
         assert.match(
           result.diagnostic,
           stage === "Astro" ? /Astro failed/ : /Pagefind failed/,
@@ -279,10 +295,11 @@ test("actual Astro and Pagefind failures withhold completed output and preserve 
       assert.equal(result.output, undefined);
       assert.ok(!existsSync(output));
       assert.deepEqual(tree(f.archive), before);
-      assert.ok(
-        !readdirSync(f.dir).some((name) =>
+      assert.equal(
+        readdirSync(f.dir).some((name) =>
           name.startsWith(".copilot-native-incomplete-"),
         ),
+        stage === "Astro", // Failed cleanup may leave only a clearly incomplete sibling.
       );
     });
 });

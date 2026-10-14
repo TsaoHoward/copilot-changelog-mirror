@@ -99,8 +99,11 @@ The original-corpus comparison report is `v2-native-site-comparison.json`.
 links, anchors or media. Search scope checks pass for both actual indexes.
 Intentional UI differences are native continuation/section results, label/live
 status/failure adapter and a no-JavaScript browse fallback. The synthetic heading
-collision fix preserves original anchors. Independent review is recorded below
-once complete.
+collision fix preserves explicit canonical anchors. Render already maps raw
+self-linked headings to canonical `archive-heading-N` targets; both presentations
+preserve that existing behavior. Equality here does not claim raw fragment IDs
+are byte-identical to canonical ones. Independent review is complete; see [the two-axis review and saved-source
+review](v2-native-site-review.md).
 
 The accepted comparison uses one Render setup, one old build/index and one new
 build/index, sequentially, with one original-corpus repetition. Two earlier

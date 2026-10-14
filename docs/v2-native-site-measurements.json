@@ -63,6 +63,6 @@
     "Single repetitions; report wall times, no medians or ranges",
     "Warm npm-cache offline install; existing Chromium setup; cold network install/download and hosted runner unmeasured",
     "Baseline API stage timers and replacement subprocess stage timers have different boundaries; total command wall times are comparable",
-    "Independent source/difference review pending"
+    "Independent saved-source/difference review complete; final regression evidence appended after clean-tree run"
   ]
 }

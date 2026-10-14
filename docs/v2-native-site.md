@@ -39,7 +39,8 @@ cache and build/index intermediates live in a temporary sibling directory, named
 `.copilot-native-incomplete-*`; dependencies are referenced from the installed
 application. There is no source-copy/closure-selection system. After both tools
 finish, the command exclusively reserves the final directory and promotes the
-artifact. It cleans its temporary directory on ordinary failures.
+artifact. It cleans its temporary directory on ordinary failures. Cleanup errors warn on
+stderr while preserving the completed result or original stage diagnostic.
 
 Tool logs go to stderr. Success writes one JSON result with `outcome: "success"`,
 absolute `output`, `article_count`, and adapter/Astro/Pagefind elapsed timings.
@@ -54,7 +55,7 @@ The listing retains descending canonical UTC ordering, identity ties and unknown
 times last. Titles own the editorial H1; dates never fall back to discovery or
 modification time. `/posts/<slug>/`, source attribution, body order, anchors and
 external media remain intact. Generated heading IDs are disambiguated when they
-would duplicate explicit archive anchors; original fragment IDs remain usable.
+would duplicate explicit archive anchors; explicit canonical fragment IDs remain usable.
 The configured base covers internal navigation, assets and search result URLs.
 
 Search scans only fresh `posts/**/*.html` with native article-body inclusion and

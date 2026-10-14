@@ -212,6 +212,14 @@ export async function buildArchiveSite(options: {
       timings: { adapter_ms, astro_ms, pagefind_ms },
     };
   } finally {
-    await rm(temporary, { recursive: true, force: true });
+    await rm(temporary, { recursive: true, force: true }).catch(
+      (error: unknown) => {
+        // Cleanup is best-effort: it must neither mask a tool diagnostic nor turn
+        // an already-promoted artifact into a reported build failure.
+        process.stderr.write(
+          `Temporary output cleanup failed at ${temporary}: ${error instanceof Error ? error.message : String(error)}\n`,
+        );
+      },
+    );
   }
 }
