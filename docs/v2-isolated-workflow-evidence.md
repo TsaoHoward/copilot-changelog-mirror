@@ -155,7 +155,30 @@ production workflows and CI checkout configuration are unchanged; no network
 fetch workaround or Actions simulator was added.
 
 Focused verification passed (3/3 file tests, including the formerly failing test).
-Full Node/Chromium results and the new remote CI run are recorded after their
-execution. This repair performs no hosted provisioning, Pages configuration,
-archive mutation or public-site deployment. #35 hosted acceptance remains pending;
+On repair source commit `bdd0df5e177862fcefd9a21d884813898c04fee2`, the same commands
+used by CI passed: **334/334** tests with `npm test` and **31/31** checks with
+`npm run test:browser`, with no failures or skips. Node-reported suite durations
+were 231.810 and 32.452 seconds respectively; these are local measurements with
+existing dependencies/browser cache, not hosted runner observations. Formatting,
+TypeScript type checking and `git diff --check` passed. The new remote CI run is
+reported on PR #40 separately; these local results do not establish its outcome.
+
+### Standards
+
+0 hard violations and 0 actionable smells against original PR HEAD
+`9f1cc4e1701608d193301b38104ca31fb7591d22...bdd0df5`. The diff is limited to the
+test and directly related evidence. The minimal file-only fixture owns its
+refs/history, resets outputs between cases and adds no testing framework. The
+shipped workflow is unchanged; no regression was found.
+
+### Spec
+
+0 actionable findings or scope creep. The fixture satisfies the requested local
+remote/trusted-history boundary, exact positive selection, and refusal of invalid
+inputs and existing untrusted commits. It preserves the actual ancestry guard
+and adds no real-remote CI fetch workaround. Remote CI must still be observed on
+the pushed HEAD rather than inferred from local passes.
+
+This repair performs no hosted provisioning, Pages configuration, archive
+mutation or public-site deployment. #35 hosted acceptance remains pending;
 #36 production cutover and #24 acceptance remain separate.
