@@ -205,7 +205,11 @@
         "discovery_title": "HydraFusion updates and new Max option",
         "discovery_published_at": "2026-10-14T20:01:35.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "HydraFusion updates and new Max option",
+        "published_at": "2026-10-14T20:01:35.000Z",
+        "publication_path": "/posts/2026-10-14-hydrafusion-updates-and-new-max-option/"
+      }
     }
   }
 }
