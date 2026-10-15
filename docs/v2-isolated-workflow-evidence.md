@@ -10,9 +10,9 @@ observed scheduled Actions event. An awaiting isolated schedule is separately
 pending and does not turn otherwise completed functional acceptance into a pass
 for scheduling.
 
-## Status before hosted verification
+## Acceptance status
 
-- Routine workflow contracts and real-Git persistence: implementation in progress.
+- Routine workflow contracts and real-Git persistence: **passed** locally.
 - Native full-update, render-rebuild, explicit known-good republish, representative
   upstream failure and public browser acceptance: pending functional acceptance.
 - Real isolated scheduled event: pending observation.
@@ -68,3 +68,61 @@ archive/source branches and `github-pages` environment; enable its Actions Pages
 site; execute the bounded hosted acceptance and reversible fixture/renderer
 failure-and-repair steps described in the runbook. Production remains outside
 this scope.
+
+## Final local verification
+
+On source revision `39c34d8`, the complete serial suite passed **334/334** tests
+and the serial Chromium suites passed **31/31** checks, with zero failures or
+skips. Formatting, type checking, shell syntax and `git diff --check` passed.
+Both review axes also reviewed the `3cd1970...39c34d8` follow-up and reported zero
+findings. Production workflow files have no diff against the starting `main`.
+No original-repository remote branch, issue, archive or Pages setting was changed.
+
+The new permanent coverage is eight tests: three YAML/entry-shell contracts and
+five persistence/republish cases. The existing late-Render-failure/offline-repair
+case now directly executes the same persistence script used by Actions. Real
+compiler/indexer failures and incomplete canonical rejection stay at their
+existing #34 seam; the new caller test additionally proves remote R survives an
+actual site CLI output-safety refusal. This is composite local evidence, not a
+claim of a hosted compiler/indexer failure.
+
+Commands for the accepted local measurements (one invocation each, sequential):
+
+```sh
+node --import tsx --test --test-concurrency=1 tests/v2/*.test.ts
+node --import tsx --test --test-concurrency=1 \
+  tests/v2/search.browser.ts tests/v2/native-site.browser.ts
+```
+
+| Local check                         | Result     | `/usr/bin/time` elapsed seconds | Node test-runner reported seconds |
+| ----------------------------------- | ---------- | ------------------------------: | --------------------------------: |
+| Full retained and replacement suite | 334 passed |                          265.56 |                           286.673 |
+| Both Chromium suites                | 31 passed  |                           35.88 |                            37.993 |
+
+The two timing sources returned different durations; both readings are preserved
+without interpreting the difference as a performance improvement. Each row is a
+single sample, not a median or range. Focused development runs, including the
+expected red missing-script/template tests and the corrected missing event-env
+fixture, are excluded from these accepted samples. The final focused eight-test
+run passed in 6.096 Node-reported seconds with both test files running under the
+default test-file concurrency; it is not directly comparable to the serial suite.
+
+Environment: Linux `6.6.87.2-microsoft-standard-WSL2`, Node 22.22.0, npm 10.9.4,
+lockfile and dependency versions retained from the starting application, existing
+`node_modules` and Chromium cache (Playwright 1.63.0). There was no fresh npm or
+browser installation for these samples, so cold installation/download cost is
+unmeasured. Full tests and browser suites ran serially at file concurrency 1 and
+did not overlap each other. Fixture construction and Git/subprocess setup are
+included in suite durations rather than separately benchmarked. All outputs and
+remotes are disposable. The new republish case uses one synthetic saved article
+at `/isolated/`; the existing suites retain their established authentic and
+synthetic corpora and base paths. See the #33/#34 test records for those fixtures'
+source/condition/independent-expectation policy. No generalized benchmarking
+framework, target count, total CI speedup or hosted performance is claimed.
+
+Hosted setup/install/cache, application/archive revisions, corpus/base, native
+stage/upload/deploy/job/queue/pipeline timings and invocation counts are all
+**unmeasured pending the approved hosted milestone**. They must be recorded from
+actual native runs when access is authorized, alongside mode skips, remote
+ancestry, public URLs and title/body search/result navigation. No local result
+substitutes for those observations.
