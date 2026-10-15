@@ -126,3 +126,36 @@ stage/upload/deploy/job/queue/pipeline timings and invocation counts are all
 actual native runs when access is authorized, alongside mode skips, remote
 ancestry, public URLs and title/body search/result navigation. No local result
 substitutes for those observations.
+
+## CI checkout portability repair — 2026-10-16
+
+[PR #40's initial CI](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/38717498644)
+failed 1 of 334 Node tests. Its checkout fetched only the shallow PR merge ref;
+the entry-shell test incorrectly assumed the application checkout had
+`origin/main`. The error occurred at test setup (`git rev-parse origin/main`),
+before the actual workflow entry shell ran. Earlier local success did not prove
+portability to CI's ref layout.
+
+The test now creates a minimal temporary application repository and local bare
+remote, prepares `main`/`origin/main` with two compatible trusted commits, and
+creates a further commit outside that trusted history. Git transport is limited
+to `file`. The shipped entry shell runs unchanged in this fixture. Assertions
+verify exact mode/application selection for schedule, manual modes and an explicit
+trusted ancestor, and reject incorrect repository/default branch/event/mode,
+invalid or missing SHA, and existing untrusted application/workflow SHAs before
+outputs or success summaries are written. Each invocation starts with empty
+output/summary files so preceding successes cannot mask a refusal.
+
+The original focused test reproduced the CI error in a disposable local
+single-branch shallow clone with no `origin/main`. The repaired test passed in
+that same clone without fetching a real remote. Removing only the ancestry guard
+in the disposable template made the existing-untrusted-commit case fail, proving
+that the new fixture exercises the history boundary. The real workflow template,
+production workflows and CI checkout configuration are unchanged; no network
+fetch workaround or Actions simulator was added.
+
+Focused verification passed (3/3 file tests, including the formerly failing test).
+Full Node/Chromium results and the new remote CI run are recorded after their
+execution. This repair performs no hosted provisioning, Pages configuration,
+archive mutation or public-site deployment. #35 hosted acceptance remains pending;
+#36 production cutover and #24 acceptance remain separate.
