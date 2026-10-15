@@ -47,3 +47,7 @@ and `render:directory`). Production entry points remain available.
 The additive [saved-archive site build](docs/v2-native-site.md) uses
 `site:build:directory` to build/index fresh static output with native Astro and
 Pagefind, independently of capture, Git persistence and deployment.
+
+The simplified update/publish integration is an inactive production template.
+See the [isolated workflow runbook](docs/v2-isolated-workflow.md) and
+[acceptance evidence](docs/v2-isolated-workflow-evidence.md) for #35.

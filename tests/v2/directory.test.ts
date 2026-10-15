@@ -102,8 +102,26 @@ test("ordinary Git pushes Capture before late Render failure, then repaired offl
     `<item><link>${a}</link></item><item><link>${z}</link></item>`,
   );
   assert.equal((await f.cli("capture", ["--feed-url", feed])).code, 0);
-  const capture = f.persist("Capture C");
-  f.git("push", "-q", "origin", "mirror-data-v2");
+  const persist = (stage: string) => {
+    execFileSync(
+      "bash",
+      [
+        join(import.meta.dirname, "../../.github/isolated/persist-stage.sh"),
+        stage,
+        f.archive,
+      ],
+      {
+        env: {
+          ...process.env,
+          GITHUB_OUTPUT: join(f.dir, "outputs"),
+          GITHUB_STEP_SUMMARY: join(f.dir, "summary"),
+        },
+        stdio: "pipe",
+      },
+    );
+    return f.git("rev-parse", "HEAD");
+  };
+  const capture = persist("capture");
   const remote = (...args: string[]) =>
     execFileSync("git", ["--git-dir", f.remote, ...args])
       .toString()
@@ -144,9 +162,8 @@ test("ordinary Git pushes Capture before late Render failure, then repaired offl
   assert.equal(rendered.code, 0, rendered.stderr);
   assert.equal(existsSync(log), false);
   assert.equal(f.git("rev-parse", "HEAD"), capture);
-  const render = f.persist("Render R after renderer repair");
+  const render = persist("render");
   assert.equal(f.git("rev-parse", `${render}^`), capture);
-  f.git("push", "-q", "origin", "mirror-data-v2");
   assert.equal(remote("rev-parse", "mirror-data-v2"), render);
   assert.equal(
     (await f.cli("capture", ["--feed-url", feed])).result.outcome,
