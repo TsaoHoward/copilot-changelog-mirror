@@ -50,8 +50,8 @@
       "article_id": "2026-10-07-claude-haiku-5-5-in-github-copilot-d309be13e53a",
       "source_url": "https://github.blog/changelog/2026-10-07-claude-haiku-5-5-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "036525f503234d499a853576dc514ead7804d9d434b1ef39228d9099142af99f",
-        "observed_at": "2026-10-15T00:35:09.504Z",
+        "snapshot_sha256": "25f6a71252d0b81ff97922b034ea77deb9fd61921aef43f9b4696819206c1b64",
+        "observed_at": "2026-10-15T09:13:07.386Z",
         "discovery_title": "Claude Haiku 5.5 in GitHub Copilot",
         "discovery_published_at": "2026-10-07T20:12:18.000Z"
       },
@@ -95,8 +95,8 @@
       "article_id": "2026-10-07-purpose-built-model-for-leaked-secret-detection-d6b735286b37",
       "source_url": "https://github.blog/changelog/2026-10-07-purpose-built-model-for-leaked-secret-detection",
       "capture": {
-        "snapshot_sha256": "ee4d20e317d2d4411ee9bc351a8bada9856d8e04ae7a25da5c3180b804f66923",
-        "observed_at": "2026-10-15T00:35:10.694Z",
+        "snapshot_sha256": "ebd932c3b6276da3e822e5dd458aa0a563ef452a252e6948f18fdaf8bd4c27e5",
+        "observed_at": "2026-10-15T09:13:09.099Z",
         "discovery_title": "Purpose-built model for leaked secret detection",
         "discovery_published_at": "2026-10-07T16:13:56.000Z"
       },
@@ -110,8 +110,8 @@
       "article_id": "2026-10-08-copilot-code-review-new-organization-billing-options-and-controls-24caa334278b",
       "source_url": "https://github.blog/changelog/2026-10-08-copilot-code-review-new-organization-billing-options-and-controls",
       "capture": {
-        "snapshot_sha256": "181080274455179cddb3c8cc9ef2c23bccdad1dc9a0348d840506f2f00d71495",
-        "observed_at": "2026-10-15T00:35:11.273Z",
+        "snapshot_sha256": "a3437ae48a6bce89e698f22a638a654cb5fccddd42f59dc1ddb3cac98704784d",
+        "observed_at": "2026-10-15T09:13:09.635Z",
         "discovery_title": "Copilot code review: New organization billing options and controls",
         "discovery_published_at": "2026-10-08T19:43:05.000Z"
       },
@@ -125,8 +125,8 @@
       "article_id": "2026-10-09-github-copilot-weekly-releases-october-5-ec899f104655",
       "source_url": "https://github.blog/changelog/2026-10-09-github-copilot-weekly-releases-october-5",
       "capture": {
-        "snapshot_sha256": "99acdcf1b528ab8ec0f42367dbe999e7f9818f959bc173959871769d97da1f12",
-        "observed_at": "2026-10-15T00:35:11.795Z",
+        "snapshot_sha256": "6e76c4a5f68756f941ff4c9fdee1947fb623d501720f8c2d182456846bc4eab0",
+        "observed_at": "2026-10-15T09:13:10.201Z",
         "discovery_title": "GitHub Copilot weekly releases — October 5",
         "discovery_published_at": "2026-10-09T22:58:23.000Z"
       },
@@ -155,8 +155,8 @@
       "article_id": "2026-10-12-client-telemetry-user-attribution-and-configurable-capture-9d90bbd97b85",
       "source_url": "https://github.blog/changelog/2026-10-12-client-telemetry-user-attribution-and-configurable-capture",
       "capture": {
-        "snapshot_sha256": "24af904d2c2a8ac44da39a7c4a250a0c8859fce38dd04327439987dd4639655f",
-        "observed_at": "2026-10-15T00:35:13.509Z",
+        "snapshot_sha256": "acab0b87742ca156464361834250e9ace507366d42be7b27f85a2492f71ed62b",
+        "observed_at": "2026-10-15T09:13:11.839Z",
         "discovery_title": "Client telemetry user attribution and configurable capture",
         "discovery_published_at": "2026-10-12T22:38:00.000Z"
       },
@@ -170,8 +170,8 @@
       "article_id": "2026-10-13-enterprise-managed-settings-enforcement-updates-bca5e0416551",
       "source_url": "https://github.blog/changelog/2026-10-13-enterprise-managed-settings-enforcement-updates",
       "capture": {
-        "snapshot_sha256": "35cea94dacb555f5d18b03572db0bb2eeac6245ac3a1b6127bca6cdf97ae1e62",
-        "observed_at": "2026-10-15T00:35:14.069Z",
+        "snapshot_sha256": "6b869ba8612dd998c12f7b9be1fe0d3dfec683a29681c46af7f250557f46fa81",
+        "observed_at": "2026-10-15T09:13:12.501Z",
         "discovery_title": "Enterprise managed settings enforcement updates",
         "discovery_published_at": "2026-10-13T15:20:10.000Z"
       },
