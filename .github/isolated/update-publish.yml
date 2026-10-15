@@ -84,6 +84,7 @@ jobs:
           for file in src/v2/capture-directory-cli.ts src/v2/render-directory-cli.ts src/v2/native-site-cli.ts; do
             git cat-file -e "$application:$file"
           done
+          git show "$application:package.json" | jq -e '.scripts | .["capture:directory"] and .["render:directory"] and .["site:build:directory"]' > /dev/null
           echo "mode=$mode" >> "$GITHUB_OUTPUT"
           echo "application=$application" >> "$GITHUB_OUTPUT"
           {
@@ -129,7 +130,8 @@ jobs:
         run: |
           set -euo pipefail
           [[ $(git symbolic-ref --short HEAD) == mirror-data-v2 ]]
-          [[ $(git remote get-url origin) == "https://github.com/$GITHUB_REPOSITORY"* ]]
+          remote=$(git remote get-url origin)
+          [[ "$remote" == "https://github.com/$GITHUB_REPOSITORY" || "$remote" == "https://github.com/$GITHUB_REPOSITORY.git" ]]
           if [[ "$MODE" == republish && -n "$REQUESTED_ARCHIVE" ]]; then
             git cat-file -e "$REQUESTED_ARCHIVE^{commit}"
             git merge-base --is-ancestor "$REQUESTED_ARCHIVE" HEAD
@@ -149,7 +151,9 @@ jobs:
         id: capture
         if: steps.entry.outputs.mode == 'full-update'
         working-directory: app
-        run: npm run --silent capture:directory -- --archive-dir "$ARCHIVE_DIR" --feed-url "$FEED_URL" > "$RUNNER_TEMP/capture-result.json"
+        run: |
+          echo "Capture input: $(git -C "$ARCHIVE_DIR" rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+          npm run --silent capture:directory -- --archive-dir "$ARCHIVE_DIR" --feed-url "$FEED_URL" > "$RUNNER_TEMP/capture-result.json"
 
       - name: Push completed Capture before Render
         id: capture-push
@@ -160,7 +164,9 @@ jobs:
         id: render
         if: steps.entry.outputs.mode != 'republish'
         working-directory: app
-        run: npm run --silent render:directory -- --archive-dir "$ARCHIVE_DIR" > "$RUNNER_TEMP/render-result.json"
+        run: |
+          echo "Render input: $(git -C "$ARCHIVE_DIR" rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+          npm run --silent render:directory -- --archive-dir "$ARCHIVE_DIR" > "$RUNNER_TEMP/render-result.json"
 
       - name: Push completed Render before build
         id: render-push
@@ -198,6 +204,11 @@ jobs:
             echo "Capture: $CAPTURE_STATUS; Render: $RENDER_STATUS"
             echo "Skipped stages were not executed; selected saved input: $SELECTED (mode $MODE)."
             echo "Build: $BUILD_STATUS; upload: $UPLOAD_STATUS"
+            if [[ "$BUILD_STATUS" != success || "$UPLOAD_STATUS" != success ]]; then
+              echo 'Native deployment is blocked by upstream failure or skipped build/upload.'
+            else
+              echo 'Native deployment is pending the dependent job; inspect its outcome and public content.'
+            fi
             for stage in capture render build; do
               if [[ -f "$RUNNER_TEMP/$stage-result.json" ]]; then
                 echo "$stage command result (directory success alone is not a confirmed push):"

@@ -25,3 +25,46 @@ and Chromium cache. Focused tests run with the existing install; no cold network
 or cold browser setup is claimed. Hosted installs and queue/job/pipeline durations
 will be recorded from native logs and timestamps, separately from local timing.
 No benchmark framework or total CI savings claim is introduced.
+
+## Review and hosted provisioning boundary
+
+The required `/code-review` ran separate Standards and Spec reviewers against
+`f22eb6dc1ea0014f6398e80c31e2157d0f4fc533...3cd1970`.
+
+### Standards
+
+No hard documented violations or actionable baseline smells. The small test
+wrappers serve different assertions; another abstraction was not warranted.
+The reviewed stages push separately, no-change still pushes, refusal/uncertainty
+halts downstream, republish skips persistence, and production remains isolated.
+
+### Spec
+
+Zero code findings and no scope creep. The reviewer confirmed native success
+gates, pinned/disjoint checkouts, ordinary pushes, modes, concurrency and
+permissions. Required hosted mode/failure/public/cost evidence is a disclosed
+pending acceptance gap; actual isolated scheduling is independently pending.
+
+Follow-up polish explicitly records stage input SHA before CLI execution (also
+on failure), verifies the selected npm command mappings exist, requires an exact
+isolated remote URL, and reports the blocked/pending native deployment gate.
+
+A disposable local export was prepared at `/tmp/issue-35-hosted`, excluding every
+production workflow before installing the reviewed template. Separate blank
+archive and two-fixture source repositories were prepared. **No remote repository,
+branch, environment, schedule or Pages configuration was created.** Automatic
+approval review rejected provisioning the new public target and enabling Pages
+because public export and external mutations require explicit user approval.
+Required full-update/render-rebuild/known-good republish/representative failure,
+public browsing/search and hosted cost observations remain **pending functional
+acceptance**, not passed. Schedule registration and scheduled execution have not
+occurred and remain **pending observation**. This differs from a schedule that is
+registered and merely awaiting its nominal time.
+
+Approval scope needed to continue: create the public
+`TsaoHoward/copilot-changelog-isolated-35` repository containing the reviewed
+application export and authentic minimized fixture sources; create its isolated
+archive/source branches and `github-pages` environment; enable its Actions Pages
+site; execute the bounded hosted acceptance and reversible fixture/renderer
+failure-and-repair steps described in the runbook. Production remains outside
+this scope.

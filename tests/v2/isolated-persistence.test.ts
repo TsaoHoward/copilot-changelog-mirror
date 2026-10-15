@@ -75,8 +75,22 @@ test("reviewed Actions persistence pushes Capture before Render and a separate R
     remote(f, "show", `${r}:posts/${article.article_id}.md`),
     "Durable body.",
   );
-  // A failed downstream process cannot undo either pushed revision.
-  assert.equal(spawnSync("bash", ["-c", "exit 1"]).status, 1);
+  // Reuse the native CLI's output-safety failure, not another compiler fault matrix.
+  const failedBuild = spawnSync(
+    process.execPath,
+    [
+      "--import",
+      "tsx",
+      join(root, "src/v2/native-site-cli.ts"),
+      "--archive-dir",
+      f.archive,
+      "--output",
+      f.archive,
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  assert.equal(failedBuild.status, 1, failedBuild.stderr);
+  assert.equal(JSON.parse(failedBuild.stdout).outcome, "failure");
   assert.equal(remote(f, "rev-parse", "mirror-data-v2"), r);
   assert.equal(
     (await f.cli("capture", ["--feed-url", feed])).result.outcome,
