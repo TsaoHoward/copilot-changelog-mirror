@@ -32,7 +32,14 @@ npm run --silent render -- --data-branch local-v2
 
 ## Production
 
-Complete [the checkpoint and activation procedure](docs/v2-cutover.md) before the first production write. The implementation branch alone does not activate production; its [acceptance record](docs/v2-acceptance.md) distinguishes local checks, actual hosted runs and scheduled observations.
+Issue #36's simplified single-workflow chain is **prepared, not activated**. Use
+[the cutover and native rollback runbook](docs/v2-production-cutover.md) and
+[the dated evidence and pending decisions](docs/v2-production-evidence.md).
+The production template stays outside `.github/workflows` until separately
+approved activation and old-chain draining. The following describes the current
+old chain and its historical guarantees; the runbook defines their replacement.
+
+[The original checkpoint/bootstrap procedure](docs/v2-cutover.md) is historical; do not rerun it on the existing archive. The implementation branch alone does not activate production; its [acceptance record](docs/v2-acceptance.md) distinguishes local checks, actual hosted runs and scheduled observations.
 
 **V2 production capture → V2 production render → V2 production Pages** are separate Actions runs. Capture verifies remote durability before render; render verifies canonical durability before Pages. Each stage carries exact application/definition/archive revisions and upstream run/attempt evidence. All automatic/manual operations share `copilot-archive-production`, with cancellation disabled and `queue: max`. Superseded selections perform no stale push/deployment. Only the deployment job has Pages/OIDC write permission.
 

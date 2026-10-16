@@ -1,0 +1,331 @@
+{
+  "observed_at": "2026-10-16T12:30:05.497Z",
+  "application": "81b7df4dbf2fb75f61a9752c519e80bf8f4c73f7",
+  "lock_sha256": "7062f8445365011714769409b0b94c574894960773e23ae2aba2c474f514e8dd",
+  "current": {
+    "revision": "8d38d259c0c4f9e6ea7216eb9fd6e4b8cf2db0bb",
+    "tree": "044e5a8be92e5ea97ecc894ea9d3412695fd52f1",
+    "reachable_commits": 15,
+    "verified_files": 35
+  },
+  "checkpoint": {
+    "revision": "be5b40d1fd205137939f37ced96adfe19ef0fabc",
+    "tree": "cf9f357a9b1f18bab2de45b4f5dfdb8a35fa0710",
+    "reachable_commits": 43,
+    "verified_files": 66,
+    "html_count": 21,
+    "sidecar_count": 21,
+    "frontmatter_posts_verified": 24
+  },
+  "refs": {
+    "mirror-data": "be5b40d1fd205137939f37ced96adfe19ef0fabc",
+    "v1-final-before-v2": "be5b40d1fd205137939f37ced96adfe19ef0fabc",
+    "v2-initial-capture": "71edf378bff29beaed88cb12906e9276ef1307f5",
+    "v2-reset-input": "894008dce71c24c98fd587793dc4bd0b6eab1b78"
+  },
+  "fsck": "clean",
+  "article_count": 17,
+  "snapshot_count": 17,
+  "body_count": 17,
+  "articles": [
+    {
+      "article_id": "2026-10-02-copilot-code-review-api-support-and-new-default-effort-level-be3b1d341079",
+      "source_url": "https://github.blog/changelog/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level",
+      "capture": {
+        "snapshot_sha256": "53187163872d53761f779395e7a09fdce67054db30e5c8324b65bc9eebf566ed",
+        "observed_at": "2026-10-13T11:54:34.887Z",
+        "discovery_title": "Copilot code review: API support and new default effort level",
+        "discovery_published_at": "2026-10-02T19:13:50.000Z"
+      },
+      "canonical": {
+        "title": "Copilot code review: API support and new default effort level",
+        "published_at": "2026-10-02T19:13:50.000Z",
+        "publication_path": "/posts/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level/"
+      },
+      "verified_snapshot_sha256": "53187163872d53761f779395e7a09fdce67054db30e5c8324b65bc9eebf566ed",
+      "body_sha256": "f6f24ffbe1a95a5b8b4d6999cd63f09d5e2e7397c641675abf727447c4d92607"
+    },
+    {
+      "article_id": "2026-10-02-selected-models-in-github-copilot-deprecated-705956e4f1fc",
+      "source_url": "https://github.blog/changelog/2026-10-02-selected-models-in-github-copilot-deprecated",
+      "capture": {
+        "snapshot_sha256": "e046775f5cccf47ce5a93e1c4787f5fd6588dff3f2607b2fe8abe7275f52bcf0",
+        "observed_at": "2026-10-12T11:26:31.541Z",
+        "discovery_title": "Selected models in GitHub Copilot deprecated",
+        "discovery_published_at": "2026-10-02T18:24:19.000Z"
+      },
+      "canonical": {
+        "title": "Selected models in GitHub Copilot deprecated",
+        "published_at": "2026-10-02T18:24:19.000Z",
+        "publication_path": "/posts/2026-10-02-selected-models-in-github-copilot-deprecated/"
+      },
+      "verified_snapshot_sha256": "e046775f5cccf47ce5a93e1c4787f5fd6588dff3f2607b2fe8abe7275f52bcf0",
+      "body_sha256": "36aad3b2503fc3dbc3d238a5ac51c41a182a5bdcfc52cd0dd4bf9b3b5dbd386a"
+    },
+    {
+      "article_id": "2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics-f833eccb65de",
+      "source_url": "https://github.blog/changelog/2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics",
+      "capture": {
+        "snapshot_sha256": "1e58497d070f4f6fdceca967daf6b48e5d1a629451a0c728136e242f9e8de561",
+        "observed_at": "2026-10-13T11:54:35.956Z",
+        "discovery_title": "Update your IDE to restore agent activity in Copilot usage metrics",
+        "discovery_published_at": "2026-10-06T23:43:00.000Z"
+      },
+      "canonical": {
+        "title": "Update your IDE to restore agent activity in Copilot usage metrics",
+        "published_at": "2026-10-06T23:43:00.000Z",
+        "publication_path": "/posts/2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics/"
+      },
+      "verified_snapshot_sha256": "1e58497d070f4f6fdceca967daf6b48e5d1a629451a0c728136e242f9e8de561",
+      "body_sha256": "5abd561b479363771fa421c3cad3f906b4efbbd3fb92ebf24c4e0cd102f4b053"
+    },
+    {
+      "article_id": "2026-10-07-claude-haiku-5-5-in-github-copilot-d309be13e53a",
+      "source_url": "https://github.blog/changelog/2026-10-07-claude-haiku-5-5-in-github-copilot",
+      "capture": {
+        "snapshot_sha256": "32cba70502209ed493352acc75b0c2e1077f190d6f9b58762d99bd1f5182d807",
+        "observed_at": "2026-10-16T00:28:58.913Z",
+        "discovery_title": "Claude Haiku 5.5 in GitHub Copilot",
+        "discovery_published_at": "2026-10-07T20:12:18.000Z"
+      },
+      "canonical": {
+        "title": "Claude Haiku 5.5 in GitHub Copilot",
+        "published_at": "2026-10-07T20:12:18.000Z",
+        "publication_path": "/posts/2026-10-07-claude-haiku-5-5-in-github-copilot/"
+      },
+      "verified_snapshot_sha256": "32cba70502209ed493352acc75b0c2e1077f190d6f9b58762d99bd1f5182d807",
+      "body_sha256": "23d4d7b0e7d83018c67e0108068c5333ccf0a8b7c4eddc5b8a0c0f96c511e2b3"
+    },
+    {
+      "article_id": "2026-10-07-discover-local-models-in-github-copilot-cli-8241d56116d9",
+      "source_url": "https://github.blog/changelog/2026-10-07-discover-local-models-in-github-copilot-cli",
+      "capture": {
+        "snapshot_sha256": "6ecbc1bab1b0e2e2c445bd8c7657b66a359827b195333216ba19f009af969108",
+        "observed_at": "2026-10-14T01:16:53.199Z",
+        "discovery_title": "Discover local models in GitHub Copilot CLI",
+        "discovery_published_at": "2026-10-07T15:46:13.000Z"
+      },
+      "canonical": {
+        "title": "Discover local models in GitHub Copilot CLI",
+        "published_at": "2026-10-07T15:46:13.000Z",
+        "publication_path": "/posts/2026-10-07-discover-local-models-in-github-copilot-cli/"
+      },
+      "verified_snapshot_sha256": "6ecbc1bab1b0e2e2c445bd8c7657b66a359827b195333216ba19f009af969108",
+      "body_sha256": "9ebb2125de2648b372c4d4660dd74c0715babf5c2b23798cab305338cfe020f3"
+    },
+    {
+      "article_id": "2026-10-07-local-sandboxing-for-github-copilot-now-generally-available-1e174328109a",
+      "source_url": "https://github.blog/changelog/2026-10-07-local-sandboxing-for-github-copilot-now-generally-available",
+      "capture": {
+        "snapshot_sha256": "d5243225e41ffaefbe09c7765786af96e63cfd1a72265f6754ce37db5d536d67",
+        "observed_at": "2026-10-15T00:35:10.220Z",
+        "discovery_title": "Local sandboxing for GitHub Copilot now generally available",
+        "discovery_published_at": "2026-10-07T15:46:17.000Z"
+      },
+      "canonical": {
+        "title": "Local sandboxing for GitHub Copilot now generally available",
+        "published_at": "2026-10-07T15:46:17.000Z",
+        "publication_path": "/posts/2026-10-07-local-sandboxing-for-github-copilot-now-generally-available/"
+      },
+      "verified_snapshot_sha256": "d5243225e41ffaefbe09c7765786af96e63cfd1a72265f6754ce37db5d536d67",
+      "body_sha256": "d0f61fb9688ed12a4f66b77ce127b769ca6e685147e0797eabb10ca112304616"
+    },
+    {
+      "article_id": "2026-10-07-purpose-built-model-for-leaked-secret-detection-d6b735286b37",
+      "source_url": "https://github.blog/changelog/2026-10-07-purpose-built-model-for-leaked-secret-detection",
+      "capture": {
+        "snapshot_sha256": "ebd932c3b6276da3e822e5dd458aa0a563ef452a252e6948f18fdaf8bd4c27e5",
+        "observed_at": "2026-10-15T09:13:09.099Z",
+        "discovery_title": "Purpose-built model for leaked secret detection",
+        "discovery_published_at": "2026-10-07T16:13:56.000Z"
+      },
+      "canonical": {
+        "title": "Purpose-built model for leaked secret detection",
+        "published_at": "2026-10-07T16:13:56.000Z",
+        "publication_path": "/posts/2026-10-07-purpose-built-model-for-leaked-secret-detection/"
+      },
+      "verified_snapshot_sha256": "ebd932c3b6276da3e822e5dd458aa0a563ef452a252e6948f18fdaf8bd4c27e5",
+      "body_sha256": "ae74a53000d012a8d74d2e32f58d99fcd83ffbfe79ee480577f4eef2681e8339"
+    },
+    {
+      "article_id": "2026-10-08-copilot-code-review-new-organization-billing-options-and-controls-24caa334278b",
+      "source_url": "https://github.blog/changelog/2026-10-08-copilot-code-review-new-organization-billing-options-and-controls",
+      "capture": {
+        "snapshot_sha256": "526d5e76d63ae7b46b6b1c1cfaf2179247d1f1df919355ea350ccad276acf20e",
+        "observed_at": "2026-10-16T09:06:02.018Z",
+        "discovery_title": "Copilot code review: New organization billing options and controls",
+        "discovery_published_at": "2026-10-08T19:43:05.000Z"
+      },
+      "canonical": {
+        "title": "Copilot code review: New organization billing options and controls",
+        "published_at": "2026-10-08T19:43:05.000Z",
+        "publication_path": "/posts/2026-10-08-copilot-code-review-new-organization-billing-options-and-controls/"
+      },
+      "verified_snapshot_sha256": "526d5e76d63ae7b46b6b1c1cfaf2179247d1f1df919355ea350ccad276acf20e",
+      "body_sha256": "d6222a7c736345267e57a8346b73b6948eedf077a435f3e393327761ba6d3726"
+    },
+    {
+      "article_id": "2026-10-09-github-copilot-weekly-releases-october-5-ec899f104655",
+      "source_url": "https://github.blog/changelog/2026-10-09-github-copilot-weekly-releases-october-5",
+      "capture": {
+        "snapshot_sha256": "83cbf09bddc9825214d737b0cffb1f228d3382832cd3063335f2047e585ed097",
+        "observed_at": "2026-10-16T09:06:02.092Z",
+        "discovery_title": "GitHub Copilot weekly releases — October 5",
+        "discovery_published_at": "2026-10-09T22:58:23.000Z"
+      },
+      "canonical": {
+        "title": "GitHub Copilot weekly releases — October 5",
+        "published_at": "2026-10-09T22:58:23.000Z",
+        "publication_path": "/posts/2026-10-09-github-copilot-weekly-releases-october-5/"
+      },
+      "verified_snapshot_sha256": "83cbf09bddc9825214d737b0cffb1f228d3382832cd3063335f2047e585ed097",
+      "body_sha256": "7f1dfbb91055942eb8bce0e09843a19ab654fc240668ef262d290a734501d169"
+    },
+    {
+      "article_id": "2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains-a91405951b83",
+      "source_url": "https://github.blog/changelog/2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains",
+      "capture": {
+        "snapshot_sha256": "a730a44b4014e86190c2eff4eca54bbaca04d5da6ace6b347dfdea4d751d1c25",
+        "observed_at": "2026-10-16T09:06:02.749Z",
+        "discovery_title": "New controls and chat improvements in Copilot for JetBrains",
+        "discovery_published_at": "2026-10-10T18:53:39.000Z"
+      },
+      "canonical": {
+        "title": "New controls and chat improvements in Copilot for JetBrains",
+        "published_at": "2026-10-10T18:53:39.000Z",
+        "publication_path": "/posts/2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains/"
+      },
+      "verified_snapshot_sha256": "a730a44b4014e86190c2eff4eca54bbaca04d5da6ace6b347dfdea4d751d1c25",
+      "body_sha256": "7afc107d0716055dfd5a916aa73a66cdd646c951ad744bfe312b1ca9fd732a50"
+    },
+    {
+      "article_id": "2026-10-12-client-telemetry-user-attribution-and-configurable-capture-9d90bbd97b85",
+      "source_url": "https://github.blog/changelog/2026-10-12-client-telemetry-user-attribution-and-configurable-capture",
+      "capture": {
+        "snapshot_sha256": "43663b2c47643ea52344bea82a1d0ad4f85c7e5dc92b0a91324394bcc45d83aa",
+        "observed_at": "2026-10-16T09:06:03.795Z",
+        "discovery_title": "Client telemetry user attribution and configurable capture",
+        "discovery_published_at": "2026-10-12T22:38:00.000Z"
+      },
+      "canonical": {
+        "title": "Client telemetry user attribution and configurable capture",
+        "published_at": "2026-10-12T22:38:00.000Z",
+        "publication_path": "/posts/2026-10-12-client-telemetry-user-attribution-and-configurable-capture/"
+      },
+      "verified_snapshot_sha256": "43663b2c47643ea52344bea82a1d0ad4f85c7e5dc92b0a91324394bcc45d83aa",
+      "body_sha256": "62f7686b1591e919cfa9ff598a03a7f41ff579b0c32884dfeb52792f43f5219c"
+    },
+    {
+      "article_id": "2026-10-13-enterprise-managed-settings-enforcement-updates-bca5e0416551",
+      "source_url": "https://github.blog/changelog/2026-10-13-enterprise-managed-settings-enforcement-updates",
+      "capture": {
+        "snapshot_sha256": "08d2ba0ac1db4cbdd91c551e24095ce24e767b0ec762e1878e851b1dcafd4d18",
+        "observed_at": "2026-10-16T09:06:04.287Z",
+        "discovery_title": "Enterprise managed settings enforcement updates",
+        "discovery_published_at": "2026-10-13T15:20:10.000Z"
+      },
+      "canonical": {
+        "title": "Enterprise managed settings enforcement updates",
+        "published_at": "2026-10-13T15:20:10.000Z",
+        "publication_path": "/posts/2026-10-13-enterprise-managed-settings-enforcement-updates/"
+      },
+      "verified_snapshot_sha256": "08d2ba0ac1db4cbdd91c551e24095ce24e767b0ec762e1878e851b1dcafd4d18",
+      "body_sha256": "ded2e782e87026f296dfc976d69ef3f8c41a6c3f898225d5c350a21cee530ea5"
+    },
+    {
+      "article_id": "2026-10-13-gemini-4-argon-in-github-copilot-23347420601c",
+      "source_url": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
+      "capture": {
+        "snapshot_sha256": "1806b90bf3ad582d821216d1c6ab4e9ff7d90aaa7e5219e1797aa326b4761ce8",
+        "observed_at": "2026-10-16T09:06:04.720Z",
+        "discovery_title": "Gemini 4 Argon in GitHub Copilot",
+        "discovery_published_at": "2026-10-13T18:39:56.000Z"
+      },
+      "canonical": {
+        "title": "Gemini 4 Argon in GitHub Copilot",
+        "published_at": "2026-10-13T18:39:56.000Z",
+        "publication_path": "/posts/2026-10-13-gemini-4-argon-in-github-copilot/"
+      },
+      "verified_snapshot_sha256": "1806b90bf3ad582d821216d1c6ab4e9ff7d90aaa7e5219e1797aa326b4761ce8",
+      "body_sha256": "3a0c87f61aed70b9c2a90e3697ebaf4b855503f56eef2a642949900635d7f066"
+    },
+    {
+      "article_id": "2026-10-14-hydrafusion-updates-and-new-max-option-ffb5a326c8ee",
+      "source_url": "https://github.blog/changelog/2026-10-14-hydrafusion-updates-and-new-max-option",
+      "capture": {
+        "snapshot_sha256": "df6d9062c77305578fa07e9c8fe4635ac1117717b217a76d264d294704250e5e",
+        "observed_at": "2026-10-16T09:06:04.797Z",
+        "discovery_title": "HydraFusion updates and new Max option",
+        "discovery_published_at": "2026-10-14T20:01:35.000Z"
+      },
+      "canonical": {
+        "title": "HydraFusion updates and new Max option",
+        "published_at": "2026-10-14T20:01:35.000Z",
+        "publication_path": "/posts/2026-10-14-hydrafusion-updates-and-new-max-option/"
+      },
+      "verified_snapshot_sha256": "df6d9062c77305578fa07e9c8fe4635ac1117717b217a76d264d294704250e5e",
+      "body_sha256": "3b68a54b132a93f4346b6e0ab1b10bb0e5c51a3d3e7d3892dd8dc5b86f30c271"
+    },
+    {
+      "article_id": "2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability-449b1014bc14",
+      "source_url": "https://github.blog/changelog/2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability",
+      "capture": {
+        "snapshot_sha256": "495b2f579f8ea767afb0b308a2db14a680487f04b58038fc4aa231427171554a",
+        "observed_at": "2026-10-16T09:06:05.377Z",
+        "discovery_title": "Agentic autofix for code scanning alerts general availability",
+        "discovery_published_at": "2026-10-15T13:49:20.000Z"
+      },
+      "canonical": {
+        "title": "Agentic autofix for code scanning alerts general availability",
+        "published_at": "2026-10-15T13:49:20.000Z",
+        "publication_path": "/posts/2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability/"
+      },
+      "verified_snapshot_sha256": "495b2f579f8ea767afb0b308a2db14a680487f04b58038fc4aa231427171554a",
+      "body_sha256": "b8f79a14bd4e7629aa6e99df9a93e2ad5bbf66077f3b985fefeae78dcc61d49d"
+    },
+    {
+      "article_id": "2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates-6fdf4a6bc9a4",
+      "source_url": "https://github.blog/changelog/2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates",
+      "capture": {
+        "snapshot_sha256": "93d34cb61ade1f2598720921d0b1dd4bc00a099a3ea1f0d869f3fce50025409b",
+        "observed_at": "2026-10-16T09:06:05.443Z",
+        "discovery_title": "Multi-repo support and other improvements for GitHub Copilot in Slack and Microsoft Teams",
+        "discovery_published_at": "2026-10-16T02:16:35.000Z"
+      },
+      "canonical": {
+        "title": "Multi-repo support and other improvements for GitHub Copilot in Slack and Microsoft Teams",
+        "published_at": "2026-10-16T02:16:35.000Z",
+        "publication_path": "/posts/2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates/"
+      },
+      "verified_snapshot_sha256": "93d34cb61ade1f2598720921d0b1dd4bc00a099a3ea1f0d869f3fce50025409b",
+      "body_sha256": "6a2a30990214a5dd3d71aec99509af25355baba1025b29b85ad2ac818231dc22"
+    },
+    {
+      "article_id": "2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november-0fb5cf8a26c7",
+      "source_url": "https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november",
+      "capture": {
+        "snapshot_sha256": "7e2133aeccf59ef80d0ec9ec31aad8e98eade0e7c381de0cf7e48adeb6de6409",
+        "observed_at": "2026-10-16T09:06:05.508Z",
+        "discovery_title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
+        "discovery_published_at": "2026-10-15T19:35:13.000Z"
+      },
+      "canonical": {
+        "title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
+        "published_at": "2026-10-15T19:35:13.000Z",
+        "publication_path": "/posts/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november/"
+      },
+      "verified_snapshot_sha256": "7e2133aeccf59ef80d0ec9ec31aad8e98eade0e7c381de0cf7e48adeb6de6409",
+      "body_sha256": "4a40d0535d4a8b0d122548455f40504feac64ab990876b1b3f5ca453c70cefcc"
+    }
+  ],
+  "note": "One-time read-only migration inventory, not a runtime evidence protocol or a lease on live refs. Reaudit at drained activation boundary.",
+  "native_build": {
+    "outcome": "success",
+    "article_count": 17,
+    "timings": {
+      "adapter_ms": 17.650896000000003,
+      "astro_ms": 1429.624046,
+      "pagefind_ms": 45.06454299999996
+    }
+  }
+}
