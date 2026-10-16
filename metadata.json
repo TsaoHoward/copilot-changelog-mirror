@@ -220,7 +220,11 @@
         "discovery_title": "Agentic autofix for code scanning alerts general availability",
         "discovery_published_at": "2026-10-15T13:49:20.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Agentic autofix for code scanning alerts general availability",
+        "published_at": "2026-10-15T13:49:20.000Z",
+        "publication_path": "/posts/2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability/"
+      }
     },
     "2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november-0fb5cf8a26c7": {
       "article_id": "2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november-0fb5cf8a26c7",
@@ -231,7 +235,11 @@
         "discovery_title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
         "discovery_published_at": "2026-10-15T19:35:13.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
+        "published_at": "2026-10-15T19:35:13.000Z",
+        "publication_path": "/posts/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november/"
+      }
     }
   }
 }

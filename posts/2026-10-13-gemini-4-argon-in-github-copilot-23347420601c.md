@@ -4,8 +4,6 @@ Gemini 4 Argon, Google’s newest frontier model, is now generally available in 
 
 This model is billed at provider list pricing under usage-based billing. See [Models and pricing for GitHub Copilot](https://docs.github.com/copilot/reference/copilot-billing/models-and-pricing) for details.
 
-<video loop="" controls="" autoplay="" muted="" width="100%" src="https://github.com/user-attachments/assets/d1986fbf-df1d-4295-9dc1-c7f62bb4dd34"><br></video>
-
 <a id="archive-heading-1"></a>
 
 ### [Availability in GitHub Copilot](#archive-heading-1)
