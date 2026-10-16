@@ -15,6 +15,51 @@ and `https://tsaohoward.github.io/copilot-changelog-isolated-35/` site. It has n
 production workflow completion consumers or copied credentials. A second
 environment in the production repository would not provide a separate Pages site.
 
+## Current isolated target and repeatable recovery
+
+The [2026-10-16 hosted milestone](v2-isolated-workflow-evidence.md#isolated-hosted-acceptance--2026-10-16)
+is complete: actual full-update, durable Capture across Render failure, offline
+render-rebuild, and explicit known-good republish all passed their acceptance
+checks. The deliberate failure run itself correctly concludes `failure`.
+The target now exists; inspect its ownership/refs/environment before operating it.
+Do not rerun blank-archive provisioning or overwrite its history.
+
+The isolated archive currently retains three complete derived articles at
+`7560149179043cfd0fdf507ce7292009aa685d88`. Its last published site intentionally
+contains the earlier two-article known-good publication. This demonstrates
+saved-derived recovery without rewinding the archive. Repeat it with:
+
+```sh
+repo=TsaoHoward/copilot-changelog-isolated-35
+gh workflow run update-publish.yml --repo "$repo" --ref main \
+  -f mode=republish \
+  -f application_sha=8f4aae37d74268321a0edbcb34b8de546e6b1559 \
+  -f archive_sha=7b71362ebafb9aeaccb39ee7dded171cad36b38b
+```
+
+For current saved data, dispatch `mode=render-rebuild` or `mode=republish` without
+historical inputs, using the commands below. A later isolated full-update or
+schedule may publish all three articles again; that is expected. Before changing
+fixture RSS and dispatching, verify the ordinary fixed raw URL serves the intended
+bytes: its CDN returned older data during setup. Source/condition changes belong
+only to `acceptance-source`, never to the production archive.
+
+Isolated `main` at `da369324b3347f3d1ac943b14b70c23a55a1279c` contains a narrowly
+reviewed synthetic-layout selector and a test-only preload of the existing
+acquisition guard. It reports covered source-acquisition attempts on stderr and
+preserves the directory CLI's stdout/argument contract. Those acceptance-only
+changes stay in the isolated repository; do not copy that branch into production.
+The workflow file itself remains the exact reviewed template. Native workflow
+registration is active; actual scheduled-event execution is still **pending
+observation**, independently of the completed manual functional milestone:
+
+```sh
+gh run list --repo "$repo" --workflow update-publish.yml --event schedule --limit 5
+```
+
+The following provisioning instructions are for an intentionally new target;
+the fixed target above must be reused with ordinary forward history instead.
+
 ## Provision and install the reviewed workflow
 
 Use a new disposable application directory. Export the reviewed issue commit,
