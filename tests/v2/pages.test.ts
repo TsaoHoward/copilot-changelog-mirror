@@ -663,11 +663,19 @@ test("failed hosted result never replaces baseline; source acquisition even caug
   assert.equal(f.remoteTip(), prep.archive_revision);
 });
 
-test("production Pages preserves shared queue, least permissions, exact attempt wiring and build execution agreement", async () => {
+test("retained legacy Pages preserves shared queue, least permissions, exact attempt wiring and build execution agreement", async () => {
   const { parse } = await import("yaml");
   const { root } = await import("./support.js");
   const production = parse(
-    readFileSync(join(root, ".github/workflows/v2-pages.yml"), "utf8"),
+    readFileSync(
+      join(
+        root,
+        existsSync(join(root, ".github/workflows/v2-pages.yml"))
+          ? ".github/workflows/v2-pages.yml"
+          : ".github/historical/v2-pages.yml",
+      ),
+      "utf8",
+    ),
   );
   const definition = JSON.parse(
     readFileSync(join(root, ".github/v2-pages-build.json"), "utf8"),

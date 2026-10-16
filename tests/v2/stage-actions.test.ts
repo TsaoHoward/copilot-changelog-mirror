@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { readFileSync, writeFileSync, readdirSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { execFileSync } from "node:child_process";
 import { parse } from "yaml";
@@ -122,15 +122,18 @@ test("Actions guards reject foreign/default-branch/event contradictions before a
   }
 });
 
-test("production workflows share the queue, target, schedule and exact v2 completion chain", () => {
+test("retained legacy chain preserves its queue, target, schedule and exact handoff contracts", () => {
+  const location = existsSync(join(root, ".github/workflows/v2-capture.yml"))
+    ? ".github/workflows"
+    : ".github/historical";
   const capture = parse(
-    readFileSync(join(root, ".github/workflows/v2-capture.yml"), "utf8"),
+    readFileSync(join(root, location, "v2-capture.yml"), "utf8"),
   );
   const render = parse(
-    readFileSync(join(root, ".github/workflows/v2-render.yml"), "utf8"),
+    readFileSync(join(root, location, "v2-render.yml"), "utf8"),
   );
   const pages = parse(
-    readFileSync(join(root, ".github/workflows/v2-pages.yml"), "utf8"),
+    readFileSync(join(root, location, "v2-pages.yml"), "utf8"),
   );
   assert.deepEqual(capture.on.schedule, [
     { cron: "17 6,12 * * *", timezone: "Asia/Taipei" },
@@ -145,12 +148,6 @@ test("production workflows share the queue, target, schedule and exact v2 comple
   assert.equal(render.on.workflow_dispatch.inputs.advance.default, false);
   assert.deepEqual(render.on.workflow_run.workflows, [capture.name]);
   assert.deepEqual(pages.on.workflow_run.workflows, [render.name]);
-  assert.deepEqual(readdirSync(join(root, ".github/workflows")).sort(), [
-    "ci.yml",
-    "v2-capture.yml",
-    "v2-pages.yml",
-    "v2-render.yml",
-  ]);
   const ci = parse(
     readFileSync(join(root, ".github/workflows/ci.yml"), "utf8"),
   );

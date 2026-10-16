@@ -1,5 +1,10 @@
 # v1 checkpoint and v2 production activation
 
+**Historical first-v2 bootstrap only. Do not rerun checkpoint/reset/bootstrap on
+the existing production archive.** For #36 use [the preservation cutover and
+native rebuild rollback runbook](v2-production-cutover.md). The retained commands
+below describe the original transition and its historical #24 acceptance.
+
 Prepare and validate the whole application/workflow change on the issue branch before changing hosted production. The implementation alone is not hosted acceptance. Do not merge/activate before the checkpoint gate succeeds. Production archive mutations use `npm run stage`; reset outside Actions requires the exclusive quiescence below.
 
 ## Freeze and verify the final v1 archive
