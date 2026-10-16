@@ -54,7 +54,7 @@ lease. Production refs may advance; refresh at the drained cutover boundary.
 | Current schema / inventory                                        | v2; 17 identities, 17 raw HTML, 17 complete bodies; 35 restored files; 15 reachable commits                    |
 | Historical checkpoint and unchanged `mirror-data`                 | `be5b40d1fd205137939f37ced96adfe19ef0fabc`                                                                     |
 | Checkpoint tree                                                   | `cf9f357a9b1f18bab2de45b4f5dfdb8a35fa0710`                                                                     |
-| Restored historical content                                       | 66 original files: 22 HTML, 22 JSON sidecars, 22 Markdown with original front matter; 43 reachable commits     |
+| Restored historical content                                       | 66 original files: 21 HTML, 21 JSON sidecars, 24 Markdown with original front matter; 43 reachable commits     |
 | Initial Capture witness                                           | `71edf378bff29beaed88cb12906e9276ef1307f5`; confirmed ancestor of current archive                              |
 | Annotated historical reset proof object                           | `894008dce71c24c98fd587793dc4bd0b6eab1b78`; peeled target is checkpoint above; recorded initial archive absent |
 
@@ -171,6 +171,45 @@ fixed checkouts, supported modes and same-workflow native permissions/dependency
 gates. Real-Git failure/persistence tests remain with #35; schema and native build
 failure tests remain with #33/#34. No failure was injected into production.
 
-Full suite, browser gates and final two-axis review results are recorded below
-once completed. Activation, hosted rollback, both new schedules and new production
-costs remain pending regardless of local results.
+Final verification uses Node 22.22.0/npm 10.9.4, existing application dependencies
+and Chromium cache. No cold CI/runtime savings are claimed. Local verification
+performed no production dispatch or archive write.
+
+- Formatting, TypeScript and `git diff --check`: passed.
+- Production/isolated YAML, actual entry shell and existing real-Git persistence:
+  11 focused checks passed.
+- Future installed layout in a disposable copy: 6 production/isolated workflow
+  checks and 2 retained historical wiring checks passed after moving old definitions
+  outside registration and copying the new template into place.
+- Retained Chromium gates: 31 passed, 0 failed/skipped (25.383 seconds reported).
+- Final opt-in reader check including repository-base asset assertions: local
+  artifact passed at 12:39:01 UTC / 20:39:01 Taipei; current public site passed at
+  12:39:11 UTC / 20:39:11 Taipei (9.414 seconds reported for public check).
+- First full-suite invocation began before the changed `package.json` was committed:
+  311 passed / 23 failed (173.400 seconds). Legacy operational fixtures require a
+  clean committed control source and refused that dirty source; later upstream
+  evidence/remote-state assertions consequently lacked durable results. This is a
+  recorded verification-order mistake, not accepted feature behavior. After the
+  preparation commit, all 10 `stage-writer.test.ts` checks passed (17.000 seconds).
+  The complete clean-source rerun passed **337/337**, 0 failures/skips
+  (166.997 seconds reported). The failed attempt's count was lower because failed
+  parent cases did not execute all their nested checks.
+
+### Standards
+
+Independent reviewer of `81b7df4...9d48d2a`: 0 documented violations and 0
+actionable baseline smells. Fixed inputs, separate pushes, guarded activation,
+restoration and executable rollback were checked. The reviewer requested that
+this final verification footer be completed; it is recorded here.
+
+### Spec
+
+Independent reviewer: 0 actionable findings or scope creep. Dormant installation,
+production feed/base and guards, runbook, real recoverability/local build and
+old-site baseline implement the authorized preparation. The corrected checkpoint
+counts match the inventory. Hosted acceptance is correctly pending as required by
+“If activation remains unauthorized, report implementation preparation separately
+from pending activation/acceptance; do not claim #36 complete.”
+
+Review totals: Standards 0; Spec 0. Activation, hosted rollback, both new schedules
+and new production costs remain pending regardless of local results.
