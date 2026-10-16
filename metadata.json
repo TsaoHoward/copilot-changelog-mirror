@@ -235,7 +235,11 @@
         "discovery_title": "Multi-repo support and other improvements for GitHub Copilot in Slack and Microsoft Teams",
         "discovery_published_at": "2026-10-16T02:16:35.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Multi-repo support and other improvements for GitHub Copilot in Slack and Microsoft Teams",
+        "published_at": "2026-10-16T02:16:35.000Z",
+        "publication_path": "/posts/2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates/"
+      }
     },
     "2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november-0fb5cf8a26c7": {
       "article_id": "2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november-0fb5cf8a26c7",
