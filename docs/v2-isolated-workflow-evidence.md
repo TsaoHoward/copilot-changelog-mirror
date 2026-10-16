@@ -127,12 +127,11 @@ synthetic corpora and base paths. See the #33/#34 test records for those fixture
 source/condition/independent-expectation policy. No generalized benchmarking
 framework, target count, total CI speedup or hosted performance is claimed.
 
-Hosted setup/install/cache, application/archive revisions, corpus/base, native
-stage/upload/deploy/job/queue/pipeline timings and invocation counts are all
-**unmeasured pending the approved hosted milestone**. They must be recorded from
-actual native runs when access is authorized, alongside mode skips, remote
-ancestry, public URLs and title/body search/result navigation. No local result
-substitutes for those observations.
+At that local-verification checkpoint, hosted setup/install/cache, revisions,
+corpus/base and native stage/job/queue/pipeline costs were still unmeasured.
+The subsequent authorized native observations, mode skips, remote ancestry,
+public URLs, reader checks and costs are now recorded in the hosted section below.
+The earlier local results did not substitute for those observations.
 
 ## CI checkout portability repair — 2026-10-16
 
@@ -186,9 +185,10 @@ inputs and existing untrusted commits. It preserves the actual ancestry guard
 and adds no real-remote CI fetch workaround. Remote CI must still be observed on
 the pushed HEAD rather than inferred from local passes.
 
-This repair performs no hosted provisioning, Pages configuration, archive
-mutation or public-site deployment. #35 hosted acceptance remains pending;
-#36 production cutover and #24 acceptance remain separate.
+That CI-only repair did not perform hosted provisioning, Pages configuration,
+archive mutation or public-site deployment. Hosted acceptance was still pending
+at that checkpoint; the later explicit authorization and completed hosted section
+below supersede that status. #36 production cutover and #24 remain separate.
 
 ## Isolated Hosted Acceptance — 2026-10-16
 
