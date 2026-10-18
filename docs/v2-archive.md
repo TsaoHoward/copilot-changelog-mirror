@@ -1,10 +1,11 @@
 # V2 capture, offline render, and shared archive contract
 
-The old v2 chain described here remains active during #36 preparation. Its
-checkpoint/reset and exact-evidence operations become historical after the
-separately approved switch. Use [the preservation cutover and native recovery
-runbook](v2-production-cutover.md) for that transition; do not bootstrap/reset the
-existing archive. [Current evidence and pending decisions](v2-production-evidence.md).
+The current production entry point is `.github/workflows/update-publish.yml`,
+activated by PR #43 on 2026-10-18. The stage/checkpoint/reset and exact-evidence
+operations below describe the retained historical chain; its workflow definitions
+are in `.github/historical/`. Use [the production and native recovery
+runbook](v2-production-cutover.md); do not bootstrap/reset the existing archive.
+[Current evidence and pending schedule observations](v2-production-evidence.md).
 
 The supported production chain uses Node.js/TypeScript capture, offline rendering, the shared archive-domain API, Astro and Pagefind. [Durable operations](v2-operations.md) and [Pages recovery](v2-pages.md) target `mirror-data-v2`. The v1 `mirror-data` history remains protected; [checkpoint and activation](v2-cutover.md) precede the fresh reset. Select a separate target for local fixture experiments.
 

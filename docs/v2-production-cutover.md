@@ -1,8 +1,11 @@
 # Simplified production cutover and recovery (#36)
 
-**Prepared, not activated.** The old Capture → Render → Pages chain remains live.
-The replacement is `.github/production/update-publish.yml`, outside the registered
-workflow directory. Merging this preparation does not register or dispatch it.
+**Activated by PR #43 on 2026-10-18.** Production uses
+`.github/workflows/update-publish.yml` (workflow `388375554`). The old chain was
+disabled and fully drained; its definitions remain in `.github/historical/`.
+The installation/stop sequence below records the executed transition and must not
+be repeated against the active chain. Manual/rollback results and pending actual
+schedule observations are in the dated evidence. #36 remains Open.
 Read [the dated evidence](v2-production-evidence.md) before any operator action.
 #32 supplies design authority, #35 supplies isolated integration proof, and #24
 remains a separate historical acceptance record.
@@ -35,9 +38,9 @@ must not block a native rebuild. These retirements do not pass #24's pending mat
 ## Read-only preparation and one-time recoverability audit
 
 Use a fresh directory and the real repository; never initialize or reset an archive.
-The fixed known-good pair currently verified is application
-`81b7df4dbf2fb75f61a9752c519e80bf8f4c73f7` with complete-derived archive
-`8d38d259c0c4f9e6ea7216eb9fd6e4b8cf2db0bb`. The application already contains the
+The fixed known-good pair actually rebuilt/published during activation is application
+`9cca716865717a50fa02066b98bfa0e2bbba247b` with complete-derived archive
+`0ce0a0e922c87cedccbd3cdc2165ce3037fd0e11`. The application already contains the
 three replacement commands. Public base is `/copilot-changelog-mirror/`, origin
 `https://tsaohoward.github.io`. Recheck compatibility if choosing another pair.
 
@@ -45,8 +48,8 @@ three replacement commands. Public base is `/copilot-changelog-mirror/`, origin
 set -euo pipefail
 repo=TsaoHoward/copilot-changelog-mirror
 audit=$(mktemp -d /tmp/copilot-cutover.XXXXXX)
-application=81b7df4dbf2fb75f61a9752c519e80bf8f4c73f7
-derived=8d38d259c0c4f9e6ea7216eb9fd6e4b8cf2db0bb
+application=9cca716865717a50fa02066b98bfa0e2bbba247b
+derived=0ce0a0e922c87cedccbd3cdc2165ce3037fd0e11
 git clone --mirror "https://github.com/$repo.git" "$audit/repository.git"
 git --git-dir="$audit/repository.git" show-ref > "$audit/refs-before.txt"
 git --git-dir="$audit/repository.git" fsck --full --no-reflogs
@@ -227,15 +230,15 @@ separate from first replacement publication.
 
 ## Known-good rollback and uncertainty
 
-After authorization and sole-chain activation, this executable fresh native rebuild
-and publish uses the locally verified compatible pair without moving archive refs:
+This executable fresh native rebuild/publish was verified in Production by run
+`39122524338`, including public reader/search and unchanged archive refs:
 
 ```bash
 git ls-remote "https://github.com/$repo.git" refs/heads/mirror-data-v2 > "$audit/before-republish.txt"
 gh workflow run update-publish.yml --repo "$repo" --ref main \
   -f mode=republish \
-  -f application_sha=81b7df4dbf2fb75f61a9752c519e80bf8f4c73f7 \
-  -f archive_sha=8d38d259c0c4f9e6ea7216eb9fd6e4b8cf2db0bb
+  -f application_sha=9cca716865717a50fa02066b98bfa0e2bbba247b \
+  -f archive_sha=0ce0a0e922c87cedccbd3cdc2165ce3037fd0e11
 # Identify the newly created run by event/time/inputs; do not select an unrelated latest run.
 gh run list --repo "$repo" --workflow update-publish.yml --event workflow_dispatch --limit 10
 # gh run watch ACTUAL_RUN_ID --repo "$repo" --exit-status
