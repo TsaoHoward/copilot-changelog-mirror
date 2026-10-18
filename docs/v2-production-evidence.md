@@ -12,17 +12,24 @@ Inspected 2026-10-16. Application default `main` was fast-forwarded to
 `81b7df4dbf2fb75f61a9752c519e80bf8f4c73f7` before creating the fresh
 `codex/issue-36-production-cutover` branch. [PR #40](https://github.com/TsaoHoward/copilot-changelog-mirror/pull/40)
 is merged there, including the isolated template and
-[#35's functional evidence](v2-isolated-workflow-evidence.md). #35 remains open;
-its isolated manual full/update/failure/repair/republish/public checks are recorded
-as passed, while isolated scheduling is separately pending. Those observations
-have not been promoted to a distinct human acceptance/production activation
-record. Obtain both decisions on #36 before proceeding with the
-[executable runbook](v2-production-cutover.md).
+[#35's functional evidence](v2-isolated-workflow-evidence.md).
+
+Status rechecked **2026-10-18 (Asia/Taipei)**: [#35](https://github.com/TsaoHoward/copilot-changelog-mirror/issues/35)
+is **Closed — Completed**. Its closure records acceptance of the isolated functional
+evidence (full-update, Capture-persisted/Render-failed boundary, offline repair,
+known-good republish, native Pages and public browsing/search). The real isolated
+schedule observation remains **Pending**, independently of that completed functional
+acceptance. This status correction does not revise the historical results below.
+Record the accepted evidence and delivered revision on #36, and obtain a separate,
+explicit production activation decision before executing the
+[cutover runbook](v2-production-cutover.md). Closing #35 or merging this preparation
+does not authorize production activation or pass #36's production acceptance;
+activation and production acceptance remain **Pending**.
 
 | Required observation / decision                                              | State              | Evidence / next step                                                                    |
 | ---------------------------------------------------------------------------- | ------------------ | --------------------------------------------------------------------------------------- |
 | Delivered #35 interfaces and isolated functional evidence available          | Passed inspection  | PR #40, default SHA above, retained isolated evidence; no new isolated dispatch         |
-| Human acceptance of replacement functional evidence                          | Pending            | Record accepting operator and evidence revision on #36                                  |
+| Human acceptance of replacement functional evidence                          | Passed (#35)       | #35 closure accepts PR #40's isolated functional evidence; reference it on #36          |
 | Explicit production activation decision                                      | Pending            | Record separate approval and coordinated operating window                               |
 | Current archive/raw/schema and restored checkpoint recoverability            | Passed preparation | Dated inventory and Git checks below; repeat if refs advance before drained boundary    |
 | Compatible complete-derived native build/index                               | Passed locally     | Fixed pair, fresh install/output, 17 indexed articles below                             |
