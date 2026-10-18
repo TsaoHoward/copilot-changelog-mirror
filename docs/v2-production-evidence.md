@@ -437,7 +437,7 @@ install in native directory build. Setup-node/full tool setup measured 8s.
 | 39122218434 full-update                  |           34s |        11s |     45s | 3s / 4s                 |        53s |      5s | 6s / 1s        | 1s / <1s resolution |          4s | <1s resolution |            7s |
 | 39122396833 render-rebuild               |           22s |        10s |     32s | 5s / 5s                 |        42s |      5s | skipped        | 1s / <1s resolution |          3s |             1s |            6s |
 | 39122524338 known-good republish         |           25s |         9s |     34s | 3s / 3s                 |        41s |      4s | skipped        | skipped             |          3s |             1s |            6s |
-| 39122655130 latest restoration republish |           26s |        13s |     39s | 4s / 4s                 |        47s |      4s | skipped        | skipped             |          3s |             2s |            6s |
+| 39122655130 latest restoration republish |           28s |        11s |     39s | 4s / 4s                 |        47s |      4s | skipped        | skipped             |          3s |             2s |            6s |
 
 All values are native timestamp measurements at one-second endpoint resolution;
 zero difference means below that resolution, not zero work. End-to-end is creation
