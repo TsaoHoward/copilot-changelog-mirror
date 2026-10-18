@@ -1,10 +1,10 @@
 # Issue #36 production preparation and observation
 
-**Activation in progress; production acceptance pending.** The preparation record below is historical. See the dated activation section for current status. Authority:
+**Production manual acceptance and rollback passed; both real schedule observations Pending.** The preparation record below is historical. See the dated activation section for current status. #36 remains Open. Authority:
 [#36 body and specification](https://github.com/TsaoHoward/copilot-changelog-mirror/issues/36#issuecomment-6214593750),
 parent #32, prerequisite #35. This record does not close #24. No production
 workflow was disabled/enabled/dispatched, no archive ref changed, and no new
-Pages deployment was requested by this implementation.
+Pages deployment was requested by preparation PR #42. The later authorized activation is recorded below.
 
 ## Decisions and prerequisite
 
@@ -289,3 +289,210 @@ succeeded by duplicate suppression with deploy skipped; it was not a new publica
 No in-flight native deployment found.
 
 Current full article/Capture/raw/body audit export SHA-256: `79fcc4910d82f8e75bcb538335c69aa3b8b71caec2319bebbc45349295775e79`. Per-article raw hashes and Capture metadata are recoverable from the pinned archive metadata; independently recomputed hashes matched.
+
+### Gate 2 — Passed
+
+[Activation PR #43](https://github.com/TsaoHoward/copilot-changelog-mirror/pull/43)
+head `ae923f0cdecc99b0890e60c5724bbd7dbbd43bc2` preserved the three workflow
+definitions byte-for-byte under `.github/historical/` and installed the reviewed
+production template byte-for-byte. CI and ordinary persistence helper unchanged.
+Local format/typecheck/diff checks passed; 11 focused checks, 2 retained historical
+checks, 337/337 Node checks (178.329s), 31/31 Chromium checks (51.021s).
+Independent Standards and Spec reviewers each reported 0 findings.
+[Exact-head CI 39121521827](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39121521827)
+passed at 19:08:47 Taipei. The old chain stayed live throughout PR/CI preparation.
+
+### Gate 3 — Passed
+
+Old IDs Capture `381740224`, Render `381740225`, Pages `381887694` were explicitly
+disabled. Two full repository snapshots at **19:09:42** and **19:10:02 Taipei**
+showed all three `disabled_manually`, zero nonterminal runs across queued,
+in_progress, waiting, pending and requested states, no newly created downstream
+consumer/rerun, and no unresolved Pages deployment. No cancellation needed. Last
+actual publication remained deployment `7132459232`/success. Public reader/search
+rechecked successfully at **19:10:03**. Archive HEAD/tree and all checkpoint refs
+remained identical to Gate 1, so that freshly verified build remained applicable.
+
+The operating coordination was posted on #36 before stop/drain: no old dispatch,
+rerun, re-enable, external archive writer or alternate publisher during cutover.
+This is operator coordination, not a claim that Actions concurrency locks human
+administrators. No competing writer or late old publication was observed.
+
+### Gate 4 — Passed
+
+PR #43 merged normally at **19:10:33**, main/merge
+`e7965ffce081bbd8078e8a1185edb5893700d3b7`, without protection bypass. Snapshot
+at **19:10:48** showed new workflow **388375554** active, CI independent, actual
+workflow directory containing only `ci.yml` and `update-publish.yml`. New registered
+bytes matched the reviewed template; the old IDs became `deleted` after definition
+removal and have no current registered trigger path. Their source remains retained.
+No late old run/deployment. Archive and historical refs unchanged by merge.
+[Main CI 39122175485](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39122175485)
+was observed separately from Production acceptance.
+
+### Gate 5A — Passed: real manual full-update
+
+[Run 39122218434](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39122218434),
+workflow/application `e7965ffce081bbd8078e8a1185edb5893700d3b7`, selected archive
+`0ce0a0e922c87cedccbd3cdc2165ce3037fd0e11`, successful. Real GitHub Blog Capture
+ordinary-pushed **C `defab4385586c67a196fe8f383a1eb37f8522c79`**. Offline Render
+was unchanged, then separately ordinary-pushed successfully (`Everything up-to-date`),
+so **R = C**. The accepted no-change path creates no artificial Render commit;
+C is a direct ordinary child of drained HEAD and R is descendant-or-equal to C.
+
+Archive tree `567384606fa5975382c1bc54e38b35ae56b25ff3`, 21 reachable commits.
+All 17 original identities/bodies retained, no discovery pruning; only legitimate
+Capture changed metadata and two raw snapshots (October 9 weekly / October 13
+Gemini announcements). Every raw SHA-256 revalidated. Canonical bodies unchanged;
+all historical refs retained. One local comparison ran before mirror fetch finished
+and saw the stale baseline; it was repeated after the completed fetch. Only the
+correct `defab438...` input was used for the authoritative post-publication check.
+
+Astro/Pagefind completed (17 pages / 1114 words), native upload then deploy succeeded.
+Deployment **7153710530**, native status success, [public site](https://tsaohoward.github.io/copilot-changelog-mirror/).
+At **19:13:26**, Chromium passed listing/order, all retained routes/title/date/source
+links, saved prose, anchors, image/video references, repository-base assets,
+`weekly releases` title search, `enterprise-provided` body search and navigation.
+External media references were checked with external requests blocked.
+
+### Gate 5B — Passed: persisted-source render-rebuild
+
+[Run 39122396833](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39122396833),
+same workflow/application, selected archive `defab4385586c67a196fe8f383a1eb37f8522c79`,
+successful. Native steps explicitly show Capture and Capture push skipped; offline
+Render and its ordinary push succeeded unchanged. No acquisition stage executed.
+R remains `defab438...`; full archive HEAD/tree/history, immutable identities,
+raw bytes and Capture fields unchanged. Fresh Astro/Pagefind/native upload/deploy
+succeeded, deployment **7153740176**, native status success. Same complete public
+reader/search check passed at **19:15:17**.
+
+### Gate 5C — Passed: known-good native rollback and latest-version restoration
+
+[Rollback run 39122524338](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39122524338)
+used workflow `e7965ffce081bbd8078e8a1185edb5893700d3b7`, fixed trusted application
+**`9cca716865717a50fa02066b98bfa0e2bbba247b`** and fixed complete-derived archive
+**`0ce0a0e922c87cedccbd3cdc2165ce3037fd0e11`**, confirmed by actual checkout logs.
+Capture, Render and both push steps explicitly skipped. Fresh Astro/Pagefind,
+native upload and deployment **7153762546** succeeded. Public reader/search against
+the selected known-good inputs passed at **19:17:08 Taipei**. Before/after remote
+ref exports were byte-identical; fetched archive HEAD/tree/history stayed
+`defab438...` / `567384606fa5975382c1bc54e38b35ae56b25ff3` / 21 commits.
+All newer raw data survived. No old artifact or historical evidence expiry gate
+was used. This is actually executed hosted rollback evidence.
+
+Because rollback selected an older pair, one required extra
+[latest-version republish 39122655130](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39122655130)
+restored fixed application **`e7965ffce081bbd8078e8a1185edb5893700d3b7`** plus latest
+verified complete archive **`defab4385586c67a196fe8f383a1eb37f8522c79`**. All writer
+steps again skipped; deployment **7153785521** succeeded. Final public reader/search
+passed at **19:19:27**. Final full native inventory **19:19:28** found CI and sole
+production workflow active, no nonterminal runs, four successful new native
+publications and no late old publication. Repeated Git inspection confirmed all
+17 identities/raw hashes, complete bodies, archive ancestry and checkpoint refs.
+The initial Capture checkpoint was also actually exported and every mode/blob
+verified: 11 files, one reachable initial commit.
+
+Merged activation main CI **39122175485** completed **success at 19:18:29**, exact
+merge/application SHA `e7965ffce081bbd8078e8a1185edb5893700d3b7`.
+
+Durable input records: [drained metadata](https://github.com/TsaoHoward/copilot-changelog-mirror/blob/0ce0a0e922c87cedccbd3cdc2165ce3037fd0e11/metadata.json)
+and [post-activation metadata](https://github.com/TsaoHoward/copilot-changelog-mirror/blob/defab4385586c67a196fe8f383a1eb37f8522c79/metadata.json)
+retain every immutable identity, source URL, canonical field, Capture timestamp and
+snapshot SHA-256. The pinned trees retain exact raw/body blob bytes. No historical
+ref or reset witness was recreated. No Production failure was injected and no
+Production run failed or required a retry; isolated destructive failure proof remains
+#35's evidence. No ambiguous native deployment occurred.
+
+### Observed Production costs
+
+A newly fetched old complete successful pipeline is Capture
+[38986967477](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/38986967477),
+Render [38987030881](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/38987030881),
+Pages [38987096817](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/38987096817),
+2026-10-17 00:34:06–00:37:19 UTC. Application/definition `81b7df4...`, Capture
+output `2a18c3d657f344e6d2f0521d4fb73161d0eadbc2`, Render output `5dc00f3...`,
+17 articles, one changed canonical body. Three invocations/four jobs: Capture 46s,
+Render 44s, Pages prepare 51s, deploy 34s; job sum **175s**, end-to-end **193s**.
+Initial queues 3s/3s/4s, cross-workflow handoffs 1s/1s, prepare-to-deploy gap 4s.
+Six explicit installs total 27s, plus one nested locked site-build install confirmed
+from executed code (within the 18s build step, no separate timing): seven installs.
+Capture/persist 23s, Render/persist 21s, native upload 1s, native deploy action 7s.
+Grouped historical stage durations include legacy operational checks; finer
+acquisition/push/index splits are unavailable. This newer sample supplements the
+original October 16 baseline above without rewriting it.
+
+Both old and new observed runners: `ubuntu-latest`, Ubuntu 24.04.5, image
+`20261012.334.1`, Node 22.22.0/npm 10.9.4, Astro 7.3.6/Pagefind 1.5.2, same lock
+SHA-256 `7062f8445365011714769409b0b94c574894960773e23ae2aba2c474f514e8dd`,
+restored npm cache key
+`node-cache-Linux-x64-npm-5bd78caab370a3b3aabc9cf8660d17fa327faaa4870fd509bc288bd278d85309`,
+17 articles, `/copilot-changelog-mirror/`, real production inputs. New full/render/
+restore application `e7965ff...`; rollback application `9cca716...`; archives listed
+above. Cache is the npm download cache, not reuse of installed application modules.
+Each new run installed once in archive-build, none in deploy; no nested application
+install in native directory build. Setup-node/full tool setup measured 8s.
+
+| New run / mode                           | Archive-build | Deploy job | Job sum | Initial queue / job gap | End-to-end | Install | Capture / push | Render / push       | Build/index |         Upload | Deploy action |
+| ---------------------------------------- | ------------: | ---------: | ------: | ----------------------- | ---------: | ------: | -------------- | ------------------- | ----------: | -------------: | ------------: |
+| 39122218434 full-update                  |           34s |        11s |     45s | 3s / 4s                 |        53s |      5s | 6s / 1s        | 1s / <1s resolution |          4s | <1s resolution |            7s |
+| 39122396833 render-rebuild               |           22s |        10s |     32s | 5s / 5s                 |        42s |      5s | skipped        | 1s / <1s resolution |          3s |             1s |            6s |
+| 39122524338 known-good republish         |           25s |         9s |     34s | 3s / 3s                 |        41s |      4s | skipped        | skipped             |          3s |             1s |            6s |
+| 39122655130 latest restoration republish |           26s |        13s |     39s | 4s / 4s                 |        47s |      4s | skipped        | skipped             |          3s |             2s |            6s |
+
+All values are native timestamp measurements at one-second endpoint resolution;
+zero difference means below that resolution, not zero work. End-to-end is creation
+to final run update. Build/index includes adapter/Astro/Pagefind; no finer new
+Production command JSON timing is claimed. New full-update start/end UTC:
+11:11:13–11:12:06; render 11:13:57–11:14:39; rollback 11:15:48–11:16:29; restore
+11:17:45–11:18:32. Four successful workflow invocations / eight jobs / four installs /
+four native publications; **150s total job intervals**, **183s sum of individual
+pipeline intervals**. No failed/repeated Production attempt. Restoration is one
+additional publication beyond the three required modes and is included in totals.
+Local audit builds, browser checks and routine PR/main CI are separate evidence
+and excluded from these Production totals.
+
+Observed full-update sample is 45s job sum / 53s end-to-end versus newer old
+175s / 193s, and original old 222s / 244s. The new full Render was unchanged while
+the compared old Render changed one body; applications/operational checks and
+acquisition/network/cache conditions differ. These are single observed samples,
+not a controlled benchmark, monetary billing estimate or generalized savings claim.
+The install-count reduction was actually observed; exact future runtime savings
+remain unmeasured.
+
+### Actual schedules and current acceptance
+
+As of 2026-10-18 **19:20 Asia/Taipei**, querying actual `schedule` events for workflow
+388375554 returned none. Both configured slots are **Pending**, not failed or passed.
+Activation occurred after today's two nominal times. Next observation opportunities:
+
+| Slot  | Next nominal Taipei | Nominal UTC      | Actual event / job / deploy / public result |
+| ----- | ------------------- | ---------------- | ------------------------------------------- |
+| 06:17 | 2026-10-19 06:17    | 2026-10-18 22:17 | Pending; no event observed                  |
+| 12:17 | 2026-10-19 12:17    | 2026-10-19 04:17 | Pending; no event observed                  |
+
+Retain actual event creation, job start/queue/execution, selected application/archive,
+C/R, deployment and public checks when observed. Investigate the historical nominal
+discrepancy using actual event/platform diagnostics; slot arithmetic alone cannot
+attribute a delayed event. Cron/timezone remain unchanged; no manual result fills
+these rows. Missing observation, platform delay and failure remain distinct.
+
+| Required decision / observation                                          | Current state                      |
+| ------------------------------------------------------------------------ | ---------------------------------- |
+| #35 functional acceptance and separate explicit activation authorization | Passed, separately recorded        |
+| Current schema/raw/identity audit and actual checkpoint restore          | Passed                             |
+| Compatible known-good native rebuild/index and rollback inputs           | Passed                             |
+| Old disable/drain, sole current production path, no late old deploy      | Passed                             |
+| Activation exact-head PR CI and merged-main CI                           | Passed                             |
+| Full-update, separate C/R pushes, finished build/native publication      | Passed; R no-change push confirmed |
+| Retained data/identities/checkpoints/history                             | Passed                             |
+| Persisted-source render-rebuild without Capture                          | Passed                             |
+| Known-good saved-derived native republish/rollback                       | Passed                             |
+| Latest verified public publication restored; public reader/search        | Passed                             |
+| Production costs with conditions and extra publication                   | Passed, bounded observed samples   |
+| Actual 06:17 and 12:17 scheduled events/public outcomes                  | Pending, both                      |
+| #36 fully accepted / closed                                              | Pending; remains Open              |
+
+Next required work is observing both actual scheduled events and their public
+outcomes, then recording dated evidence before deciding #36 completion. #24 remains
+independent and unchanged; #37 has not started. No additional evidence protocol,
+scheduler or recovery framework was introduced.

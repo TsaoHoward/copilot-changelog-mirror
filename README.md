@@ -21,9 +21,11 @@ CI runs the locked Node install, formatting, typecheck, real command/build contr
 
 The archive contains original `snapshots/<article_id>.html`, one `metadata.json` current-state manifest, and independent body-only `posts/<article_id>.md`. Capture owns evidence and discovery observations; offline render owns canonical title, publication time, route and body. `article_id` and `source_url` are immutable. Identical acquisition preserves observation time and Git history.
 
-The archive domain owns canonical publication identity. Presentation owns deployment identity, combining canonical publication with effective Astro/Pagefind source and supported locked build inputs. Raw chrome can change the evidence revision while both identities stay equal, suppressing deployment. Presentation fixes can change deployment identity without changing the archive. Pages compares only against server-verified actual successful deployment evidence.
-
-Use [the archive/API contract](docs/v2-archive.md), [writer operations](docs/v2-operations.md), and [Pages and retention recovery](docs/v2-pages.md) for details. For local fixture experiments, select a separate target:
+The archive API retains canonical publication identity for callers. The current
+production workflow uses saved directory inputs and fresh native builds; historical
+deployment-identity suppression and retention-qualified proof gates are retired.
+See [the current production runbook](docs/v2-production-cutover.md) and
+[the retained archive/API contract](docs/v2-archive.md). For local fixture experiments, select a separate target:
 
 ```sh
 npm run --silent capture -- --data-branch local-v2 --feed-url file:///path/to/feed.xml
@@ -32,29 +34,47 @@ npm run --silent render -- --data-branch local-v2
 
 ## Production
 
-Issue #36's simplified single-workflow chain is **prepared, not activated**. Use
-[the cutover and native rollback runbook](docs/v2-production-cutover.md) and
-[the dated evidence and pending decisions](docs/v2-production-evidence.md).
-The production template stays outside `.github/workflows` until separately
-approved activation and old-chain draining. The following describes the current
-old chain and its historical guarantees; the runbook defines their replacement.
+Production uses **`.github/workflows/update-publish.yml`**, activated by
+[PR #43](https://github.com/TsaoHoward/copilot-changelog-mirror/pull/43) after verified
+old-chain disable/drain. The old Capture/Render/Pages definitions are retained under
+`.github/historical/`. Use [the native rollback runbook](docs/v2-production-cutover.md)
+and [dated production evidence](docs/v2-production-evidence.md). Manual functional
+acceptance and known-good rollback are recorded there; both real schedule
+observations remain Pending, so #36 remains Open. #24 is separate.
 
-[The original checkpoint/bootstrap procedure](docs/v2-cutover.md) is historical; do not rerun it on the existing archive. The implementation branch alone does not activate production; its [acceptance record](docs/v2-acceptance.md) distinguishes local checks, actual hosted runs and scheduled observations.
+One archive/build job installs dependencies once, acquires the real feed, ordinary
+pushes Capture, renders saved source offline, ordinary pushes Render, builds with
+Astro/Pagefind and uploads finished output. A dependent job performs native Pages
+deployment. Failed or uncertain pushes stop downstream work. Whole-workflow
+`copilot-archive-production` concurrency covers deployment, with cancellation
+disabled and `queue: max`.
 
-**V2 production capture → V2 production render → V2 production Pages** are separate Actions runs. Capture verifies remote durability before render; render verifies canonical durability before Pages. Each stage carries exact application/definition/archive revisions and upstream run/attempt evidence. All automatic/manual operations share `copilot-archive-production`, with cancellation disabled and `queue: max`. Superseded selections perform no stale push/deployment. Only the deployment job has Pages/OIDC write permission.
+Scheduled full updates retain **06:17 and 12:17 Asia/Taipei**
+(`17 6,12 * * *`, `timezone: Asia/Taipei`). Manual operations:
 
-Capture alone runs at **06:17 and 12:17 Asia/Taipei** (`17 6,12 * * *`, `timezone: Asia/Taipei`). Scheduled and default manual capture advance; `advance=false` captures only. Manual render defaults to render-only; `advance=true` renders and publishes. Pages supports publish-only, exact failed deployment retries, force limited to duplicate suppression, and explicit retention-qualified baseline re-establishment. Render and Pages have no independent schedules.
+```sh
+gh workflow run update-publish.yml --ref main -f mode=full-update
+gh workflow run update-publish.yml --ref main -f mode=render-rebuild
+gh workflow run update-publish.yml --ref main -f mode=republish
+```
+
+Use the runbook's fixed application/archive selectors for known-good republish.
+Render-rebuild skips acquisition; republish skips Capture, Render and archive pushes.
+Keep newer raw history during rollback. After deployment ambiguity inspect native
+status and actual public content/search before another publication. Keep old
+workflows inactive. [Original checkpoint/bootstrap](docs/v2-cutover.md) is historical;
+do not rerun it on the existing archive.
 
 Published articles retain `/posts/<slug>/` under `/copilot-changelog-mirror/`, source attribution, section anchors and media. The listing uses canonical publication time. Search indexes body text and titles at build time; index/build output is derived, never archive state. The site needs no runtime backend or database.
 
-The additive [directory Capture and offline Render workflow](docs/v2-directory.md)
+The production [directory Capture and offline Render workflow](docs/v2-directory.md)
 uses a dedicated archive checkout and ordinary Git persistence (`capture:directory`
-and `render:directory`). Production entry points remain available.
+and `render:directory`). Historical stage entry points remain available for retained callers.
 
-The additive [saved-archive site build](docs/v2-native-site.md) uses
+The production [saved-archive site build](docs/v2-native-site.md) uses
 `site:build:directory` to build/index fresh static output with native Astro and
 Pagefind, independently of capture, Git persistence and deployment.
 
-The simplified update/publish integration is an inactive production template.
+The simplified update/publish integration is active in production.
 See the [isolated workflow runbook](docs/v2-isolated-workflow.md) and
 [acceptance evidence](docs/v2-isolated-workflow-evidence.md) for #35.

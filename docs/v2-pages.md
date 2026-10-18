@@ -1,12 +1,13 @@
 # v2 Pages publication and recovery
 
-The old v2 chain described here remains active during #36 preparation. Its
-checkpoint/reset and exact-evidence operations become historical after the
-separately approved switch. Use [the preservation cutover and native recovery
-runbook](v2-production-cutover.md) for that transition; do not bootstrap/reset the
-existing archive. [Current evidence and pending decisions](v2-production-evidence.md).
+The current production entry point is `.github/workflows/update-publish.yml`,
+activated by PR #43 on 2026-10-18. The stage/checkpoint/reset and exact-evidence
+operations below describe the retained historical chain; its workflow definitions
+are in `.github/historical/`. Use [the production and native recovery
+runbook](v2-production-cutover.md); do not bootstrap/reset the existing archive.
+[Current evidence and pending schedule observations](v2-production-evidence.md).
 
-The production Node Pages workflow consumes the v2 archive and presentation-owned deployment identity. `.github/workflows/v2-pages.yml` follows `V2 production render` on the `mirror-data-v2` target. All stages share `copilot-archive-production`, `cancel-in-progress: false`, and `queue: max`. Completion events start independent runs after the upstream releases the queue; no child wait holds it. [Checkpoint/reset activation](v2-cutover.md) and [hosted acceptance](v2-acceptance.md) remain separately recorded; local tests do not establish a live deployment.
+The production Node Pages workflow consumes the v2 archive and presentation-owned deployment identity. `.github/historical/v2-pages.yml` follows `V2 production render` on the `mirror-data-v2` target. All stages share `copilot-archive-production`, `cancel-in-progress: false`, and `queue: max`. Completion events start independent runs after the upstream releases the queue; no child wait holds it. [Checkpoint/reset activation](v2-cutover.md) and [hosted acceptance](v2-acceptance.md) remain separately recorded; local tests do not establish a live deployment.
 
 ## Two identities and immutable selections
 

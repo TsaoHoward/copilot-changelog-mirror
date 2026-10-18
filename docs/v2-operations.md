@@ -1,10 +1,11 @@
 # Durable v2 capture and render
 
-The old v2 chain described here remains active during #36 preparation. Its
-checkpoint/reset and exact-evidence operations become historical after the
-separately approved switch. Use [the preservation cutover and native recovery
-runbook](v2-production-cutover.md) for that transition; do not bootstrap/reset the
-existing archive. [Current evidence and pending decisions](v2-production-evidence.md).
+The current production entry point is `.github/workflows/update-publish.yml`,
+activated by PR #43 on 2026-10-18. The stage/checkpoint/reset and exact-evidence
+operations below describe the retained historical chain; its workflow definitions
+are in `.github/historical/`. Use [the production and native recovery
+runbook](v2-production-cutover.md); do not bootstrap/reset the existing archive.
+[Current evidence and pending schedule observations](v2-production-evidence.md).
 
 `npm run stage --` is the Node operational boundary. It uses the selected application's capture/render CLI and shared archive-domain APIs. It owns exact input preparation, ordinary remote pushes, remote freshness, Actions evidence validation and reporting. Execution evidence never enters `metadata.json`, snapshots or canonical bodies. Canonical publication identity comes from the render domain; this command does not define deployment identity or make a Pages decision.
 

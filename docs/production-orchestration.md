@@ -1,17 +1,17 @@
 # Production orchestration and recovery
 
-The old v2 Capture → Render → Pages chain remains active during #36 preparation.
-The simplified production template is unregistered in `.github/production/`.
-Use [the preservation cutover/native rollback runbook](v2-production-cutover.md)
-and [dated evidence and pending decisions](v2-production-evidence.md). Production
-activation needs acceptance of isolated evidence and a separate explicit decision,
-then old-chain disable/drain before replacement registration.
+Production uses `.github/workflows/update-publish.yml` (workflow `388375554`),
+activated by [PR #43](https://github.com/TsaoHoward/copilot-changelog-mirror/pull/43)
+on 2026-10-18 after explicit acceptance/activation decisions and two verified drain
+inventories. The three old workflows are inactive; their exact definitions remain
+in `.github/historical/`. CI is independent. Use
+[the production/native rollback runbook](v2-production-cutover.md) and
+[dated evidence and pending schedule observations](v2-production-evidence.md).
 
-Until that switch, the old chain uses [stage operations](v2-operations.md) and
-[Pages exact-evidence/retention recovery](v2-pages.md). Afterward those describe
-historical operational guarantees intentionally retired by the new runbook.
-[Original checkpoint/fresh bootstrap](v2-cutover.md) is historical and must not be
-rerun on the existing archive. [#24 acceptance](v2-acceptance.md) remains separate.
+The retained [stage operations](v2-operations.md) and
+[Pages exact-evidence/retention recovery](v2-pages.md) describe the historical chain.
+[Original checkpoint/fresh bootstrap](v2-cutover.md) must not be rerun on the
+existing archive. [#24 acceptance](v2-acceptance.md) remains separate.
 
 The new chain supports `full-update`, saved-source `render-rebuild`, and saved-derived
 `republish`. It rebuilds native Astro/Pagefind artifacts from retained compatible
