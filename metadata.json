@@ -125,8 +125,8 @@
       "article_id": "2026-10-09-github-copilot-weekly-releases-october-5-ec899f104655",
       "source_url": "https://github.blog/changelog/2026-10-09-github-copilot-weekly-releases-october-5",
       "capture": {
-        "snapshot_sha256": "9274d9bd57bef930edf437e331ed16e01f504a89ac0aa1d08b3fb31448b19655",
-        "observed_at": "2026-10-18T08:55:01.989Z",
+        "snapshot_sha256": "084700f8e8f6749af7a750a49ff745f8ff205dfc5779bd0eff2ddf006b66b364",
+        "observed_at": "2026-10-18T11:11:36.080Z",
         "discovery_title": "GitHub Copilot weekly releases — October 5",
         "discovery_published_at": "2026-10-09T22:58:23.000Z"
       },
@@ -185,8 +185,8 @@
       "article_id": "2026-10-13-gemini-4-argon-in-github-copilot-23347420601c",
       "source_url": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "dc10f259480909036cfa09f874d5085f83536d4f964958ba488daf21a18f8325",
-        "observed_at": "2026-10-18T08:55:04.555Z",
+        "snapshot_sha256": "35a1d1c344ff3e3a50b91e5a833d090e3085e13b152731dfdd3ba6b4c4cf5511",
+        "observed_at": "2026-10-18T11:11:38.459Z",
         "discovery_title": "Gemini 4 Argon in GitHub Copilot",
         "discovery_published_at": "2026-10-13T18:39:56.000Z"
       },
