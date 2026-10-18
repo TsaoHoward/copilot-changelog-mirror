@@ -1,6 +1,6 @@
 # Issue #36 production preparation and observation
 
-**Preparation complete; activation and production acceptance pending.** Authority:
+**Activation in progress; production acceptance pending.** The preparation record below is historical. See the dated activation section for current status. Authority:
 [#36 body and specification](https://github.com/TsaoHoward/copilot-changelog-mirror/issues/36#issuecomment-6214593750),
 parent #32, prerequisite #35. This record does not close #24. No production
 workflow was disabled/enabled/dispatched, no archive ref changed, and no new
@@ -220,3 +220,72 @@ from pending activation/acceptance; do not claim #36 complete.”
 
 Review totals: Standards 0; Spec 0. Activation, hosted rollback, both new schedules
 and new production costs remain pending regardless of local results.
+
+## Production Activation — 2026-10-18 Asia/Taipei
+
+The user separately accepted #35's isolated functional evidence delivered by PR #40
+(`81b7df4dbf2fb75f61a9752c519e80bf8f4c73f7`) and explicitly authorized production
+activation in the current operating window. Both decisions are recorded in
+[#36 operation comment](https://github.com/TsaoHoward/copilot-changelog-mirror/issues/36#issuecomment-6248994488).
+The first precisely captured operation timestamp is **18:56:03 Asia/Taipei**;
+18:53 in that initial comment is an approximate initial-read time, not a measured
+event timestamp. Isolated scheduled observation remains Pending independently.
+#24 is unchanged; #37 has not started. Retired guarantees remain as described in
+the runbook; they do not sign off #24.
+
+### Gate 1 — Passed (18:58 Asia/Taipei)
+
+Fresh remote mirror, not preparation refs: `main`
+`9cca716865717a50fa02066b98bfa0e2bbba247b` (PR #42 merged; CI
+[39115871075](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39115871075)
+success); archive `0ce0a0e922c87cedccbd3cdc2165ce3037fd0e11`, tree
+`150f9fc9dc03f53aed09eb32e354517f25e0d665`, 20 reachable commits. All 17
+identities retained since preparation. Current schema v2 validates; 17 raw HTML,
+17 complete canonical bodies, Capture metadata and every snapshot SHA-256 pass.
+The archive advanced by five ordinary Capture/Render commits since the preparation
+baseline. Canonical bodies match the last actual publication at
+`5dc00f3b932bf4979f157752bf6a2d5aceb4768e`; later raw acquisitions remain intact.
+
+A fresh mirror `fsck --full --no-reflogs` passed. Disposable exports verified every
+file blob and executable mode: checkpoint 66 files / 43 reachable commits, current
+archive 35 files, and application 179 files. Historical HTML, JSON sidecars and
+Markdown front matter inspected. `mirror-data` and `v1-final-before-v2` remain
+`be5b40d1fd205137939f37ced96adfe19ef0fabc`, tree
+`cf9f357a9b1f18bab2de45b4f5dfdb8a35fa0710`;
+`v2-reset-input` annotated object `894008dce71c24c98fd587793dc4bd0b6eab1b78`
+peels to that checkpoint. Its historical payload was read, not recreated.
+`v2-initial-capture` `71edf378bff29beaed88cb12906e9276ef1307f5` remains an
+ancestor of current archive. Previous complete-derived `8d38d259...` also restored
+and verified. No inferred historical ordering, archive write or old artifact used.
+
+Current verified known-good recovery pair: application
+`9cca716865717a50fa02066b98bfa0e2bbba247b`, complete-derived archive
+`0ce0a0e922c87cedccbd3cdc2165ce3037fd0e11`. Fresh locked npm install from local
+cache, Node 22.22.0/npm 10.9.4; Astro 7.3.6 built 18 routes, Pagefind 1.5.2
+indexed 17 pages / 1114 words in a new output directory. Adapter 18.96 ms,
+Astro 1453.67 ms, Pagefind 45.58 ms. First sandboxed install failed on process
+permissions; elevated retry passed with unchanged lock/toolchain. These are local
+recovery checks, not hosted costs. Native recovery after sole-chain activation:
+`gh workflow run update-publish.yml --ref main -f mode=republish -f application_sha=9cca716865717a50fa02066b98bfa0e2bbba247b -f archive_sha=0ce0a0e922c87cedccbd3cdc2165ce3037fd0e11`.
+
+Local reader check passed at **18:58:24**, public reader baseline at **18:58:06**:
+17 ordered listing entries, all routes/titles/dates/source links, representative
+saved prose, anchors, image/video references, repository-base assets, title query
+`weekly releases`, body query `enterprise-provided`, and result navigation.
+External media requests were blocked; references, not remote availability, verified.
+
+Live workflow inventory: CI `371055837`, old Capture `381740224`, Render
+`381740225`, Pages `381887694`, all active. Capture has schedule/dispatch;
+Render and Pages dispatch/workflow_run; all production definitions use whole-workflow
+`copilot-archive-production`, no cancellation, `queue: max`. CI has push/PR only.
+No other registered writer/deployer found. Repository-wide queued, in_progress,
+waiting, pending and requested inventories empty. Replacement not registered.
+Pages uses native workflow deployment, HTTPS, environment `github-pages`, branch
+policy `main`. Last actual public deployment **7132459232**, status success,
+[Pages 38987096817](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/38987096817),
+application `81b7df4...`, archive `5dc00f3...`, completed 2026-10-17 08:37 Taipei.
+Recent [Pages 39113382212](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39113382212)
+succeeded by duplicate suppression with deploy skipped; it was not a new publication.
+No in-flight native deployment found.
+
+Current full article/Capture/raw/body audit export SHA-256: `79fcc4910d82f8e75bcb538335c69aa3b8b71caec2319bebbc45349295775e79`. Per-article raw hashes and Capture metadata are recoverable from the pinned archive metadata; independently recomputed hashes matched.
