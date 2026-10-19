@@ -121,3 +121,60 @@ Job interval 11:30:56–11:39:03 UTC = **487s summed job time** (one job);
 run creation to final update 11:30:53–11:39:04 = **491s end-to-end**.
 These native timestamp intervals include runner/setup/teardown boundaries and
 are separate from local test harness durations. One sample has no spread estimate.
+
+### Group attribution and browser environment
+
+Final local Chromium was **153.0.8010.12**, executable from the installed
+`chromium-1243` cache, with Playwright 1.63.0. This is the same browser cache used
+for baseline and final local suites.
+
+Summing top-level test durations **within** selected files helps locate work; files
+run concurrently, so summing across this table does not yield suite wall time:
+
+| Baseline file/group                         | Before summed test time               | Final owner / after observation                                                   |
+| ------------------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------- |
+| Pages coordination (19 top-level cases)     | 177.27s                               | Retired; necessary product checks moved to named active owners                    |
+| Stage writer (10 cases)                     | 34.29s                                | Retired; directory/ordinary persistence owns durability                           |
+| Full production site (one case, both bases) | 14.58s                                | Historical comparison retained, routine primary/browser owns minimized conditions |
+| Directory command contracts                 | 30.95s                                | 9.98s, with duplicate ordinary push conflict moved to production helper tests     |
+| Native input/safety/tool failures           | 16.54s                                | 7.51s, including new completed-tools/output failure                               |
+| Cheap acquisition/directory contracts       | Not separately attributed here        | 0.145s                                                                            |
+| Normalization contracts                     | Prior slice records retained          | 0.073s                                                                            |
+| Domain / projection                         | Not separately attributed here        | 0.019s / 0.006s                                                                   |
+| Content / metadata normalization            | Prior slice records retained          | 0.059s / 0.023s                                                                   |
+| Installed workflow contract / entry shell   | Former isolated and production groups | 0.038s / 0.359s                                                                   |
+
+There is no paired per-file population for retired responsibilities: active owner
+conditions have moved, so these rows describe attributed work rather than an
+assertion of equivalent per-file functionality or a causal speedup. The complete
+case disposition supplies behavioral equivalence at the agreed seams.
+
+### Reused latest scheduled production observation
+
+Accepted native schedule run [39233149746](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39233149746),
+application `64516e9d685c2082f9fa67aeccb87d113be7c480`, used a 17-article archive
+and completed at 2026-10-19 17:52:02 Taipei. Its native intervals were archive/build
+33s and deploy 9s = **42s summed job time**, versus **49s end-to-end** from creation
+at 17:51:13. Capture 7s, Capture push 2s, Render 1s, Render no-change push within the
+same second, build/index 2s, upload 1s and native deploy 6s. Timestamp resolution is
+one second: the no-change push is not a zero-cost claim. One archive/build install,
+one build/index and two ordinary confirmed push steps occur; deployment installs
+no application dependencies. This is a single accepted **pre-cleanup** production
+sample, not an after-cleanup deployment or a repeatability distribution. It reuses
+#36 evidence; no new production operation was performed for this ticket.
+
+## Pending hosted after-CI observation
+
+Code and local checks were committed as `efadbf8`; the required two-axis review
+found no issues. A proposed push of the issue branch and draft PR was rejected
+**before execution** by automatic approval review, which required explicit user
+authorization to publish repository contents to GitHub. No remote branch or PR was
+created. The reviewable PR description is prepared locally at
+`/tmp/issue-37/pr-body.md`.
+
+Therefore the hosted after-CI sample and final hosted-before/after comparison are
+**pending explicit publication authorization**. Do not claim a hosted CI improvement,
+final #37 acceptance or a completed hosted delivery from the local numbers. Once
+authorized, push the reviewed issue branch, open a draft PR, inspect its CI, and
+append the native job/step/pipeline intervals, runner/cache/lock context and limits.
+No production dispatch is needed or authorized by that CI observation.
