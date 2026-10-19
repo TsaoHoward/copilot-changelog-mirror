@@ -110,8 +110,8 @@
       "article_id": "2026-10-08-copilot-code-review-new-organization-billing-options-and-controls-24caa334278b",
       "source_url": "https://github.blog/changelog/2026-10-08-copilot-code-review-new-organization-billing-options-and-controls",
       "capture": {
-        "snapshot_sha256": "4d0c84c88b249cc69aaa86deff4baddfbf52ea3cd5cdf25f2c6338a78da97bc5",
-        "observed_at": "2026-10-18T00:06:10.766Z",
+        "snapshot_sha256": "f6f1a3c1de877aa96cca478aba9e8b174eab2093738a18e49f5354518b64037d",
+        "observed_at": "2026-10-19T00:12:22.208Z",
         "discovery_title": "Copilot code review: New organization billing options and controls",
         "discovery_published_at": "2026-10-08T19:43:05.000Z"
       },
@@ -125,8 +125,8 @@
       "article_id": "2026-10-09-github-copilot-weekly-releases-october-5-ec899f104655",
       "source_url": "https://github.blog/changelog/2026-10-09-github-copilot-weekly-releases-october-5",
       "capture": {
-        "snapshot_sha256": "084700f8e8f6749af7a750a49ff745f8ff205dfc5779bd0eff2ddf006b66b364",
-        "observed_at": "2026-10-18T11:11:36.080Z",
+        "snapshot_sha256": "9710e0708f9175add5126e0994b8b02762941742dfa1a0bffa8fe666f91e5c50",
+        "observed_at": "2026-10-19T00:12:22.667Z",
         "discovery_title": "GitHub Copilot weekly releases — October 5",
         "discovery_published_at": "2026-10-09T22:58:23.000Z"
       },
@@ -140,8 +140,8 @@
       "article_id": "2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains-a91405951b83",
       "source_url": "https://github.blog/changelog/2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains",
       "capture": {
-        "snapshot_sha256": "ef6887d21bf0bad761c4d648a87fa758402f9446c06a4bef0f3e7fe8174e6291",
-        "observed_at": "2026-10-18T08:55:02.091Z",
+        "snapshot_sha256": "1d90f040cd1c8bb12ee9cc6054b531dffdbb097bc338e5fe767b8c3b6d619bc1",
+        "observed_at": "2026-10-19T00:12:23.696Z",
         "discovery_title": "New controls and chat improvements in Copilot for JetBrains",
         "discovery_published_at": "2026-10-10T18:53:39.000Z"
       },
@@ -155,8 +155,8 @@
       "article_id": "2026-10-12-client-telemetry-user-attribution-and-configurable-capture-9d90bbd97b85",
       "source_url": "https://github.blog/changelog/2026-10-12-client-telemetry-user-attribution-and-configurable-capture",
       "capture": {
-        "snapshot_sha256": "28fa66eb1fa9221aff2184b75a892cd31d7fd76666e61e9a43f912097ba94549",
-        "observed_at": "2026-10-18T00:06:13.119Z",
+        "snapshot_sha256": "8b62c727f1fe5cb07d4f18ec0f1fcaaab440eec28e2b9c13c2e5c0851250938d",
+        "observed_at": "2026-10-19T00:12:24.103Z",
         "discovery_title": "Client telemetry user attribution and configurable capture",
         "discovery_published_at": "2026-10-12T22:38:00.000Z"
       },
@@ -170,8 +170,8 @@
       "article_id": "2026-10-13-enterprise-managed-settings-enforcement-updates-bca5e0416551",
       "source_url": "https://github.blog/changelog/2026-10-13-enterprise-managed-settings-enforcement-updates",
       "capture": {
-        "snapshot_sha256": "3391f79dbc998a5ebe5ea1b7f4179992a5b2995a635ba003cab2c2a8545a5c29",
-        "observed_at": "2026-10-18T08:55:03.949Z",
+        "snapshot_sha256": "ef25f27235050681f4adef4ef78361075a41214a374208d14ead32c25f17333c",
+        "observed_at": "2026-10-19T00:12:24.522Z",
         "discovery_title": "Enterprise managed settings enforcement updates",
         "discovery_published_at": "2026-10-13T15:20:10.000Z"
       },
@@ -185,8 +185,8 @@
       "article_id": "2026-10-13-gemini-4-argon-in-github-copilot-23347420601c",
       "source_url": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "35a1d1c344ff3e3a50b91e5a833d090e3085e13b152731dfdd3ba6b4c4cf5511",
-        "observed_at": "2026-10-18T11:11:38.459Z",
+        "snapshot_sha256": "8efff43e83dda5104f113875aa6cd94d655b24ca8450d674f7ab3145e63198f9",
+        "observed_at": "2026-10-19T00:12:25.527Z",
         "discovery_title": "Gemini 4 Argon in GitHub Copilot",
         "discovery_published_at": "2026-10-13T18:39:56.000Z"
       },
@@ -200,8 +200,8 @@
       "article_id": "2026-10-14-hydrafusion-updates-and-new-max-option-ffb5a326c8ee",
       "source_url": "https://github.blog/changelog/2026-10-14-hydrafusion-updates-and-new-max-option",
       "capture": {
-        "snapshot_sha256": "ea2cf54dc1c49543dcda4165ba22257a8886c27756b222c9666ad8966a43a4e4",
-        "observed_at": "2026-10-18T08:55:05.285Z",
+        "snapshot_sha256": "7336e0b29c2b12bc925ac7706c9a46cd4f00b28d5d0b40f3a20cfa4447a0380a",
+        "observed_at": "2026-10-19T00:12:25.940Z",
         "discovery_title": "HydraFusion updates and new Max option",
         "discovery_published_at": "2026-10-14T20:01:35.000Z"
       },
@@ -215,8 +215,8 @@
       "article_id": "2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability-449b1014bc14",
       "source_url": "https://github.blog/changelog/2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability",
       "capture": {
-        "snapshot_sha256": "fcaf3fe4d2b97ab1c77d9877fa1b54295949410538966990b11bb5341e050ee2",
-        "observed_at": "2026-10-18T08:55:05.850Z",
+        "snapshot_sha256": "30d567c54f45580a85bba84406f56225c7b8632c742fbd8a9585ff27e3489022",
+        "observed_at": "2026-10-19T00:12:26.026Z",
         "discovery_title": "Agentic autofix for code scanning alerts general availability",
         "discovery_published_at": "2026-10-15T13:49:20.000Z"
       },
@@ -230,8 +230,8 @@
       "article_id": "2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates-6fdf4a6bc9a4",
       "source_url": "https://github.blog/changelog/2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates",
       "capture": {
-        "snapshot_sha256": "1ae3da102290b065a55466e845c4d1c39525aff75bcdffb3c896b0560c4405d9",
-        "observed_at": "2026-10-18T08:55:06.001Z",
+        "snapshot_sha256": "3ddda16bb144f56b227d0427df885548283fbbc16a1b831640e4a5b9bb6085aa",
+        "observed_at": "2026-10-19T00:12:26.088Z",
         "discovery_title": "Multi-repository support and other improvements for GitHub in Slack and Teams",
         "discovery_published_at": "2026-10-16T02:16:35.000Z"
       },
@@ -245,8 +245,8 @@
       "article_id": "2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november-0fb5cf8a26c7",
       "source_url": "https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november",
       "capture": {
-        "snapshot_sha256": "5951af7fc0170725dcc6dd563b20246f6a232af9ae48013cf082cc3c6a413133",
-        "observed_at": "2026-10-18T08:55:06.616Z",
+        "snapshot_sha256": "63e0c86af2f8a6a02a4ceaa4c08b9635e8d5d39b67fddc9289be06a5f04350ed",
+        "observed_at": "2026-10-19T00:12:26.151Z",
         "discovery_title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
         "discovery_published_at": "2026-10-15T19:35:13.000Z"
       },
