@@ -455,14 +455,14 @@ test("native offline artifact preserves presentation and maintained search behav
         ),
       );
       const tables = supplemental(".article-body table");
-      assert.equal(tables.length, 4);
+      assert.equal(tables.length, 5);
       assert.deepEqual(
         tables
           .eq(0)
           .find("td")
           .toArray()
           .map((cell) => supplemental(cell).text()),
-        ["Guide | reference", "Élan ready a|b <span> & *", ""],
+        ["Guide | reference", "Élan ready a|b <span> & * ~one~ ~~two~~", ""],
       );
       assert.equal(
         tables.eq(0).find("a").attr("href"),
@@ -482,7 +482,9 @@ test("native offline artifact preserves presentation and maintained search behav
         "Group A",
       );
       assert.equal(
-        merged.find("td[headers='group-a capacity'] a").attr("href"),
+        merged
+          .find("td[headers='group-a capacity archive-heading-1'] a")
+          .attr("href"),
         "#capacity",
       );
       assert.equal(
@@ -509,6 +511,10 @@ test("native offline artifact preserves presentation and maintained search behav
           ["Total", "30"],
         ],
       );
+      assert.equal(supplemental("#archive-heading-1").length, 1);
+      assert.equal(supplemental("#archive-heading-1").prop("tagName"), "TH");
+      assert.equal(supplemental(".article-body s,.article-body del").length, 0);
+      assert.equal(tables.eq(4).find("code").text(), " ");
       assert.equal(tables.eq(2).find("th").length, 0);
       assert.deepEqual(
         tables
@@ -521,12 +527,14 @@ test("native offline artifact preserves presentation and maintained search behav
       assert.deepEqual(
         supplemental(".article-body > p")
           .toArray()
-          .map((p) => supplemental(p).text()),
+          .map((p) => supplemental(p).text())
+          .filter(Boolean),
         [
           "Before simple table.",
           "Between simple and merged tables.",
           "Between merged and headerless tables.",
           "Before wide table.",
+          "Before whitespace code table.",
           "After all tables.",
         ],
       );
@@ -535,6 +543,7 @@ test("native offline artifact preserves presentation and maintained search behav
         "Between simple and merged tables.",
         "Between merged and headerless tables.",
         "Before wide table.",
+        "Before whitespace code table.",
       ].entries())
         assert.equal(tables.eq(i).prev("p").text(), before);
       assert.equal(tables.last().next("p").text(), "After all tables.");
@@ -573,7 +582,7 @@ test("native offline artifact preserves presentation and maintained search behav
             fullPage: true,
           });
           await page.goto(`${url}posts/table-fidelity-examples/`);
-          await expect(page.getByRole("table")).toHaveCount(4);
+          await expect(page.getByRole("table")).toHaveCount(5);
           await expect(
             page.getByRole("rowheader", { name: "Group A", exact: true }),
           ).toBeVisible();
@@ -581,7 +590,7 @@ test("native offline artifact preserves presentation and maintained search behav
           await expect(page).toHaveURL(
             `${url}posts/table-fidelity-examples/#capacity`,
           );
-          const wide = page.getByRole("table").last();
+          const wide = page.getByRole("table").nth(3);
           const overflow = await wide.evaluate((node) => {
             const before = node.scrollLeft;
             node.scrollLeft = node.scrollWidth;

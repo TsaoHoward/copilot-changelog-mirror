@@ -278,8 +278,22 @@ function headingFragments(
   source: string,
 ): void {
   const ordered = root.find(headings).toArray();
+  const retainedIds = new Set(
+    root
+      .find("table[id],table [id]")
+      .toArray()
+      .filter((el) => !$(el).is(headings) && !$(el).closest(headings).length)
+      .map((el) => $(el).attr("id")!),
+  );
+  let sequence = 0;
   const ids = new Map<AnyNode, string>(
-    ordered.map((heading, index) => [heading, `archive-heading-${index + 1}`]),
+    ordered.map((heading) => {
+      let id: string;
+      do {
+        id = `archive-heading-${++sequence}`;
+      } while (retainedIds.has(id));
+      return [heading, id];
+    }),
   );
   const sourceIds = new Map<string, string>();
   root.find("[id]").each((_, el) => {
@@ -339,6 +353,7 @@ function pipeTable($: CheerioAPI, table: Cheerio<AnyNode>): string | null {
     if (node.is("a") && !node.attr("href")) return null;
     if (node.is("code") && node.children().length) return null;
     if (node.is("code") && /[\r\n]/.test(node.text())) return null;
+    if (node.is("code") && !node.text().trim()) return null;
     if (
       node.is("th,td") &&
       node.attr("style") &&
@@ -397,6 +412,7 @@ function pipeTable($: CheerioAPI, table: Cheerio<AnyNode>): string | null {
   const escape = inline.escape;
   inline.escape = (value) =>
     escape(value)
+      .replaceAll("~", "\\~")
       .replaceAll("&", "&amp;")
       .replaceAll("<", "&lt;")
       .replaceAll(">", "&gt;");

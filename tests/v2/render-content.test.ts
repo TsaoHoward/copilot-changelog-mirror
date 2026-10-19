@@ -230,3 +230,35 @@ test("GFM inline code retains meaningful repeated spaces and escaped delimiters"
   const $ = load(new MarkdownIt({ html: true }).render(body));
   assert.equal($("td code").text(), "a  b `c` | d");
 });
+
+test("literal GFM strikethrough markers remain visible table text", () => {
+  const { body } = savedNormalization(
+    "<article><table><tr><th>Text</th></tr><tr><td>Use ~one~ and ~~two~~ literally</td></tr></table></article>",
+  );
+  const $ = load(new MarkdownIt({ html: true }).render(body));
+  assert.equal($("td").text(), "Use ~one~ and ~~two~~ literally");
+  assert.equal($("s,del").length, 0);
+});
+
+test("whitespace-only inline code survives in a structural table", () => {
+  const { body } = savedNormalization(
+    "<article><table><tr><th>Code</th></tr><tr><td><code> </code></td></tr></table></article>",
+  );
+  assert.ok(body.includes("<table"));
+  const $ = load(new MarkdownIt({ html: true }).render(body));
+  assert.equal($("td code").text(), " ");
+});
+
+test("generated section anchors avoid retained table IDs and header references", () => {
+  const { body } = savedNormalization(
+    '<article><h2>Outside</h2><table><tr><th id="archive-heading-1" scope="col">Table header</th></tr><tr><td headers="archive-heading-1"><a href="#archive-heading-1">Lookup</a><h3 id="inside">Inside</h3><a href="#inside">Inside link</a></td></tr></table></article>',
+  );
+  const $ = load(new MarkdownIt({ html: true }).render(body));
+  assert.equal($("#archive-heading-1").length, 1);
+  assert.equal($("#archive-heading-1").prop("tagName"), "TH");
+  assert.equal($("td").attr("headers"), "archive-heading-1");
+  assert.equal($("td a").first().attr("href"), "#archive-heading-1");
+  const inside = $("td a").last().attr("href")!;
+  assert.equal($(inside).length, 1);
+  assert.equal($(inside).text(), "Inside");
+});
