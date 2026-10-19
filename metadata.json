@@ -125,8 +125,8 @@
       "article_id": "2026-10-09-github-copilot-weekly-releases-october-5-ec899f104655",
       "source_url": "https://github.blog/changelog/2026-10-09-github-copilot-weekly-releases-october-5",
       "capture": {
-        "snapshot_sha256": "9710e0708f9175add5126e0994b8b02762941742dfa1a0bffa8fe666f91e5c50",
-        "observed_at": "2026-10-19T00:12:22.667Z",
+        "snapshot_sha256": "ee4f98bda94528111653bdfbb7a661cd99a3a56213d4f4f71aeec445d65b6e9a",
+        "observed_at": "2026-10-19T09:51:35.549Z",
         "discovery_title": "GitHub Copilot weekly releases — October 5",
         "discovery_published_at": "2026-10-09T22:58:23.000Z"
       },
@@ -155,8 +155,8 @@
       "article_id": "2026-10-12-client-telemetry-user-attribution-and-configurable-capture-9d90bbd97b85",
       "source_url": "https://github.blog/changelog/2026-10-12-client-telemetry-user-attribution-and-configurable-capture",
       "capture": {
-        "snapshot_sha256": "8b62c727f1fe5cb07d4f18ec0f1fcaaab440eec28e2b9c13c2e5c0851250938d",
-        "observed_at": "2026-10-19T00:12:24.103Z",
+        "snapshot_sha256": "f53c4428a5065db930a765f3f66bc51deccde0cd9932fd9b514780421c504068",
+        "observed_at": "2026-10-19T09:51:37.151Z",
         "discovery_title": "Client telemetry user attribution and configurable capture",
         "discovery_published_at": "2026-10-12T22:38:00.000Z"
       },
@@ -170,8 +170,8 @@
       "article_id": "2026-10-13-enterprise-managed-settings-enforcement-updates-bca5e0416551",
       "source_url": "https://github.blog/changelog/2026-10-13-enterprise-managed-settings-enforcement-updates",
       "capture": {
-        "snapshot_sha256": "ef25f27235050681f4adef4ef78361075a41214a374208d14ead32c25f17333c",
-        "observed_at": "2026-10-19T00:12:24.522Z",
+        "snapshot_sha256": "f06d5ba63bd3f8eb6a9787b71ce06be08647776812fe83a83a509d7c52faabfc",
+        "observed_at": "2026-10-19T09:51:37.683Z",
         "discovery_title": "Enterprise managed settings enforcement updates",
         "discovery_published_at": "2026-10-13T15:20:10.000Z"
       },
@@ -200,8 +200,8 @@
       "article_id": "2026-10-14-hydrafusion-updates-and-new-max-option-ffb5a326c8ee",
       "source_url": "https://github.blog/changelog/2026-10-14-hydrafusion-updates-and-new-max-option",
       "capture": {
-        "snapshot_sha256": "7336e0b29c2b12bc925ac7706c9a46cd4f00b28d5d0b40f3a20cfa4447a0380a",
-        "observed_at": "2026-10-19T00:12:25.940Z",
+        "snapshot_sha256": "64cbe04c3fa5e9800bbf4ab14558219d035488aecbb36e93f0c00ba0f6baf09f",
+        "observed_at": "2026-10-19T09:51:39.073Z",
         "discovery_title": "HydraFusion updates and new Max option",
         "discovery_published_at": "2026-10-14T20:01:35.000Z"
       },
@@ -230,8 +230,8 @@
       "article_id": "2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates-6fdf4a6bc9a4",
       "source_url": "https://github.blog/changelog/2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates",
       "capture": {
-        "snapshot_sha256": "3ddda16bb144f56b227d0427df885548283fbbc16a1b831640e4a5b9bb6085aa",
-        "observed_at": "2026-10-19T00:12:26.088Z",
+        "snapshot_sha256": "089e6609d3c129b827397c67182f0b8865f9362da35e4f1357ecb258ca3ec782",
+        "observed_at": "2026-10-19T09:51:40.392Z",
         "discovery_title": "Multi-repository support and other improvements for GitHub in Slack and Teams",
         "discovery_published_at": "2026-10-16T02:16:35.000Z"
       },
