@@ -18,23 +18,10 @@ HydraFusion orchestrates multiple models to produce a single response, bringing 
 
 HydraFusion Max is built on the same architecture and uses the same workflow techniques as HydraFusion, but is tuned for frontier capability on more demanding tasks. It applies higher reasoning efforts where depth and thoroughness matter most, while still using orchestration to consider token efficiency.
 
-Option
-
-Description
-
-Typical use case
-
-**HydraFusion**
-
-Balanced approach with moderate token savings.
-
-Agentic tasks that require a balance of speed, cost, and performance.
-
-**HydraFusion Max**
-
-Frontier capability for more demanding tasks, with token efficiency considered through orchestration.
-
-Tasks requiring the deepest possible reasoning and most thorough analysis.
+| Option | Description | Typical use case |
+| --- | --- | --- |
+| **HydraFusion** | Balanced approach with moderate token savings. | Agentic tasks that require a balance of speed, cost, and performance. |
+| **HydraFusion Max** | Frontier capability for more demanding tasks, with token efficiency considered through orchestration. | Tasks requiring the deepest possible reasoning and most thorough analysis. |
 
 Both options are supported across all three clients, so you can access the latest HydraFusion experience whether you work in VS Code, the GitHub Copilot app, or the terminal.
 

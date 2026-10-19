@@ -8,41 +8,13 @@ The fix is available now in Visual Studio Code. Other IDEs will receive it in up
 
 Agent activity is counted again once developers are on these versions. If your developers are on an affected version, update as soon as the fixed version is available, because their activity can’t be recovered later. If you manage IDE versions centrally and rely on agent metrics, you can plan your rollout to move developers directly to these versions.
 
-IDE
-
-Version
-
-Availability
-
-Visual Studio Code
-
-1.139.0 and later
-
-Available now
-
-Visual Studio
-
-18.12
-
-Not yet released, expected in October 2026
-
-JetBrains IDEs
-
-Next plugin release
-
-Not yet released, expected by late October 2026
-
-Eclipse
-
-Next plugin release
-
-Not yet released, expected by November 2026
-
-Xcode
-
-Next plugin release
-
-Not yet released, expected by November 2026
+| IDE | Version | Availability |
+| :--- | :--- | :--- |
+| Visual Studio Code | 1.139.0 and later | Available now |
+| Visual Studio | 18.12 | Not yet released, expected in October 2026 |
+| JetBrains IDEs | Next plugin release | Not yet released, expected by late October 2026 |
+| Eclipse | Next plugin release | Not yet released, expected by November 2026 |
+| Xcode | Next plugin release | Not yet released, expected by November 2026 |
 
 We’ll add each version to the [supported IDEs](https://docs.github.com/copilot/concepts/billing-and-usage/copilot-usage-metrics/copilot-metrics#supported-ides) in the docs as it ships.
 

@@ -69,29 +69,13 @@ See the [Copilot CLI security-review agent documentation](https://docs.github.co
 
 GitHub hosting plans, GHSP licenses, and Copilot subscriptions are separate. GitHub Enterprise (GHE) includes GitHub Enterprise Cloud (GHEC) and GitHub Enterprise Server (GHES). Copilot Enterprise is a separate Copilot subscription.
 
-Plan or platform
-
-Eligibility for these updates
-
-**GitHub Team and GHEC** on github.com
-
-AI push protection requires paid GHSP or GHAS coverage. Public, private, and internal repositories can qualify.
-
-**GHEC with data residency** on ghe.com
-
-Copilot Business and Enterprise are supported plans on this platform with the Copilot security review command. AI push protection is planned with paid GHSP/GHAS coverage.
-
-**GHES**
-
-The new model is planned for AI-detected alerts in GHES 3.23, at no additional charge with GHSP/GHAS. AI push protection isn’t part of this Server release. The Copilot security review command isn’t part of this Server release.
-
-**Individual Copilot plans**: Pro, Pro+, Max, Free, and Student
-
-Eligible for security review checks with the new model, subject to access controls and credit consumption. No GHSP or GHAS license is required.
-
-**Copilot Business and Copilot Enterprise**
-
-Eligible for security review checks with the new model on supported platforms, subject to invitation and administrator policies. These subscriptions don’t replace the GHSP license required for AI push protection.
+| Plan or platform | Eligibility for these updates |
+| --- | --- |
+| **GitHub Team and GHEC** on github.com | AI push protection requires paid GHSP or GHAS coverage. Public, private, and internal repositories can qualify. |
+| **GHEC with data residency** on ghe.com | Copilot Business and Enterprise are supported plans on this platform with the Copilot security review command. AI push protection is planned with paid GHSP/GHAS coverage. |
+| **GHES** | The new model is planned for AI-detected alerts in GHES 3.23, at no additional charge with GHSP/GHAS. AI push protection isn’t part of this Server release. The Copilot security review command isn’t part of this Server release. |
+| **Individual Copilot plans**: Pro, Pro+, Max, Free, and Student | Eligible for security review checks with the new model, subject to access controls and credit consumption. No GHSP or GHAS license is required. |
+| **Copilot Business and Copilot Enterprise** | Eligible for security review checks with the new model on supported platforms, subject to invitation and administrator policies. These subscriptions don’t replace the GHSP license required for AI push protection. |
 
 <a id="archive-heading-8"></a>
 
