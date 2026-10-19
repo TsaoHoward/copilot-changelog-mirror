@@ -110,11 +110,17 @@ Spec **0** findings. Source metadata/UTC expectations were independently checked
 against the original saved HTML. The reviewed implementation commit is `efadbf8`;
 following edits only record review and measurement evidence.
 
-Implementation and local verification are complete. Hosted after-CI observation
-remains **pending explicit authorization to push the branch and create a draft PR**.
-Automatic approval review rejected that remote-publication attempt before any
-command executed, citing lack of explicit publication authorization and possible
-export of repository contents. No remote branch/PR was created. The issue is not
-claimed signed off or closed while that required delivery observation remains
-pending. All unaffected work is committed locally; publication approval can now
-apply to the concrete reviewed implementation.
+Implementation and local verification are complete. The user then explicitly
+authorized the draft PR. The reviewed branch was pushed and
+[Draft PR #45](https://github.com/TsaoHoward/copilot-changelog-mirror/pull/45) created.
+[Hosted CI 39240052730](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39240052730)
+passed locked install, formatting, typecheck, 71 contract checks and 13 Chromium
+checks at `ae1300e0ff8a4f6d285aa494bacac32c3c2b625a`. The
+[measurement record](v2-cleanup-measurements.md) now includes native before/after
+step, job and end-to-end intervals, source/lock/runner/cache context and single-sample
+limits. The earlier publication rejection is resolved by that explicit user request.
+
+All required implementation, review and observation records are delivered. The PR
+remains draft for the user's review; this record performs no merge or issue closure.
+No production workflow dispatch, archive write or deployment was performed. #24 and
+the unexplained scheduler delay remain separate from this cleanup.

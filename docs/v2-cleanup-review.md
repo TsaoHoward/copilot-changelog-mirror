@@ -51,11 +51,12 @@ with synthetic gaps labeled.
 
 The accepted #36 final comment supports the retirement prerequisite. Measurement
 documentation distinguishes local samples, incomplete counter visibility, reused
-production observations and unavailable spread. Planned hosted after-CI evidence
-remains delivery work; its current absence is not a code-review finding.
+production observations and unavailable spread. At review time, hosted after-CI
+evidence remained delivery work; its absence then was not a code-review finding. That observation is now recorded separately
+in [the measurement record](v2-cleanup-measurements.md).
 
 Read-only review; no full suites rerun.
 
 **Review totals:** Standards **0** findings; Spec **0** findings. No worst issue on
-either axis. Hosted after-CI comparison remains pending publication approval, as
-recorded in the delivery evidence; these reviews do not claim that observation.
+either axis. Hosted after-CI comparison is recorded separately in the delivery
+evidence; these code reviews do not themselves claim that observation.

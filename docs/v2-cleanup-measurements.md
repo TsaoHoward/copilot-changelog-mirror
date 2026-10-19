@@ -163,18 +163,51 @@ no application dependencies. This is a single accepted **pre-cleanup** productio
 sample, not an after-cleanup deployment or a repeatability distribution. It reuses
 #36 evidence; no new production operation was performed for this ticket.
 
-## Pending hosted after-CI observation
+## Hosted after-CI comparison
 
-Code and local checks were committed as `efadbf8`; the required two-axis review
-found no issues. A proposed push of the issue branch and draft PR was rejected
-**before execution** by automatic approval review, which required explicit user
-authorization to publish repository contents to GitHub. No remote branch or PR was
-created. The reviewable PR description is prepared locally at
-`/tmp/issue-37/pr-body.md`.
+The user explicitly authorized opening a draft PR after the earlier automatic
+publication review rejection. The reviewed branch was pushed and
+[Draft PR #45](https://github.com/TsaoHoward/copilot-changelog-mirror/pull/45) created;
+no production workflow was dispatched. Hosted
+[CI run 39240052730](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39240052730)
+passed at application/review-record revision
+`ae1300e0ff8a4f6d285aa494bacac32c3c2b625a`, containing reviewed code `efadbf8`.
+All install/format/type/contract/browser steps succeeded. Its logs report 71
+contract and 13 Chromium checks passing with no skips.
 
-Therefore the hosted after-CI sample and final hosted-before/after comparison are
-**pending explicit publication authorization**. Do not claim a hosted CI improvement,
-final #37 acceptance or a completed hosted delivery from the local numbers. Once
-authorized, push the reviewed issue branch, open a draft PR, inspect its CI, and
-append the native job/step/pipeline intervals, runner/cache/lock context and limits.
-No production dispatch is needed or authorized by that CI observation.
+| Native hosted interval                   | Before: 39123540575 | After: 39240052730 |
+| ---------------------------------------- | ------------------- | ------------------ |
+| Locked install                           | 5s                  | 6s                 |
+| Formatting                               | 4s                  | 1s                 |
+| Typecheck                                | 4s                  | 2s                 |
+| Contracts                                | 395s                | 17s                |
+| Chromium setup including OS dependencies | 22s                 | 22s                |
+| Chromium acceptance                      | 43s                 | 18s                |
+| Summed job time (one job)                | 487s                | 77s                |
+| End-to-end creation → final update       | 491s                | 81s                |
+
+After native job interval: `2026-10-19T10:48:16Z` → `2026-10-19T10:49:33Z`;
+run interval: `2026-10-19T10:48:13Z` → `2026-10-19T10:49:34Z`. Each workflow has one
+application dependency install, one contract command, one browser setup and one
+browser acceptance command. Both use the pinned Node 22.22.0 runtime and the same
+package versions; the after lock differs only by direct yaml dependency placement.
+Local process-counter visibility limitations above still apply; native logs do not
+supply a kernel-wide Git/build/index process census.
+
+Runner image: ubuntu-24.04 `20261012.334.1`, provisioner `20261012.601`, matching the baseline image. Node was 22.22.0 and npm 10.9.4. Hosted Chromium downloaded Chrome for Testing/headless shell 153.0.8010.12 (Playwright revision 1243), matching the local browser version.
+
+Cache log observations: the after npm cache was **not found**, while the baseline restored its recorded key. The after run saved the new lock-derived cache on completion. This difference applies to install/whole-run comparison; it is not hidden as a matched warm-cache pair.
+
+- `npm cache is not found`
+- `Cache saved with the key: node-cache-Linux-x64-npm-f61841d7636a3adcf49fcc8f0dfa843b78b9574dfff30db7fffae5fe720a396b`
+
+Before was a default-branch push; after was a draft-PR check at the recorded
+revision. This is one sample on each side, with GitHub-hosted runner/cache/network
+variation and changed fixture/caller scope. No paired repetition spread, causal
+percentage speedup, punctuality or future CI duration is claimed. The observed
+native group/job/pipeline intervals are comparable observations with these limits,
+separate from local clocks and reused pre-cleanup production samples. The after
+sample addresses final hosted-gate observation without a production deployment.
+
+Subsequent delivery-record commits update documentation only; their CI is checked
+separately, rather than relabeling this observed sample as a different revision.
