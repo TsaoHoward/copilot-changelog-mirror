@@ -161,6 +161,7 @@ nav {
 .article-body td {
   border: 1px solid #d8dce1;
   padding: 0.5rem;
+  overflow-wrap: normal;
 }
 [id] {
   scroll-margin-top: 1rem;
