@@ -161,7 +161,6 @@ export async function buildArchiveSite(options: {
       ...process.env,
       ASTRO_TELEMETRY_DISABLED: "1",
       COPILOT_PUBLICATION_FILE: join(temporary, "publication.json"),
-      COPILOT_NATIVE_SITE: "1",
     };
     const astroStart = performance.now();
     await runTool(

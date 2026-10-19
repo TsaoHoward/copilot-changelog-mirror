@@ -7,39 +7,22 @@ import { root } from "./support.js";
 
 const load = () =>
   parse(
-    readFileSync(join(root, ".github/production/update-publish.yml"), "utf8"),
+    readFileSync(join(root, ".github/workflows/update-publish.yml"), "utf8"),
   );
 
-test("prepared production chain preserves schedule, source, base, guards and scoped two-job publication in preparation or sole-chain installation", () => {
+test("installed production chain preserves schedule, source, base, guards and scoped two-job publication", () => {
   const w = load();
   const registered = readdirSync(join(root, ".github/workflows")).map((file) =>
     parse(readFileSync(join(root, ".github/workflows", file), "utf8")),
   );
-  const installed = registered.find((active) => active.name === w.name);
-  if (installed) {
-    assert.deepEqual(
-      installed,
-      w,
-      "Install the reviewed production template unchanged",
-    );
-    assert.ok(
-      registered.every(
-        (active) =>
-          ![
-            "V2 production capture",
-            "V2 production render",
-            "V2 production Pages",
-          ].includes(active.name),
-      ),
-      "Remove old triggers before replacement registration",
-    );
-  }
   const schedules = registered.filter((active) => active.on.schedule);
   assert.deepEqual(
     schedules.map((active) => active.name),
-    [installed ? w.name : "V2 production capture"],
+    [w.name],
   );
-  assert.deepEqual(w.on.schedule, schedules[0].on.schedule);
+  assert.deepEqual(w.on.schedule, [
+    { cron: "17 6,12 * * *", timezone: "Asia/Taipei" },
+  ]);
   assert.deepEqual(w.on.workflow_dispatch.inputs.mode.options, [
     "full-update",
     "render-rebuild",

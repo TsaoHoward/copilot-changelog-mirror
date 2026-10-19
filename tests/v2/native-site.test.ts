@@ -209,6 +209,7 @@ test("actual Astro and Pagefind failures withhold completed output and preserve 
     "Astro",
     "Pagefind",
     "empty Pagefind invalid CLI option",
+    "output completion",
   ])
     await t.test(stage, async (t) => {
       const f = new NativeSiteFixture(t);
@@ -237,7 +238,7 @@ test("actual Astro and Pagefind failures withhold completed output and preserve 
           join(application, "site/src/pages/index.astro"),
           "---\nthis is invalid JavaScript !!!\n---\n",
         );
-      else {
+      else if (stage !== "output completion") {
         const path = join(application, "src/v2/native-site-build.ts");
         writeFileSync(
           path,
@@ -262,6 +263,24 @@ test("actual Astro and Pagefind failures withhold completed output and preserve 
         syncBuiltinESMExports();
       `,
         );
+      if (stage === "output completion")
+        writeFileSync(
+          cleanupGuard,
+          `
+          import fs from "node:fs/promises";
+          import { join } from "node:path";
+          import { syncBuiltinESMExports } from "node:module";
+          const rename=fs.rename;
+          fs.rename=async (source,target)=>{
+            if (String(source).endsWith("/artifact")) {
+              await fs.writeFile(join(target,"user-sentinel"),"Concurrent user output");
+              throw new Error("controlled output completion failure");
+            }
+            return rename(source,target);
+          };
+          syncBuiltinESMExports();
+        `,
+        );
       const before = tree(f.archive);
       const output = join(f.dir, "output");
       let result;
@@ -269,7 +288,9 @@ test("actual Astro and Pagefind failures withhold completed output and preserve 
         await promisify(execFile)(
           process.execPath,
           [
-            ...(stage === "Astro" ? ["--import", cleanupGuard] : []),
+            ...(["Astro", "output completion"].includes(stage)
+              ? ["--import", cleanupGuard]
+              : []),
             "--import",
             join(root, "node_modules/tsx/dist/loader.mjs"),
             join(application, "src/v2/native-site-cli.ts"),
@@ -288,12 +309,22 @@ test("actual Astro and Pagefind failures withhold completed output and preserve 
           assert.match(error.stderr, /controlled cleanup failure/);
         assert.match(
           result.diagnostic,
-          stage === "Astro" ? /Astro failed/ : /Pagefind failed/,
+          stage === "Astro"
+            ? /Astro failed/
+            : stage === "output completion"
+              ? /controlled output completion failure/
+              : /Pagefind failed/,
         );
       }
       assert.equal(result.outcome, "failure");
       assert.equal(result.output, undefined);
-      assert.ok(!existsSync(output));
+      if (stage === "output completion") {
+        assert.deepEqual(readdirSync(output), ["user-sentinel"]);
+        assert.equal(
+          readFileSync(join(output, "user-sentinel"), "utf8"),
+          "Concurrent user output",
+        );
+      } else assert.ok(!existsSync(output));
       assert.deepEqual(tree(f.archive), before);
       assert.equal(
         readdirSync(f.dir).some((name) =>

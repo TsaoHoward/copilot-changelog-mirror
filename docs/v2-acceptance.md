@@ -1,3 +1,9 @@
+> Historical #24 acceptance record. Its exact-attempt, dual-identity and recovery
+> conditions describe the retired chain; this file neither governs the current
+> simplified workflow nor signs off #24. Paths/commands below refer to Git
+> revision `64516e9d685c2082f9fa67aeccb87d113be7c480`. Use the
+> [current native rollback runbook](v2-production-cutover.md) for operation.
+
 # Issue #24 acceptance record
 
 Contract: [authoritative specification](https://github.com/TsaoHoward/copilot-changelog-mirror/issues/24#issuecomment-6119967327). Implementation starts from default-branch revision `9e3e19604e2bb3aa7e935b44433855db2e482204` on `codex/issue-24-v2-production-cutover`.
@@ -43,7 +49,7 @@ A read-only hosted recheck at **2026-10-12 10:47:16 UTC / 18:47:16 Asia/Taipei**
 
 For every observed scenario append UTC and Asia/Taipei times; repository/default branch/archive target; application and definition SHAs; input/candidate/persisted/output archive SHAs; capture/render/Pages URLs and exact attempts; origin/upstream selectors; durability ordering; publication and deployment identities; outcomes and advancement; baseline selected by completed deploy-step ordering; artifact ID/name/preparation attempt; completed job/step/results and evidence uploads; public URL and observed browser behavior. Preserve exported JSON reports and the checkpoint tree inventory alongside run links. Exported records aid review and do not replace runtime server verification.
 
-Record each skipped deployment separately from a successfully completed deployment step. Keep failed or unobserved rows pending. Use [the runbook](v2-cutover.md) for actual activation and recovery; never inject fixture bytes into live upstream evidence or describe local/stub/upload-only proof as hosted deployment acceptance.
+Record each skipped deployment separately from a successfully completed deployment step. Keep failed or unobserved rows pending. Use [the historical runbook](https://github.com/TsaoHoward/copilot-changelog-mirror/blob/64516e9d685c2082f9fa67aeccb87d113be7c480/docs/v2-cutover.md) for actual activation and recovery; never inject fixture bytes into live upstream evidence or describe local/stub/upload-only proof as hosted deployment acceptance.
 
 ## Required code review
 

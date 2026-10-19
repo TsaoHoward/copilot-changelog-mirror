@@ -1,3 +1,30 @@
+# Historical full-corpus inputs
+
+Routine CI no longer renders/builds these six full articles. Their 123 frozen
+editorial blocks, independently reviewed expectations and raw bytes remain
+recoverable at Git revision `64516e9d685c2082f9fa67aeccb87d113be7c480`.
+The comparison results remain in `docs/v2-native-site-comparison.json`, source
+review in `docs/v2-native-site-review.md`, and directory comparison/cost records
+in `docs/v2-directory-tests.md` / `docs/v2-directory-measurements.json`.
+
+Recover all original fixtures and one-time runners without changing the archive:
+
+```sh
+revision=64516e9d685c2082f9fa67aeccb87d113be7c480
+historical=$(mktemp -d /tmp/copilot-comparison.XXXXXX)
+git archive "$revision" | tar -x -C "$historical"
+# Inspect $historical/tests/fixtures/production/*.json and their source hashes.
+# To reproduce the historical comparison, follow that revision's docs in its
+# own checkout with its locked dependencies. Do not run old commands on production.
+```
+
+The current minimized extracts retain the special source conditions and copied
+metadata described in `../minimal/README.md`. No parser-generated baseline or
+fixture registry replaces the independently reviewed expectations.
+
+The following is the original provenance record; paths refer to the retained Git
+revision rather than files in the active tree.
+
 # Captured Changelog regression corpus
 
 The six HTML files are byte-for-byte copies of persisted `mirror-data/snapshots/`

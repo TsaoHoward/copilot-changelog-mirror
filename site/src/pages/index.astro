@@ -1,15 +1,13 @@
 ---
 import Page from "../layouts/Page.astro";
-import Search from "../components/Search.astro";
 import NativeSearch from "../components/NativeSearch.astro";
-const nativeSearch = process.env.COPILOT_NATIVE_SITE === "1";
 import { articles, dateLabel, sitePath } from "../data";
 ---
 
 <Page title="Announcements">
   <h1>Copilot announcements</h1>
   <p class="intro">Updates from the GitHub Copilot changelog, newest first.</p>
-  {articles.length > 0 && (nativeSearch ? <NativeSearch /> : <Search />)}
+  {articles.length > 0 && <NativeSearch />}
   {articles.length ? (
     <ol class="article-list">
       {articles.map((article) => (

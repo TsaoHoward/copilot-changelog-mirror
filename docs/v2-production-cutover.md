@@ -1,289 +1,96 @@
-# Simplified production cutover and recovery (#36)
+# Production operation and native rollback
 
-**Activated by PR #43 on 2026-10-18.** Production uses
-`.github/workflows/update-publish.yml` (workflow `388375554`). The old chain was
-disabled and fully drained; its definitions remain in `.github/historical/`.
-The installation/stop sequence below records the executed transition and must not
-be repeated against the active chain. Manual/rollback results and pending actual
-schedule observations are in the dated evidence. #36 remains Open.
-Read [the dated evidence](v2-production-evidence.md) before any operator action.
-#32 supplies design authority, #35 supplies isolated integration proof, and #24
-remains a separate historical acceptance record.
+Production uses `.github/workflows/update-publish.yml` (workflow `388375554`), installed by PR #43 after the old chain was disabled and drained. [#36's acceptance on 2026-10-19](https://github.com/TsaoHoward/copilot-changelog-mirror/issues/36#issuecomment-6264851670) includes both actual schedule events and public browser checks. The dated audit/activation evidence remains in [v2-production-evidence.md](v2-production-evidence.md). The executed migration procedure is recoverable at Git revision `64516e9d685c2082f9fa67aeccb87d113be7c480`; do not repeat its archive initialization or trigger cutover.
 
-## Decisions before production change
+## Four operating paths
 
-Record two distinct human decisions on #36: acceptance of #35's isolated functional
-evidence (including its delivered default-branch revision), and explicit approval
-to activate production in a named operating window. A merged PR, specification
-approval, `ready-for-agent`, this runbook, and permission to implement supply
-neither decision. An isolated scheduled event awaiting observation is separate
-from isolated functional acceptance. Do all read-only preparation first.
+| Path                    | Acquisition | Offline Render | Archive pushes      | Fresh build/index/upload/deploy |
+| ----------------------- | ----------- | -------------- | ------------------- | ------------------------------- |
+| Scheduled full update   | Yes         | Yes            | Capture then Render | Yes                             |
+| Manual `full-update`    | Yes         | Yes            | Capture then Render | Yes                             |
+| Manual `render-rebuild` | No          | Saved source   | Render only         | Yes                             |
+| Manual `republish`      | No          | No             | None                | Complete saved derived input    |
 
-The new guarantees are retained v2 data/identity/ownership, fixed per-run inputs,
-whole-stage Capture, ordinary push C, offline Render, separate ordinary push R,
-finished Astro/Pagefind output, same-workflow native upload/deploy and manual
-recovery. No-change stages still push and continue. Any failed/uncertain push stops
-the run; inspect the remote before a fresh dispatch. Concurrency spans the entire
-workflow through deployment with `copilot-archive-production`, no cancellation,
-and `queue: max`; it does not control external writers or manual old reruns.
+The configured cron remains `17 6,12 * * *` with `Asia/Taipei`, nominally 06:17 and 12:17. Actual 2026-10-19 schedule runs occurred at 08:11:58 and 17:51:13 Taipei. Native records establish two real scheduled successes, but do not independently identify their exact nominal slots or explain the delay. Preserve this limitation for separate scheduler review; never silently change cron/timezone.
 
-Intentionally retired historical #17/#23/#24 operating guarantees: dual publication
-and deployment identities, zero duplicate deployments, exact cross-run/attempt and
-artifact handoffs, freshness/reconciliation, successful-baseline retention proof
-and renewal, hermetic build-closure identity, daily checkpoint/reset-witness checks,
-and raw-integrity auditing on every republish. Capture/Render integrity and this
-one-time migration audit remain. Old code/tests stay available; old proof expiry
-must not block a native rebuild. These retirements do not pass #24's pending matrix.
+```sh
+repo=TsaoHoward/copilot-changelog-mirror
+gh workflow run update-publish.yml --repo "$repo" --ref main -f mode=full-update
+gh workflow run update-publish.yml --repo "$repo" --ref main -f mode=render-rebuild
+gh workflow run update-publish.yml --repo "$repo" --ref main -f mode=republish
+```
 
-## Read-only preparation and one-time recoverability audit
+Select one operation, inspect its completion and public outcome before recovery. Capture-only remains a [directory CLI capability](v2-directory.md), rather than a production mode. Both jobs require the exact repository, default branch and schedule/dispatch event. The application is selected once from trusted default-branch history. The archive checkout is selected once; explicit full archive SHA is allowed only for republish and must belong to retained archive ancestry.
 
-Use a fresh directory and the real repository; never initialize or reset an archive.
-The fixed known-good pair actually rebuilt/published during activation is application
-`9cca716865717a50fa02066b98bfa0e2bbba247b` with complete-derived archive
-`0ce0a0e922c87cedccbd3cdc2165ce3037fd0e11`. The application already contains the
-three replacement commands. Public base is `/copilot-changelog-mirror/`, origin
-`https://tsaohoward.github.io`. Recheck compatibility if choosing another pair.
+Actions owns sequencing, separate ordinary Capture/Render commits and pushes, artifact transfer and native Pages deployment. `.github/scripts/persist-stage.sh` persists only a completed stage. Capture must be confirmed pushed before Render; Render before build. No-change stages avoid empty commits but still confirm an ordinary push and continue. Repeated builds/deployments are allowed. No identity hash, successful-deployment baseline, run-attempt proof or expiry artifact authorizes recovery.
+
+The archive/build job installs locked dependencies once. Only deploy has Pages/OIDC permission; republish's archive/build job retains contents-write permission but skips archive writes. Whole-workflow `copilot-archive-production` concurrency covers deployment, has cancellation disabled and `queue: max`. It does not lock external writers.
+
+## Failures and manual recovery
+
+CLI directory success describes validated local files. A commit, confirmed ordinary push and hosted publication are distinct outcomes. Inspect JSON results, native job/step summaries and the remote before proceeding.
+
+- Acquisition/normalization/input-validation failure: no successful batch is available to commit. Repair the application or upstream condition, then rerun the appropriate mode.
+- Local filesystem completion failure: the disposable checkout may contain partial files. Do not commit/push them. Preserve the saved revision and prepare a fresh dedicated checkout; inspect remaining local work before disposal.
+- Commit failure: inspect the local index/author/hooks and remote. No downstream work should run.
+- Non-fast-forward or uncertain push: stop, fetch/inspect both histories and compare local candidate with the remote. Preserve competing/new Capture history. Use a fresh checkout from the confirmed remote tip for a later run, or prepare reviewed forward corrective commits. Never force-push, automatically rebase/reset or overwrite the competitor.
+- A build/index/upload failure blocks dependent deployment. Durable Capture/Render remains available for render-rebuild or republish. Build requires every canonical record/body, safe routes/paths and fresh output; finish Render if a new capture is incomplete.
+- Once deployment was invoked, a failed/ambiguous response does not prove old public bytes survived. Inspect native run/jobs, the environment/deployment status and actual public content/search before deciding the next publication.
+
+```sh
+gh run view ACTUAL_RUN_ID --repo "$repo" --json status,conclusion,jobs,headSha,url
+gh api "repos/$repo/deployments?environment=github-pages&per_page=20"
+# Select the relevant deployment, then inspect its statuses:
+gh api "repos/$repo/deployments/DEPLOYMENT_ID/statuses"
+```
+
+## Executable known-good rollback
+
+The accepted rollback pair is application `9cca716865717a50fa02066b98bfa0e2bbba247b` and complete-derived archive `0ce0a0e922c87cedccbd3cdc2165ce3037fd0e11`. Production run [39122524338](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39122524338) rebuilt/published this pair and passed public checks without rewinding the archive. The application already contains the directory/native commands, and its old surrounding modules are not invoked by this path. Inputs are ordinary reachable Git history; old Actions artifacts and proof gates are unnecessary. Cleanup also verifies a native rebuild of these derived inputs with the current application.
 
 ```bash
 set -euo pipefail
 repo=TsaoHoward/copilot-changelog-mirror
-audit=$(mktemp -d /tmp/copilot-cutover.XXXXXX)
+recovery=$(mktemp -d /tmp/copilot-recovery.XXXXXX)
+git clone --mirror "https://github.com/$repo.git" "$recovery/repository.git"
 application=9cca716865717a50fa02066b98bfa0e2bbba247b
 derived=0ce0a0e922c87cedccbd3cdc2165ce3037fd0e11
-git clone --mirror "https://github.com/$repo.git" "$audit/repository.git"
-git --git-dir="$audit/repository.git" show-ref > "$audit/refs-before.txt"
-git --git-dir="$audit/repository.git" fsck --full --no-reflogs
-mkdir "$audit/checkpoint" "$audit/current" "$audit/derived" "$audit/app"
-git --git-dir="$audit/repository.git" archive v1-final-before-v2 | tar -x -C "$audit/checkpoint"
-git --git-dir="$audit/repository.git" archive mirror-data-v2 | tar -x -C "$audit/current"
-git --git-dir="$audit/repository.git" archive "$derived" | tar -x -C "$audit/derived"
-git --git-dir="$audit/repository.git" archive "$application" | tar -x -C "$audit/app"
-```
-
-Verify **every** restored file's mode and blob, not just ref resolution:
-
-```bash
-verify_restoration() {
-  local revision=$1 directory=$2 record mode type oid file
-  while IFS= read -r -d '' record; do
-    file=${record#*$'\t'}
-    read -r mode type oid <<< "${record%%$'\t'*}"
-    [[ $type == blob && ( $mode == 100644 || $mode == 100755 ) ]]
-    [[ -f "$directory/$file" && ! -L "$directory/$file" ]]
-    [[ $(git hash-object --no-filters "$directory/$file") == "$oid" ]]
-    if [[ $mode == 100755 ]]; then test -x "$directory/$file"; else test ! -x "$directory/$file"; fi
-  done < <(git --git-dir="$audit/repository.git" ls-tree -rz "$revision")
-}
-verify_restoration v1-final-before-v2 "$audit/checkpoint"
-verify_restoration mirror-data-v2 "$audit/current"
-verify_restoration "$derived" "$audit/derived"
-git --git-dir="$audit/repository.git" rev-list --count v1-final-before-v2
-git --git-dir="$audit/repository.git" rev-list --count mirror-data-v2
-git --git-dir="$audit/repository.git" merge-base --is-ancestor v2-initial-capture mirror-data-v2
-```
-
-Inspect historical HTML/JSON sidecars/Markdown and original front matter. Preserve
-`mirror-data`, `v1-final-before-v2`, `v2-reset-input` (annotated tag object and peeled
-target) and `v2-initial-capture` without recreating them. Resolve/review reset proof
-contents as historical data; do not infer unknown checkpoint-operation ordering.
-
-Validate current v2 schema/identity/routes, Capture metadata and each snapshot hash.
-This uses the existing archive validator, which also rejects unexpected managed
-files and mismatching evidence. Run from the fixed application after `npm ci`:
-
-```bash
-cd "$audit/app"
-npm ci
-ARCHIVE_AUDIT_DIR="$audit/current" node --import tsx --input-type=module <<'JS'
-import {readFileSync, readdirSync, writeFileSync} from 'node:fs';
-import {join} from 'node:path';
-import {readManifest, sha256} from './src/v2/domain.ts';
-import {validateDirectoryArchive} from './src/v2/directory-archive.ts';
-const dir=process.env.ARCHIVE_AUDIT_DIR, files=new Map();
-for (const name of readdirSync(dir)) {
-  if (['snapshots','posts'].includes(name)) for (const file of readdirSync(join(dir,name)))
-    files.set(`${name}/${file}`, {mode:'100644', bytes:readFileSync(join(dir,name,file))});
-  else files.set(name, {mode:'100644', bytes:readFileSync(join(dir,name))});
-}
-const manifest=readManifest(files.get('metadata.json').bytes);
-validateDirectoryArchive({manifest,files});
-const inventory=Object.values(manifest.articles).map(a=>({...a,
-  verified_snapshot_sha256:sha256(files.get(`snapshots/${a.article_id}.html`).bytes)}));
-writeFileSync(join(dir,'../raw-inventory.json'), JSON.stringify(inventory,null,2)+'\n');
-console.log(`Validated ${inventory.length} retained articles`);
-JS
-npm run --silent site:build:directory -- --archive-dir "$audit/derived" \
-  --output "$audit/site" --base /copilot-changelog-mirror/ \
+git --git-dir="$recovery/repository.git" cat-file -e "$application^{commit}"
+git --git-dir="$recovery/repository.git" merge-base --is-ancestor "$application" refs/heads/main
+git --git-dir="$recovery/repository.git" merge-base --is-ancestor "$derived" refs/heads/mirror-data-v2
+mkdir "$recovery/derived"
+git --git-dir="$recovery/repository.git" archive "$derived" | tar -x -C "$recovery/derived"
+# From the current installed application, inspect a local rebuild before publication:
+npm run site:build:directory -- --archive-dir "$recovery/derived" \
+  --output "$recovery/site" --base /copilot-changelog-mirror/ \
   --site https://tsaohoward.github.io
+
+# When deliberately restoring known-good public content:
+git ls-remote "https://github.com/$repo.git" refs/heads/mirror-data-v2 > "$recovery/archive-before.txt"
+gh workflow run update-publish.yml --repo "$repo" --ref main \
+  -f mode=republish -f application_sha="$application" -f archive_sha="$derived"
+gh run list --repo "$repo" --workflow update-publish.yml --event workflow_dispatch --limit 10
+# Identify this dispatch by event/time/inputs, then:
+# gh run watch ACTUAL_RUN_ID --repo "$repo" --exit-status
+# Inspect native deployment and public content before claiming rollback success.
+git ls-remote "https://github.com/$repo.git" refs/heads/mirror-data-v2 > "$recovery/archive-after.txt"
+diff -u "$recovery/archive-before.txt" "$recovery/archive-after.txt"
 ```
 
-Inspect finished listing/routes/assets and Pagefind output before uploading. Run
-the reader check below against a locally served build first. Build success proves
-compatible saved inputs, not a new hosted rollback. Keep inventory exports and
-counts/hashes/SHAs in the evidence record. If canonical data is incomplete, select
-a retained complete-derived revision; keep newer raw data in the archive branch.
-Do not require retained old Actions artifacts. Repeat the audit against newly
-fetched refs after draining if production advanced since preparation.
+The archive branch keeps its newest descendants and raw captures even when the public site uses older complete-derived input. Forward corrective application/derived commits are another recovery option; preserve Capture-owned fields. To restore the newest complete publication after rollback, use manual republish with no archive selector, following inspection of that input. Do not reactivate the old workflows or reset/bootstrap the current archive.
 
-## Approved stop, drain, install, activate sequence
+## Public verification and historical inputs
 
-**The following changes require the separate recorded activation decision.**
-Prepare an activation PR from updated `main` only after that decision. Do not merge
-it until the old chain is disabled and drained. Coordinate maintainers to prevent
-manual dispatches, old reruns, external writes and reactivation during observation.
+Use the retained opt-in reader check from the current application against the **archive matching the actual publication**:
 
-```bash
-gh workflow disable v2-capture.yml --repo "$repo"
-gh workflow disable v2-render.yml --repo "$repo"
-gh workflow disable v2-pages.yml --repo "$repo"
-gh api "repos/$repo/actions/workflows" --paginate --jq '.workflows[] | {id,path,state}'
-gh api "repos/$repo/actions/runs?per_page=100" --paginate \
-  --jq '.workflow_runs[] | select(.workflow_id == 381740224 or .workflow_id == 381740225 or .workflow_id == 381887694) | {id,status,conclusion,head_sha,html_url}' \
-  | jq -s '.' > "$audit/old-runs.json"
-jq '[.[] | select(.status != "completed")]' "$audit/old-runs.json"
-gh api "repos/$repo/deployments?environment=github-pages&per_page=100" --paginate > "$audit/deployments.json"
-```
-
-Inspect jobs for every nonterminal run with `gh run view RUN --repo "$repo" --json
-jobs`; include running, queued, pending, waiting, requested, action-required and
-environment-waiting work. Let it finish or deliberately `gh run cancel RUN --repo
-"$repo"`, then verify terminal state. Reinventory **after** completions to catch
-new `workflow_run` consumers. Inspect each relevant deployment's `/statuses`
-endpoint and its Pages job; a run conclusion alone does not resolve deployment
-ambiguity. Record the last old successful public content. If any old work or
-in-flight native deployment remains uncertain, stop here.
-
-In the approved activation branch, preserve old definitions outside registration:
-
-```bash
-mkdir -p .github/historical
-git mv .github/workflows/v2-capture.yml .github/historical/v2-capture.yml
-git mv .github/workflows/v2-render.yml .github/historical/v2-render.yml
-git mv .github/workflows/v2-pages.yml .github/historical/v2-pages.yml
-cp .github/production/update-publish.yml .github/workflows/update-publish.yml
-npm run format:check
-npm run typecheck
-node --import tsx --test tests/v2/production-workflow.test.ts tests/v2/isolated-workflow.test.ts
-node --import tsx --test --test-name-pattern='retained legacy' tests/v2/stage-actions.test.ts tests/v2/pages.test.ts
-```
-
-The contracts support both preparation and installed sole-chain source layouts;
-they do not prove hosted workflow states. Keep `.github/isolated/persist-stage.sh`:
-it is the already tested fixture-independent ordinary persistence helper, shared
-by both templates. Do not copy isolated fixture source, application overrides or
-acquisition preloads. Install the reviewed production template unchanged.
-
-After review, merge the activation PR while the old workflows remain disabled and
-drained. A newly registered schedule can start immediately; readiness must precede
-that merge. Enable `update-publish.yml` only if it registered disabled. Inventory
-workflow states/runs/deployments again. Exactly one production path must be active;
-CI is independent. Keep old workflows disabled even after their definitions move,
-and prohibit old reruns. Shared concurrency is a supplement to this drain.
-
-## First publication and manual modes
-
-Scheduled runs always select `full-update`; manual default is also full update.
-Both jobs guard the exact repository, default branch and schedule/dispatch events.
-Application and archive are separate fixed checkouts. Requested application must
-be a full SHA in trusted default-branch history with compatible commands; explicit
-archive SHA is republish-only and must be retained in archive ancestry.
-
-```bash
-gh workflow run update-publish.yml --repo "$repo" --ref main -f mode=full-update
-# After that run completes and its outcome/publication is inspected:
-gh workflow run update-publish.yml --repo "$repo" --ref main -f mode=render-rebuild
-# The known-good republish below also provides rollback evidence; avoid redundant runs.
-```
-
-Record the actual selected/pushed C/R SHAs and counts in summaries and remote Git.
-Full update acquires only the real GitHub Blog feed. Render-rebuild skips Capture
-and preserves acquisition bytes/fields. Republish skips both stages and both
-pushes; archive/build retains contents-write permission but that mode is read-only.
-Only the dependent deploy job has Pages/OIDC, no application install there. Build
-must finish complete Astro compilation and Pagefind indexing before native upload;
-upstream failure prevents deploy. No-change still continues downstream.
-
-Compare before/after identity sets, Capture fields, snapshot hashes, refs and
-ancestry. New raw differences must trace to legitimate Capture; discovery omission
-must not remove stored articles. Verify C → R ordinary descendant commits. Never
-force-push, rewind, rebase/reconcile automatically, or persist a partially failed
-checkout. Failed/uncertain push is a failed stage even if bytes reached the server.
-
-After each selected publication, run the same reader check using its saved inputs:
-
-```bash
-ARCHIVE_DIR="$audit/derived" \
+```sh
+ARCHIVE_DIR=/path/to/selected-derived-export \
 SITE_URL=https://tsaohoward.github.io/copilot-changelog-mirror/ \
 node --import tsx --test tests/v2/production-site.browser.ts
 ```
 
-Run this from the reviewed preparation/activation checkout (the older known-good
-application predates this reader script). Select the archive matching the actual
-publication, not a moving tip; re-export it if needed. The check covers listing
-order/date/title, all retained routes and source attribution, representative heading
-anchor, image/video references, local assets, title/body search and result navigation.
-The authentic October 9 weekly announcement is its fixed representative; if a
-chosen older complete revision lacks it, select/review another independent saved
-expectation explicitly. External media requests are blocked: references are checked,
-not upstream availability or permanent media archival. Keep old-site observations
-separate from first replacement publication.
+It checks listing/order/date/title/routes/attribution, representative anchors/media/base assets, executed title/body searches and navigation. It requires the authentic October 9 weekly article; an older selected publication requires separately reviewed expectations rather than a fabricated pass. External media requests are blocked: references are checked, not permanent upstream availability. The rollback pair's accepted public checks remain in dated #36 evidence.
 
-## Known-good rollback and uncertainty
+Retain `mirror-data`, `mirror-data-v2`, `v1-final-before-v2`, annotated `v2-reset-input`, and `v2-initial-capture`. Discover them with `git show-ref` in a mirror clone; use `git archive REF` in a fresh directory and `git fsck --full --no-reflogs` to inspect recoverability. Ref existence alone does not establish original-byte integrity; #36's audit recorded restored blobs/modes, hashes and ancestry. Do not recreate historical refs. Current Capture/Render validates raw joins; republish reads canonical metadata/bodies only.
 
-This executable fresh native rebuild/publish was verified in Production by run
-`39122524338`, including public reader/search and unchanged archive refs:
-
-```bash
-git ls-remote "https://github.com/$repo.git" refs/heads/mirror-data-v2 > "$audit/before-republish.txt"
-gh workflow run update-publish.yml --repo "$repo" --ref main \
-  -f mode=republish \
-  -f application_sha=9cca716865717a50fa02066b98bfa0e2bbba247b \
-  -f archive_sha=0ce0a0e922c87cedccbd3cdc2165ce3037fd0e11
-# Identify the newly created run by event/time/inputs; do not select an unrelated latest run.
-gh run list --repo "$repo" --workflow update-publish.yml --event workflow_dispatch --limit 10
-# gh run watch ACTUAL_RUN_ID --repo "$repo" --exit-status
-# Inspect native jobs/deployment, then run the public check against $audit/derived.
-git ls-remote "https://github.com/$repo.git" refs/heads/mirror-data-v2 > "$audit/after-republish.txt"
-diff -u "$audit/before-republish.txt" "$audit/after-republish.txt"
-```
-
-Recheck complete-derived tree/history and raw inventory too. The archive branch
-keeps its newest descendants and raw captures while the public site may use older
-known-good content. Alternatively make ordinary forward corrective application or
-derived commits preserving Capture fields and use render-rebuild/republish. Keep
-old source, but restoring old workflows alone is not verified rollback because
-legacy evidence may expire. Fresh build/upload avoids that dependency.
-
-If deployment was invoked and response/reporting is uncertain, inspect run/job,
-native deployment `/statuses`, environment and actual public content/search before
-deciding recovery. Stop further bad publications as necessary while keeping the
-other chain disabled. A failed response does not prove the old site survived.
-Use isolated #35 failure evidence for destructive cases; never corrupt production,
-race live writers, delete evidence or inject fixtures to manufacture failure proof.
-
-## Schedule observations, costs and sign-off
-
-Preserve `17 6,12 * * *`, `timezone: Asia/Taipei`: nominal 06:17 is previous-day
-22:17 UTC; nominal 12:17 is 04:17 UTC. For each actual new `schedule` event record
-nominal opportunity, created time, job start/queue/execution, inputs/pushes,
-native conclusion/deployment and public result. Inspect original native event and
-workflow revision for the October 13 discrepancy; its current unresolved finding
-is in the evidence record. Do not infer a timezone correction or rewrite schedule.
-Manual success or configured YAML never substitutes for either schedule event.
-Missing observation stays pending with next check; platform delay and failed run
-are distinct. Successful manual recovery does not change a scheduled failure.
-
-For costs export `gh api repos/$repo/actions/runs/RUN/jobs --paginate` and
-`gh run view RUN --log`. Record SHA/lock/tool/runner/corpus/base/mode and cache,
-install conditions/repetitions, failed/extra attempts, invocation count, queue versus
-execution, installs, stages/pushes, build/index, upload/deploy, job and pipeline times.
-Compare the old three-run handoff with the complete new workflow. Native step
-intervals can contain several operations: disclose when finer timing is unavailable.
-Separate local builds, routine CI, isolated evidence and production measurements;
-structural install savings are inferred until comparable production observations.
-
-Update every acceptance row in the evidence record as passed, failed or pending,
-with dated URLs and remediation/next observation. Record decisions, drain and
-sole-path inventories before/after first publication, manual paths, rollback,
-post-cutover raw/ancestry comparison and both actual schedule events. Pending
-schedule or activation means #36 is not fully accepted. Do not close or rewrite #24.
+This cleanup authorizes no production dispatch or new site change. #24's historical hosted acceptance remains separate. [Final test ownership](v2-cleanup-tests.md), [cleanup evidence](v2-cleanup-evidence.md), and [measurements](v2-cleanup-measurements.md) describe what local and hosted CI checks establish.

@@ -106,7 +106,7 @@ test("ordinary Git pushes Capture before late Render failure, then repaired offl
     execFileSync(
       "bash",
       [
-        join(import.meta.dirname, "../../.github/isolated/persist-stage.sh"),
+        join(import.meta.dirname, "../../.github/scripts/persist-stage.sh"),
         stage,
         f.archive,
       ],
@@ -169,9 +169,16 @@ test("ordinary Git pushes Capture before late Render failure, then repaired offl
     (await f.cli("capture", ["--feed-url", feed])).result.outcome,
     "no-change",
   );
+  assert.equal(persist("capture"), render);
   assert.equal(
     (await f.cli("render", [], {}, [repair])).result.outcome,
     "no-change",
+  );
+  assert.equal(persist("render"), render);
+  assert.equal(remote("rev-parse", "mirror-data-v2"), render);
+  assert.match(
+    readFileSync(join(f.dir, "summary"), "utf8"),
+    /Confirmed pushed/,
   );
 });
 
@@ -377,53 +384,6 @@ test("a filesystem completion failure reports failure and prevents the caller's 
       .toString()
       .trim(),
     before,
-  );
-});
-
-test("an ordinary non-fast-forward push preserves the competing writer's history", async (t) => {
-  const { execFileSync } = await import("node:child_process");
-  const { writeFileSync } = await import("node:fs");
-  const f = new DirectoryFixture(t);
-  execFileSync("git", ["init", "--bare", "-q", f.remote]);
-  f.git("remote", "add", "origin", f.remote);
-  f.git("push", "-q", "origin", "mirror-data-v2");
-  const competitor = join(f.dir, "competitor");
-  execFileSync("git", [
-    "clone",
-    "-q",
-    "-b",
-    "mirror-data-v2",
-    f.remote,
-    competitor,
-  ]);
-  const git = (...args: string[]) =>
-    execFileSync("git", ["-C", competitor, ...args], {
-      stdio: ["pipe", "pipe", "pipe"],
-    })
-      .toString()
-      .trim();
-  git("config", "user.name", "Competitor");
-  git("config", "user.email", "competitor@example.invalid");
-  writeFileSync(
-    join(competitor, "metadata.json"),
-    '{"schema_version":2,"articles":{}}\n',
-  );
-  git("add", ".");
-  git("commit", "-qm", "Competing update");
-  git("push", "-q");
-  const competing = git("rev-parse", "HEAD");
-  assert.equal((await f.cli("capture", ["--feed-url", f.feed("")])).code, 0);
-  const local = f.persist("Local Capture");
-  assert.throws(
-    () => f.git("push", "origin", "mirror-data-v2"),
-    /rejected|fetch first|non-fast-forward/,
-  );
-  assert.equal(f.git("rev-parse", "HEAD"), local);
-  assert.equal(
-    execFileSync("git", ["--git-dir", f.remote, "rev-parse", "mirror-data-v2"])
-      .toString()
-      .trim(),
-    competing,
   );
 });
 

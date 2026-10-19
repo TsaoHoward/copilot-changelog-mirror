@@ -10,7 +10,7 @@ export async function renderDirectory(options: {
   try {
     const archive = new DirectoryArchive(options.archiveDir);
     const input = await archive.read();
-    const candidate = renderBatch(input, true);
+    const candidate = renderBatch(input);
     await archive.promote(input, candidate);
     return {
       outcome: candidate.changed ? "changed" : "no-change",

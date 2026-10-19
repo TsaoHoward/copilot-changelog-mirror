@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { Fixture, seedArticle } from "./support.js";
+
 import { savedNormalization } from "./normalization-support.js";
 const script = (record: unknown) =>
   `<script type="application/ld+json">${JSON.stringify(record)}</script>`;
@@ -87,37 +87,11 @@ test("metadata fallback ignores malformed, invalid, unrelated and modified-only 
       assert.equal(result.canonical.published_at, time);
     });
   }
-  const result = savedNormalization("<p>Usable body.</p>", source, "  ", null);
+  const result = savedNormalization(
+    "<article><p>Usable body.</p></article>",
+    source,
+    "  ",
+    null,
+  );
   assert.equal(result.canonical.title, source);
-});
-
-test("conflicting associated publication instants fail the entire batch with identity and dates", async (t) => {
-  const f = new Fixture(t);
-  const source = "https://github.blog/changelog/article/";
-  const id = seedArticle(
-    f,
-    script([
-      {
-        "@type": "Article",
-        url: source,
-        datePublished: "2026-10-01T12:00:00Z",
-      },
-      {
-        "@type": "TechArticle",
-        mainEntityOfPage: source,
-        datePublished: "2026-10-02T12:00:00Z",
-      },
-    ]) + "<article><p>Body.</p></article>",
-  );
-  const before = f.tip();
-  const failed = await f.render();
-  assert.equal(failed.code, 1);
-  assert.match(
-    failed.stderr,
-    /Conflicting.*2026-10-01T12:00:00.000Z.*2026-10-02T12:00:00.000Z/,
-  );
-  assert.ok(failed.stderr.includes(id));
-  assert.equal(failed.result.archive_output, null);
-  assert.ok(!("publication_output" in failed.result));
-  assert.equal(f.tip(), before);
 });
