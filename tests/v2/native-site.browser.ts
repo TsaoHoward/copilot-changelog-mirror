@@ -23,10 +23,20 @@ import {
   updateCapture,
   serializeManifest,
   sha256,
+  publicationProjection,
 } from "../../src/v2/domain.js";
+import type { Article } from "../../src/v2/domain.js";
 import { root } from "./support.js";
 
 const base = "/copilot-changelog-mirror/";
+const productionSlug =
+  "2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november";
+const productionCells = [
+  ["Model", "Deprecation date", "Suggested alternative"],
+  ["Claude Opus 4.8*", "2026-11-16", "Claude Opus 5.5"],
+  ["Claude Opus 5", "2026-11-16", "Claude Opus 5.5"],
+  ["GPT-5.6 Terra", "2026-11-16", "GPT-6.1 Sol or GPT-6 Luna"],
+];
 const results = (page: Page) => page.locator(".pagefind-ui__result-link");
 const input = (page: Page) =>
   page.getByRole("textbox", { name: "Search announcements" });
@@ -61,6 +71,7 @@ test("native offline artifact preserves presentation and maintained search behav
       file: "lists-media",
       slug: "2026-09-30-hydrafusion-in-vs-code-and-the-github-copilot-app",
     },
+    { file: "../tables/supplemental", slug: "table-fidelity-examples" },
   ];
   for (const { file, slug } of extracts) {
     const bytes = readFileSync(
@@ -78,6 +89,41 @@ test("native offline artifact preserves presentation and maintained search behav
     )!.article_id;
     writeFileSync(join(saved.archive, `snapshots/${id}.html`), bytes);
   }
+  const production: Article = JSON.parse(
+    readFileSync(
+      join(root, "tests/fixtures/tables/model-deprecation.article.json"),
+      "utf8",
+    ),
+  );
+  const productionRaw = readFileSync(
+    join(root, "tests/fixtures/tables/model-deprecation.html"),
+  );
+  assert.equal(
+    sha256(productionRaw),
+    "63e0c86af2f8a6a02a4ceaa4c08b9635e8d5d39b67fddc9289be06a5f04350ed",
+  );
+  sourceManifest.articles[production.article_id] = production;
+  writeFileSync(
+    join(saved.archive, `snapshots/${production.article_id}.html`),
+    productionRaw,
+  );
+  mkdirSync(join(saved.archive, "posts"));
+  const broken = readFileSync(
+    join(root, "tests/fixtures/tables/model-deprecation.broken.md"),
+    "utf8",
+  );
+  writeFileSync(
+    join(saved.archive, `posts/${production.article_id}.md`),
+    broken,
+  );
+  const productionManifest = {
+    schema_version: 2 as const,
+    articles: { [production.article_id]: production },
+  };
+  const projectionBefore = publicationProjection(
+    productionManifest,
+    new Map([[production.article_id, broken]]),
+  );
   writeFileSync(
     join(saved.archive, "metadata.json"),
     serializeManifest(sourceManifest),
@@ -92,10 +138,63 @@ test("native offline artifact preserves presentation and maintained search behav
   const rendered = await saved.cli("render", [], offline);
   assert.equal(rendered.code, 0, rendered.stderr);
   assert.deepEqual(rendered.result.counts, {
-    rendered: 3,
-    updated: 3,
+    rendered: 5,
+    updated: 5,
     unchanged: 0,
   });
+  assert.equal(rendered.result.outcome, "changed");
+  assert.deepEqual(
+    saved.manifest().articles[production.article_id],
+    production,
+  );
+  assert.deepEqual(
+    readFileSync(
+      join(saved.archive, `snapshots/${production.article_id}.html`),
+    ),
+    productionRaw,
+  );
+  const repaired = readFileSync(
+    join(saved.archive, `posts/${production.article_id}.md`),
+    "utf8",
+  );
+  assert.match(
+    repaired,
+    /\| Model \| Deprecation date \| Suggested alternative \|/,
+  );
+  assert.ok(!repaired.includes("<table"));
+  assert.notDeepEqual(
+    publicationProjection(
+      productionManifest,
+      new Map([[production.article_id, repaired]]),
+    ),
+    projectionBefore,
+  );
+  saved.persist("Repair saved publication tables");
+  const repairedTree = {
+    metadata: readFileSync(join(saved.archive, "metadata.json")),
+    posts: tree(join(saved.archive, "posts")),
+    snapshots: tree(join(saved.archive, "snapshots")),
+    revision: saved.git("rev-parse", "HEAD"),
+  };
+  const rerendered = await saved.cli("render", [], offline);
+  assert.equal(rerendered.code, 0, rerendered.stderr);
+  assert.equal(rerendered.result.outcome, "no-change");
+  assert.deepEqual(rerendered.result.counts, {
+    rendered: 5,
+    updated: 0,
+    unchanged: 5,
+  });
+  assert.deepEqual(
+    readFileSync(join(saved.archive, "metadata.json")),
+    repairedTree.metadata,
+  );
+  assert.deepEqual(tree(join(saved.archive, "posts")), repairedTree.posts);
+  assert.deepEqual(
+    tree(join(saved.archive, "snapshots")),
+    repairedTree.snapshots,
+  );
+  assert.equal(saved.git("rev-parse", "HEAD"), repairedTree.revision);
+  assert.equal(saved.git("status", "--porcelain"), "");
   assert.equal(existsSync(networkLog), false);
   const longTitle = "Interoperability ".repeat(24).trim();
   const synthetic = f.seed([
@@ -188,7 +287,7 @@ test("native offline artifact preserves presentation and maintained search behav
   assert.deepEqual(git("log", "--format=%H"), gitBefore.history);
   assert.deepEqual(git("ls-tree", "-r", "HEAD"), gitBefore.tree);
   assert.equal(built.code, 0, built.stderr);
-  assert.equal(built.result.article_count, 14);
+  assert.equal(built.result.article_count, 16);
   assert.equal(readFileSync(networkLog, "utf8"), "");
   assert.deepEqual(
     readFileSync(join(f.archive, "metadata.json")),
@@ -210,21 +309,23 @@ test("native offline artifact preserves presentation and maintained search behav
   assert.deepEqual(
     $(".article-list h2")
       .toArray()
-      .slice(0, 4)
+      .slice(0, 5)
       .map((n) => $(n).text()),
     [
+      production.canonical!.title,
       "Nebula <tools> & workflows",
       longTitle,
       "Continuation 0",
       "Continuation 1",
     ],
   );
-  assert.equal($(".article-list time").length, 7);
+  assert.equal($(".article-list time").length, 8);
   assert.deepEqual(
     $(".article-list a")
       .toArray()
       .map((a) => $(a).attr("href")!.slice(base.length)),
     [
+      `posts/${productionSlug}/`,
       "posts/nebula/",
       "posts/long/",
       "posts/continuation-0/",
@@ -239,6 +340,7 @@ test("native offline artifact preserves presentation and maintained search behav
       "posts/continuation-5/",
       "posts/continuation-6/",
       "posts/continuation-7/",
+      "posts/table-fidelity-examples/",
     ],
   );
   for (const link of $(".article-list a").toArray())
@@ -318,10 +420,214 @@ test("native offline artifact preserves presentation and maintained search behav
     },
   );
 
+  await t.test(
+    "saved tables retain their semantic cell mapping through the actual Astro build",
+    () => {
+      const production = load(
+        readFileSync(
+          join(output, `posts/${productionSlug}/index.html`),
+          "utf8",
+        ),
+      );
+      assert.equal(production(".article-body table").length, 1);
+      assert.equal(production("table thead th").length, 3);
+      assert.equal(production("table tbody td").length, 9);
+      assert.deepEqual(
+        production("table tr")
+          .toArray()
+          .map((row) =>
+            production(row)
+              .children()
+              .toArray()
+              .map((cell) => production(cell).text()),
+          ),
+        productionCells,
+      );
+      assert.match(production("table").prev("p").text(), /^We will deprecate/);
+      assert.match(
+        production("table").next("p").text(),
+        /^\*Claude Opus 4\.8 will remain available/,
+      );
+      const supplemental = load(
+        readFileSync(
+          join(output, "posts/table-fidelity-examples/index.html"),
+          "utf8",
+        ),
+      );
+      const tables = supplemental(".article-body table");
+      assert.equal(tables.length, 5);
+      assert.deepEqual(
+        tables
+          .eq(0)
+          .find("td")
+          .toArray()
+          .map((cell) => supplemental(cell).text()),
+        ["Guide | reference", "Élan ready a|b <span> & * ~one~ ~~two~~", ""],
+      );
+      assert.equal(
+        tables.eq(0).find("a").attr("href"),
+        "https://github.blog/changelog/guide/?mode=a%7Cb",
+      );
+      assert.equal(tables.eq(0).find("em").text(), "Élan");
+      assert.equal(tables.eq(0).find("strong").text(), "ready");
+      assert.equal(tables.eq(0).find("code").text(), "a|b");
+      const merged = tables.eq(1);
+      assert.equal(merged.find("caption").text(), "Merged capacity");
+      assert.equal(
+        merged.find("thead th[colspan='2'][scope='colgroup']").attr("id"),
+        "capacity",
+      );
+      assert.equal(
+        merged.find("tbody th[rowspan='2'][scope='rowgroup']").text(),
+        "Group A",
+      );
+      assert.equal(
+        merged
+          .find("td[headers='group-a capacity archive-heading-1'] a")
+          .attr("href"),
+        "#capacity",
+      );
+      assert.equal(
+        merged.find("a").last().attr("href"),
+        "https://github.blog/plans/",
+      );
+      assert.equal(merged.find("td strong").text(), "Plus");
+      assert.equal(merged.find("br").length, 1);
+      assert.equal(merged.find("tfoot td[colspan='2']").text(), "30");
+      assert.deepEqual(
+        merged
+          .find("tr")
+          .toArray()
+          .map((row) =>
+            supplemental(row)
+              .children()
+              .toArray()
+              .map((cell) => supplemental(cell).text()),
+          ),
+        [
+          ["Family", "Capacity"],
+          ["Group A", "10", "Basic"],
+          ["20", "PlusDetails"],
+          ["Total", "30"],
+        ],
+      );
+      assert.equal(supplemental("#archive-heading-1").length, 1);
+      assert.equal(supplemental("#archive-heading-1").prop("tagName"), "TH");
+      assert.equal(supplemental(".article-body s,.article-body del").length, 0);
+      assert.equal(tables.eq(4).find("code").text(), " ");
+      assert.equal(tables.eq(2).find("th").length, 0);
+      assert.deepEqual(
+        tables
+          .eq(2)
+          .find("td")
+          .toArray()
+          .map((cell) => supplemental(cell).text()),
+        ["Headerless", ""],
+      );
+      assert.deepEqual(
+        supplemental(".article-body > p")
+          .toArray()
+          .map((p) => supplemental(p).text())
+          .filter(Boolean),
+        [
+          "Before simple table.",
+          "Between simple and merged tables.",
+          "Between merged and headerless tables.",
+          "Before wide table.",
+          "Before whitespace code table.",
+          "After all tables.",
+        ],
+      );
+      for (const [i, before] of [
+        "Before simple table.",
+        "Between simple and merged tables.",
+        "Between merged and headerless tables.",
+        "Before wide table.",
+        "Before whitespace code table.",
+      ].entries())
+        assert.equal(tables.eq(i).prev("p").text(), before);
+      assert.equal(tables.last().next("p").text(), "After all tables.");
+    },
+  );
+
   const browser = await chromium.launch();
   t.after(() => browser.close());
   const { origin, url, missing } = await serveArtifact(t, output, base);
   const browserStarted = performance.now();
+  await t.test(
+    "table headers, merged cells and local horizontal scrolling work on desktop/mobile without JavaScript",
+    async () => {
+      const { context, page } = await openArtifact(browser, origin, {
+        javaScriptEnabled: false,
+      });
+      try {
+        for (const width of [1280, 320]) {
+          await page.setViewportSize({ width, height: 800 });
+          await page.goto(`${url}posts/${productionSlug}/`);
+          await expect(page.getByRole("table")).toHaveCount(1);
+          await expect(page.getByRole("columnheader")).toHaveText(
+            productionCells[0]!,
+          );
+          await expect(page.getByRole("cell")).toHaveText(
+            productionCells.slice(1).flat(),
+          );
+          await expect(page.getByRole("columnheader").first()).toBeVisible();
+          assert.ok(
+            await page.evaluate(
+              () => document.documentElement.scrollWidth <= innerWidth,
+            ),
+          );
+          await page.screenshot({
+            path: join("/tmp", `issue-41-production-${width}.png`),
+            fullPage: true,
+          });
+          await page.goto(`${url}posts/table-fidelity-examples/`);
+          await expect(page.getByRole("table")).toHaveCount(5);
+          await expect(
+            page.getByRole("rowheader", { name: "Group A", exact: true }),
+          ).toBeVisible();
+          await page.getByRole("link", { name: "10", exact: true }).click();
+          await expect(page).toHaveURL(
+            `${url}posts/table-fidelity-examples/#capacity`,
+          );
+          const wide = page.getByRole("table").nth(3);
+          const overflow = await wide.evaluate((node) => {
+            const before = node.scrollLeft;
+            node.scrollLeft = node.scrollWidth;
+            const last = node
+              .querySelector("td:last-child")!
+              .getBoundingClientRect();
+            const bounds = node.getBoundingClientRect();
+            return {
+              wide: node.scrollWidth > node.clientWidth,
+              moved: node.scrollLeft > before,
+              lastVisible:
+                last.right <= bounds.right + 1 && last.left >= bounds.left,
+            };
+          });
+          assert.deepEqual(overflow, {
+            wide: true,
+            moved: true,
+            lastVisible: true,
+          });
+          await expect(wide.getByRole("cell").last()).toHaveText(
+            "Reached final column",
+          );
+          assert.ok(
+            await page.evaluate(
+              () => document.documentElement.scrollWidth <= innerWidth,
+            ),
+          );
+          await page.screenshot({
+            path: join("/tmp", `issue-41-tables-${width}.png`),
+            fullPage: true,
+          });
+        }
+      } finally {
+        await context.close();
+      }
+    },
+  );
   await t.test(
     "title/body search, escaped results, scope, continuation, navigation and mobile",
     async () => {

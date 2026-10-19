@@ -278,12 +278,34 @@ function headingFragments(
   source: string,
 ): void {
   const ordered = root.find(headings).toArray();
+  const retainedIds = new Set(
+    root
+      .find("table[id],table [id]")
+      .toArray()
+      .filter((el) => !$(el).is(headings) && !$(el).closest(headings).length)
+      .map((el) => $(el).attr("id")!),
+  );
+  let sequence = 0;
   const ids = new Map<AnyNode, string>(
-    ordered.map((heading, index) => [heading, `archive-heading-${index + 1}`]),
+    ordered.map((heading) => {
+      let id: string;
+      do {
+        id = `archive-heading-${++sequence}`;
+      } while (retainedIds.has(id));
+      return [heading, id];
+    }),
   );
   const sourceIds = new Map<string, string>();
   root.find("[id]").each((_, el) => {
     const node = $(el);
+    if (
+      node.closest("table").length &&
+      !node.is(headings) &&
+      !node.closest(headings).length
+    ) {
+      sourceIds.set(node.attr("id")!, node.attr("id")!);
+      return;
+    }
     let target = node.is(headings)
       ? el
       : (node.closest(headings)[0] ?? node.find(headings)[0]);
@@ -314,6 +336,99 @@ function headingFragments(
   });
 }
 
+/** Return Markdown only when no table structure or inline meaning is lost. */
+function pipeTable($: CheerioAPI, table: Cheerio<AnyNode>): string | null {
+  const structural = table.find("*").add(table).toArray();
+  for (const el of structural) {
+    const node = $(el);
+    if (!node.is("table,thead,tbody,tr,th,td,a,em,strong,b,i,code,span"))
+      return null;
+    const allowed = node.is("th,td")
+      ? ["class", "style", "align"]
+      : node.is("a")
+        ? ["class", "href", "title"]
+        : ["class"];
+    if (Object.keys(node.attr() ?? {}).some((attr) => !allowed.includes(attr)))
+      return null;
+    if (node.is("a") && !node.attr("href")) return null;
+    if (node.is("code") && node.children().length) return null;
+    if (node.is("code") && /[\r\n]/.test(node.text())) return null;
+    if (node.is("code") && !node.text().trim()) return null;
+    if (
+      node.is("th,td") &&
+      node.attr("style") &&
+      !/^\s*text-align\s*:\s*(left|right|center)\s*;?\s*$/i.test(
+        node.attr("style")!,
+      )
+    )
+      return null;
+  }
+  if (
+    table.find("table").length ||
+    table.children("thead").length > 1 ||
+    table.children("tbody").length > 1
+  )
+    return null;
+  const rows = table.find("tr").toArray();
+  const cells = rows.map((row) => $(row).children("th,td").toArray());
+  const width = cells[0]?.length ?? 0;
+  if (
+    !width ||
+    !cells.every(
+      (row, i) =>
+        row.length === width &&
+        row.every((cell) => $(cell).is(i === 0 ? "th" : "td")),
+    )
+  )
+    return null;
+  if (
+    table.find("thead tr").length > 1 ||
+    (table.find("thead tr").length && table.find("thead tr")[0] !== rows[0])
+  )
+    return null;
+  const alignment = (cell: AnyNode): string => {
+    const node = $(cell);
+    const attr = node.attr("align")?.toLowerCase();
+    const style = /text-align\s*:\s*(left|right|center)/i
+      .exec(node.attr("style") ?? "")?.[1]
+      ?.toLowerCase();
+    if (attr && style && attr !== style) return "conflict";
+    return style ?? attr ?? "";
+  };
+  const alignments = cells[0]!.map(alignment);
+  for (const row of cells)
+    for (const [i, cell] of row.entries()) {
+      const align = alignment(cell);
+      if (
+        !["", "left", "right", "center"].includes(align) ||
+        align !== alignments[i]
+      )
+        return null;
+    }
+  const inline = new TurndownService({
+    emDelimiter: "*",
+    preformattedCode: true,
+  });
+  const escape = inline.escape;
+  inline.escape = (value) =>
+    escape(value)
+      .replaceAll("~", "\\~")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;");
+  const lines = cells.map(
+    (row) =>
+      `| ${row.map((cell) => inline.turndown($(cell).html() ?? "").replaceAll("|", "\\|")).join(" | ")} |`,
+  );
+  if (lines.some((line) => /[\r\n]/.test(line))) return null;
+  lines.splice(
+    1,
+    0,
+    `| ${alignments.map((a) => (a === "left" ? ":---" : a === "right" ? "---:" : a === "center" ? ":---:" : "---")).join(" | ")} |`,
+  );
+  return lines.join("\n");
+}
+
 function markdown(
   $: CheerioAPI,
   root: Cheerio<AnyNode>,
@@ -339,6 +454,26 @@ function markdown(
   converter.addRule("embedded-media", {
     filter: ["video", "iframe"],
     replacement: (_, node) => `\n\n${(node as HTMLElement).outerHTML}\n\n`,
+  });
+  // Protect whole processed tables from Turndown's whitespace collapsing and
+  // descendant rules, including empty cells and whitespace inside HTML <pre>.
+  const tables: string[] = [];
+  root
+    .find("table")
+    .filter((_, el) => !$(el).parents("table").length)
+    .each((_, el) => {
+      const table = $(el);
+      const converted = pipeTable($, table);
+      tables.push(converted ?? $.html(el).replace(/\r\n?|\n/g, "&#10;"));
+      table
+        .empty()
+        .attr("data-archive-table", String(tables.length - 1))
+        .append("<tr><td>table</td></tr>");
+    });
+  converter.addRule("article-tables", {
+    filter: "table",
+    replacement: (_, node) =>
+      `\n\n${tables[Number((node as HTMLElement).getAttribute("data-archive-table"))]}\n\n`,
   });
   return (
     converter
