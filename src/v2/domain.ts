@@ -241,7 +241,7 @@ export interface PublicationEntry extends Identity, Canonical {
 }
 export type PublicationProjection = readonly PublicationEntry[];
 
-/** Null means there is insufficient derived state to compare publications. */
+/** Null means at least one article lacks complete derived content. */
 export function publicationProjection(
   archive: PublicationArchive,
   bodies: ReadonlyMap<string, string>,
@@ -261,75 +261,11 @@ export function publicationProjection(
   return projection;
 }
 
-/** Format 1 is a publication contract, not the v2 storage schema. */
-export function serializePublicationProjection(
-  projection: PublicationProjection,
-): string {
-  const ids = new Set<string>();
-  const paths = new Set<string>();
-  const articles = [...projection]
-    .sort((a, b) =>
-      a.article_id < b.article_id ? -1 : a.article_id > b.article_id ? 1 : 0,
-    )
-    .map((article) => {
-      validateCanonical({
-        title: article.title,
-        published_at: article.published_at,
-        publication_path: article.publication_path,
-      });
-      string(article.article_id, "publication.article_id", true);
-      string(article.source_url, "publication.source_url", true);
-      string(article.body, "publication.body");
-      if (ids.has(article.article_id))
-        throw new Error(
-          `Duplicate publication identity: ${article.article_id}`,
-        );
-      if (paths.has(article.publication_path))
-        throw new Error(
-          `Publication route collision: ${article.publication_path} (${article.article_id})`,
-        );
-      ids.add(article.article_id);
-      paths.add(article.publication_path);
-      return {
-        article_id: article.article_id,
-        publication_path: article.publication_path,
-        title: article.title,
-        published_at: article.published_at,
-        source_url: article.source_url,
-        body: article.body,
-      };
-    });
-  return JSON.stringify({ publication_format: 1, articles }) + "\n";
-}
-
-export function publicationIdentity(projection: PublicationProjection): string {
-  return sha256(serializePublicationProjection(projection));
-}
-
-export function comparePublications(
-  previous: PublicationProjection | null,
-  candidate: PublicationProjection,
-) {
-  const publication_input =
-    previous === null ? null : publicationIdentity(previous);
-  const publication_output = publicationIdentity(candidate);
-  return {
-    publication_input,
-    publication_output,
-    publication_outcome:
-      publication_input === null
-        ? ("initialized" as const)
-        : publication_input === publication_output
-          ? ("no-change" as const)
-          : ("changed" as const),
-  };
-}
-
 export function validateManifest(value: unknown): asserts value is Manifest {
   fields(value, ["schema_version", "articles"], "manifest");
   if (value.schema_version !== 2)
     throw new Error(
-      "Unsupported schema_version; expected v2. Legacy state requires explicit reset/cutover.",
+      "Unsupported schema_version; expected v2. Legacy state requires a separate archive; preserve the current data.",
     );
   record(value.articles, "articles");
   const sources = new Set<string>();
@@ -441,7 +377,7 @@ export function validateArchive(manifest: Manifest, files: ArchiveFiles): void {
   for (const [path, file] of files) {
     if (!allowed.has(path) || !["100644", "100755"].includes(file.mode)) {
       throw new Error(
-        `Invalid v2 archive object: ${path}. Legacy/application state requires explicit reset/cutover.`,
+        `Invalid v2 archive object: ${path}. Select a valid v2 archive without resetting existing data.`,
       );
     }
     if (
@@ -451,7 +387,7 @@ export function validateArchive(manifest: Manifest, files: ArchiveFiles): void {
       )
     ) {
       throw new Error(
-        `Legacy front matter is not valid v2 canonical content: ${path}; use explicit reset/cutover.`,
+        `Legacy front matter is not valid v2 canonical content: ${path}; select body-only canonical content.`,
       );
     }
   }

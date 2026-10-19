@@ -1,11 +1,6 @@
 import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
 const publication = JSON.parse(
-  await readFile(
-    process.env.COPILOT_PUBLICATION_FILE ??
-      resolve("site/src/publication.json"),
-    "utf8",
-  ),
+  await readFile(process.env.COPILOT_PUBLICATION_FILE!, "utf8"),
 );
 import { createMarkdownProcessor } from "@astrojs/markdown-remark";
 import { markdown } from "../markdown.mjs";

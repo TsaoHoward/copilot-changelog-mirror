@@ -8,10 +8,10 @@ import {
 } from "./domain.js";
 import type { ArchiveFiles, Manifest } from "./domain.js";
 
-export function renderBatch(
-  input: { manifest: Manifest; files: ArchiveFiles },
-  requireEditorialRoot = false,
-) {
+export function renderBatch(input: {
+  manifest: Manifest;
+  files: ArchiveFiles;
+}) {
   const files = new Map(input.files);
   let manifest = input.manifest;
   const counts = { rendered: 0, updated: 0, unchanged: 0 };
@@ -21,7 +21,6 @@ export function renderBatch(
       const normalized = normalizeArticle(
         files.get(`snapshots/${id}.html`)!.bytes,
         article,
-        { requireEditorialRoot },
       );
       manifest = updateRender(manifest, id, normalized.canonical);
       const path = `posts/${id}.md`;

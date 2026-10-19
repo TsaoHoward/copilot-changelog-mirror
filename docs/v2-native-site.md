@@ -1,11 +1,10 @@
 # Build a saved archive with Astro and Pagefind
 
-`site:build:directory` is the additive presentation command for #34. It uses the
-current schema-2 manifest and body-only Markdown, native Astro configuration and
-build, and the installed lockfile-pinned Pagefind CLI. The existing `site:build`,
-`site:identity`, `site:astro`, Pages workflows and their required gates remain
-active until a later caller migration. This command does not deploy or sign off
-hosted acceptance (#24).
+`site:build:directory` is the active presentation command. It reads the current
+schema-2 manifest and body-only Markdown, uses native Astro configuration/build
+and the installed lockfile-pinned Pagefind CLI, and leaves persistence and native
+Pages deployment to Actions or the operator. See the [production runbook](v2-production-cutover.md).
+#24's historical hosted acceptance remains separate.
 
 Install dependencies separately using Node 22.22 and `npm ci`. Then run:
 
@@ -67,29 +66,20 @@ failed shards can masquerade as no matches. The adapter adds a label/live status
 observes only local search-asset failures, and leaves a readable browse fallback.
 It uses Pagefind's supported `noWorker` option to make those fetch failures
 observable. The ordinary listing works without JavaScript and throughout search
-failure. Existing production callers continue using their original search UI.
+failure.
 
-See [test reassessment and evidence](v2-native-site-tests.md) and
-[the original-corpus comparison](v2-native-site-comparison.json). To verify the
-replacement alone, after dependency and Chromium installation:
+See [final test ownership](v2-cleanup-tests.md) and the retained
+[original-corpus comparison](v2-native-site-comparison.json). After dependency
+and Chromium installation, focused verification is:
 
 ```sh
 node --import tsx --test tests/v2/native-site.test.ts
 node --import tsx --test tests/v2/native-site.browser.ts
 ```
 
-The cheap input/safety contracts also run in `npm test`; the shared browser seam
-runs in `npm run test:browser` beside the still-required production browser gates.
-The migration-only original-corpus comparison is intentionally outside routine
-suites. Reproduce it into fresh evidence storage when migration needs a new audit:
-
-```sh
-COPILOT_SITE_COMPARISON_DIR=/tmp/fresh-site-comparison \
-  node --import tsx --test tests/v2/native-site.comparison.ts
-```
-
-It exports the pinned pre-#34 application locally, prepares one saved derived
-corpus, and uses actual offline tools for both paths. Frozen source expectations
-are checked directly against generated DOM, without another Markdown oracle.
-Only timing instrumentation and isolated Vite cache placement are added to the
-disposable old build worker.
+Cheap input/safety and actual compiler/indexer/completion failures run in `npm test`.
+One primary source-to-Render-to-build artifact is shared by DOM/browser checks;
+changed and empty publications get their own necessary builds. These run in
+`npm run test:browser`. The historical full-corpus runners and frozen sources are
+recoverable from Git rather than active regular-suite fixtures; retrieval is
+documented in `tests/fixtures/production/README.md`.

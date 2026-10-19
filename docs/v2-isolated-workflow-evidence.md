@@ -1,3 +1,9 @@
+> Historical evidence for #35, recorded before #37 retirement. File paths,
+> commands and caller states below refer to that delivery revision, not supported
+> current entry points. Use [final test ownership](v2-cleanup-tests.md) and the
+> [current runbook](v2-production-cutover.md). Recover removed inputs from Git
+> revision `64516e9d685c2082f9fa67aeccb87d113be7c480`; preserve these dated observations.
+
 # Issue #35 integration evidence
 
 Implementation based on `f22eb6dc1ea0014f6398e80c31e2157d0f4fc533` and the

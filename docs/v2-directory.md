@@ -1,10 +1,9 @@
 # Directory Capture and offline Render
 
-Issue #33 adds `capture:directory` and `render:directory` alongside the production
-commands. Each command handles one stage and writes validated archive files.
-The operator owns Git commits and pushes. Existing production workflows,
-checkpoint refs, archive writer and site deployment retain their current entry
-points and behavior.
+`capture:directory` and `render:directory` are the active production and local
+stage commands. Each writes validated archive files; the operator or Actions
+owns ordinary Git commits and pushes. See the [production runbook](v2-production-cutover.md)
+for schedule/manual modes and native publication rollback.
 
 Use Node from `.node-version` and `npm ci` in the application checkout. Both
 commands require `--archive-dir PATH`. The target must be the root of a clean,
@@ -115,5 +114,5 @@ late acquisition/collision rejection, preserved user work, non-fast-forward
 rejection and a partial filesystem promotion failure that prevents caller
 persistence. It does not exercise or change the live writer or public site.
 
-See [test reassessment and measurements](v2-directory-tests.md) for fixture
-provenance, old-gate dispositions and the one-time migration comparison.
+See [final test ownership](v2-cleanup-tests.md), [measurements](v2-cleanup-measurements.md),
+and the [historical directory comparison record](v2-directory-tests.md).

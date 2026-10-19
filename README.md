@@ -1,10 +1,10 @@
 # Copilot Changelog Mirror
 
-Mirror the currently discoverable public GitHub Copilot announcements with Node.js/TypeScript, an independent Git archive, and an Astro site with Pagefind full-text search. Production uses `mirror-data-v2`; the final v1 `mirror-data` history is preserved through `v1-final-before-v2`, never imported into v2. Missing older announcements are an accepted consequence of fresh discovery.
+Mirror public GitHub Copilot announcements with Node.js/TypeScript, an independent Git archive, and an Astro site with Pagefind full-text search. Production uses `mirror-data-v2`. The final v1 `mirror-data` history and `v1-final-before-v2` checkpoint remain in Git; older announcements missing from fresh discovery were never imported into v2.
 
 ## Install and verify
 
-Use the Node 22.22 runtime pinned in `.node-version`, Git, and an author name/email for archive commits.
+Use Node 22.22 from `.node-version` and Git. Archive persistence also needs an author name/email.
 
 ```sh
 npm ci
@@ -15,42 +15,33 @@ npx playwright install --with-deps chromium
 npm run test:browser
 ```
 
-CI runs the locked Node install, formatting, typecheck, real command/build contract tests, and shipped Chromium search acceptance. The six reviewed production fixtures retain their frozen 123 editorial blocks, links, sections and meaningful media. No Python or Ruby runtime is needed. Retired sources live under `legacy/v1/` for inspection.
+CI checks cheap domain/acquisition/normalization contracts, directory CLI and ordinary Git safety, the installed production workflow, actual offline compiler/indexer failures, and a shared real Astro/Pagefind/Chromium artifact. Changed and empty publications use their own real builds. [Case dispositions](docs/v2-cleanup-tests.md) account for the entire pre-cleanup suite; [measurements](docs/v2-cleanup-measurements.md) distinguish local CI from hosted and production costs. Historical full-corpus comparison records remain available without rebuilding that corpus in routine CI.
 
-## Archive and identities
+## Local operations and archive
 
-The archive contains original `snapshots/<article_id>.html`, one `metadata.json` current-state manifest, and independent body-only `posts/<article_id>.md`. Capture owns evidence and discovery observations; offline render owns canonical title, publication time, route and body. `article_id` and `source_url` are immutable. Identical acquisition preserves observation time and Git history.
-
-The archive API retains canonical publication identity for callers. The current
-production workflow uses saved directory inputs and fresh native builds; historical
-deployment-identity suppression and retention-qualified proof gates are retired.
-See [the current production runbook](docs/v2-production-cutover.md) and
-[the retained archive/API contract](docs/v2-archive.md). For local fixture experiments, select a separate target:
+Clone a **separate dedicated** `mirror-data-v2` checkout before running stages:
 
 ```sh
-npm run --silent capture -- --data-branch local-v2 --feed-url file:///path/to/feed.xml
-npm run --silent render -- --data-branch local-v2
+git clone --single-branch --branch mirror-data-v2 \
+  https://github.com/TsaoHoward/copilot-changelog-mirror.git /path/to/archive
+npm run capture:directory -- --archive-dir /path/to/archive
+# Inspect, commit and ordinary-push Capture before Render.
+npm run render:directory -- --archive-dir /path/to/archive
+# Inspect, commit and ordinary-push Render before building.
+npm run site:build:directory -- --archive-dir /path/to/archive \
+  --output /path/to/fresh-site --base /copilot-changelog-mirror/ \
+  --site https://tsaohoward.github.io
 ```
 
-## Production
+Follow the complete [directory CLI/Git sequence](docs/v2-directory.md); the comments above indicate required persistence steps. Directory success alone means neither remote persistence nor publication. Capture saves original `snapshots/<article_id>.html` and acquisition/discovery metadata in schema-2 `metadata.json`. Offline Render owns canonical title, publication time, stable source-slug route and body-only `posts/<article_id>.md`. Article/source identities are immutable; discovery omission retains saved articles. Identical acquisition preserves observation time, and no-change stages still allow downstream recovery.
 
-Production uses **`.github/workflows/update-publish.yml`**, activated by
-[PR #43](https://github.com/TsaoHoward/copilot-changelog-mirror/pull/43) after verified
-old-chain disable/drain. The old Capture/Render/Pages definitions are retained under
-`.github/historical/`. Use [the native rollback runbook](docs/v2-production-cutover.md)
-and [dated production evidence](docs/v2-production-evidence.md). Manual functional
-acceptance and known-good rollback are recorded there; both real schedule
-observations remain Pending, so #36 remains Open. #24 is separate.
+The [saved-derived site build](docs/v2-native-site.md) reads complete metadata/bodies without raw acquisition or Git mutation. It compiles/indexes fresh output and leaves upload/deployment to the caller. Unsafe targets, symlinks, incomplete inputs and overlapping or existing output fail. A failed stage must never be committed or published.
 
-One archive/build job installs dependencies once, acquires the real feed, ordinary
-pushes Capture, renders saved source offline, ordinary pushes Render, builds with
-Astro/Pagefind and uploads finished output. A dependent job performs native Pages
-deployment. Failed or uncertain pushes stop downstream work. Whole-workflow
-`copilot-archive-production` concurrency covers deployment, with cancellation
-disabled and `queue: max`.
+## Production and recovery
 
-Scheduled full updates retain **06:17 and 12:17 Asia/Taipei**
-(`17 6,12 * * *`, `timezone: Asia/Taipei`). Manual operations:
+[`.github/workflows/update-publish.yml`](.github/workflows/update-publish.yml) is the sole production chain. One archive/build job installs once, pushes complete Capture, renders offline, pushes complete Render, builds/indexes and uploads. The dependent native Pages job deploys the finished artifact. Whole-workflow concurrency spans deployment with cancellation disabled; a failed or uncertain push stops downstream work.
+
+The four operating paths are scheduled full update at **06:17 and 12:17 Asia/Taipei**, manual full update, saved-source render/rebuild, and saved-derived republish:
 
 ```sh
 gh workflow run update-publish.yml --ref main -f mode=full-update
@@ -58,23 +49,8 @@ gh workflow run update-publish.yml --ref main -f mode=render-rebuild
 gh workflow run update-publish.yml --ref main -f mode=republish
 ```
 
-Use the runbook's fixed application/archive selectors for known-good republish.
-Render-rebuild skips acquisition; republish skips Capture, Render and archive pushes.
-Keep newer raw history during rollback. After deployment ambiguity inspect native
-status and actual public content/search before another publication. Keep old
-workflows inactive. [Original checkpoint/bootstrap](docs/v2-cutover.md) is historical;
-do not rerun it on the existing archive.
+Capture-only is an independent CLI capability. Repeated builds/deployments are allowed, including no-change recovery. Use the [current recovery and native rollback runbook](docs/v2-production-cutover.md) for non-fast-forward conflicts, failed checkouts, ambiguous deployments and fixed known-good Git inputs. Keep newer raw history during rollback.
 
-Published articles retain `/posts/<slug>/` under `/copilot-changelog-mirror/`, source attribution, section anchors and media. The listing uses canonical publication time. Search indexes body text and titles at build time; index/build output is derived, never archive state. The site needs no runtime backend or database.
+[#36 was accepted on 2026-10-19](https://github.com/TsaoHoward/copilot-changelog-mirror/issues/36#issuecomment-6264851670): manual modes, two real scheduled publications, native known-good rollback and public Chromium checks passed. The observed schedule delays remain unexplained; no punctuality claim or cron change follows. [Dated production evidence](docs/v2-production-evidence.md), the isolated #35 evidence and historical [#24 acceptance](docs/v2-acceptance.md) remain separate. Cleanup does not sign off #24 or change the published site.
 
-The production [directory Capture and offline Render workflow](docs/v2-directory.md)
-uses a dedicated archive checkout and ordinary Git persistence (`capture:directory`
-and `render:directory`). Historical stage entry points remain available for retained callers.
-
-The production [saved-archive site build](docs/v2-native-site.md) uses
-`site:build:directory` to build/index fresh static output with native Astro and
-Pagefind, independently of capture, Git persistence and deployment.
-
-The simplified update/publish integration is active in production.
-See the [isolated workflow runbook](docs/v2-isolated-workflow.md) and
-[acceptance evidence](docs/v2-isolated-workflow-evidence.md) for #35.
+Articles retain `/posts/<slug>/` beneath `/copilot-changelog-mirror/`, source attribution, usable anchors and meaningful media references. Search indexes canonical titles and bodies; listing and navigation work without JavaScript. The site has no runtime backend or database. Retired v1 source remains under `legacy/v1/`; removed v2 mechanisms are recoverable from Git rather than supported commands.

@@ -1,6 +1,13 @@
 import assert from "node:assert/strict";
-import { execFile } from "node:child_process";
-import { readFileSync, existsSync, writeFileSync, readdirSync } from "node:fs";
+import { execFile, execFileSync } from "node:child_process";
+import {
+  readFileSync,
+  existsSync,
+  writeFileSync,
+  readdirSync,
+  mkdirSync,
+  cpSync,
+} from "node:fs";
 import { join } from "node:path";
 import { performance } from "node:perf_hooks";
 import { promisify } from "node:util";
@@ -10,7 +17,13 @@ import type { Page } from "@playwright/test";
 import { load } from "cheerio";
 import { NativeSiteFixture } from "./native-site-support.js";
 import { serveArtifact, openArtifact, tree } from "./search-support.js";
-import { savedNormalization } from "./normalization-support.js";
+import { DirectoryFixture } from "./directory-support.js";
+import {
+  emptyManifest,
+  updateCapture,
+  serializeManifest,
+  sha256,
+} from "../../src/v2/domain.js";
 import { root } from "./support.js";
 
 const base = "/copilot-changelog-mirror/";
@@ -32,6 +45,9 @@ async function search(page: Page, query: string, title?: string) {
 test("native offline artifact preserves presentation and maintained search behavior", async (t) => {
   const started = performance.now();
   const f = new NativeSiteFixture(t);
+  const saved = new DirectoryFixture(t);
+  let sourceManifest = emptyManifest();
+  mkdirSync(join(saved.archive, "snapshots"));
   const extracts = [
     {
       file: "weekly-skills",
@@ -45,21 +61,44 @@ test("native offline artifact preserves presentation and maintained search behav
       file: "lists-media",
       slug: "2026-09-30-hydrafusion-in-vs-code-and-the-github-copilot-app",
     },
-  ].map(({ file, slug }) => {
-    const normalized = savedNormalization(
-      readFileSync(join(root, `tests/fixtures/minimal/${file}.html`), "utf8"),
-      `https://github.blog/changelog/${slug}/`,
+  ];
+  for (const { file, slug } of extracts) {
+    const bytes = readFileSync(
+      join(root, `tests/fixtures/minimal/${file}.html`),
     );
-    return {
-      slug,
-      title: normalized.canonical.title,
-      body: normalized.body,
-      time: normalized.canonical.published_at,
-    };
+    const source = `https://github.blog/changelog/${slug}/`;
+    sourceManifest = updateCapture(sourceManifest, source, {
+      snapshot_sha256: sha256(bytes),
+      observed_at: "2026-10-01T00:00:00.000Z",
+      discovery_title: "discoverysentinel",
+      discovery_published_at: null,
+    });
+    const id = Object.values(sourceManifest.articles).find(
+      (a) => a.source_url === source,
+    )!.article_id;
+    writeFileSync(join(saved.archive, `snapshots/${id}.html`), bytes);
+  }
+  writeFileSync(
+    join(saved.archive, "metadata.json"),
+    serializeManifest(sourceManifest),
+  );
+  saved.persist("Saved authentic source");
+  const networkLog = join(f.dir, "network.log");
+  const guard = join(root, "tests/v2/block-network.mjs");
+  const offline = {
+    COPILOT_NETWORK_LOG: networkLog,
+    NODE_OPTIONS: `${process.env.NODE_OPTIONS ?? ""} --import=${guard}`,
+  };
+  const rendered = await saved.cli("render", [], offline);
+  assert.equal(rendered.code, 0, rendered.stderr);
+  assert.deepEqual(rendered.result.counts, {
+    rendered: 3,
+    updated: 3,
+    unchanged: 0,
   });
+  assert.equal(existsSync(networkLog), false);
   const longTitle = "Interoperability ".repeat(24).trim();
-  f.seed([
-    ...extracts,
+  const synthetic = f.seed([
     {
       slug: "nebula",
       title: "Nebula <tools> & workflows",
@@ -84,6 +123,14 @@ test("native offline artifact preserves presentation and maintained search behav
       body: "constellationsentinel workflows.\n",
     })),
   ]);
+  // Preserve actual offline Render output; synthetic presentation gaps remain labeled above.
+  f.writeManifest({
+    schema_version: 2,
+    articles: { ...saved.manifest().articles, ...synthetic.articles },
+  });
+  cpSync(join(saved.archive, "posts"), join(f.archive, "posts"), {
+    recursive: true,
+  });
   // A dangling raw directory proves no raw tree walk; raw-integrity checks belong elsewhere.
   const { symlinkSync, readlinkSync } = await import("node:fs");
   symlinkSync(
@@ -92,8 +139,6 @@ test("native offline artifact preserves presentation and maintained search behav
   );
   const metadataBefore = readFileSync(join(f.archive, "metadata.json"));
   const bodiesBefore = tree(join(f.archive, "posts"));
-  const networkLog = join(f.dir, "network.log");
-  const guard = join(root, "tests/v2/block-network.mjs");
   // Positive control: attempted acquisition is recorded even if callers swallow the exception.
   await promisify(execFile)(
     process.execPath,
@@ -108,7 +153,40 @@ test("native offline artifact preserves presentation and maintained search behav
   );
   assert.match(readFileSync(networkLog, "utf8"), /attempted network/);
   writeFileSync(networkLog, "");
-  const built = await f.cli([], { COPILOT_NETWORK_LOG: networkLog }, [guard]);
+  const git = (...args: string[]) =>
+    execFileSync("git", ["-C", f.archive, ...args], { stdio: "pipe" });
+  git("init", "-q", "-b", "mirror-data-v2");
+  git(
+    "-c",
+    "user.name=Fixture",
+    "-c",
+    "user.email=fixture@example.invalid",
+    "add",
+    ".",
+  );
+  git(
+    "-c",
+    "user.name=Fixture",
+    "-c",
+    "user.email=fixture@example.invalid",
+    "commit",
+    "-qm",
+    "Saved derived publication",
+  );
+  const gitBefore = {
+    index: readFileSync(join(f.archive, ".git/index")),
+    refs: git("show-ref"),
+    history: git("log", "--format=%H"),
+    tree: git("ls-tree", "-r", "HEAD"),
+  };
+  const built = await f.cli([], offline);
+  assert.deepEqual(
+    readFileSync(join(f.archive, ".git/index")),
+    gitBefore.index,
+  );
+  assert.deepEqual(git("show-ref"), gitBefore.refs);
+  assert.deepEqual(git("log", "--format=%H"), gitBefore.history);
+  assert.deepEqual(git("ls-tree", "-r", "HEAD"), gitBefore.tree);
   assert.equal(built.code, 0, built.stderr);
   assert.equal(built.result.article_count, 14);
   assert.equal(readFileSync(networkLog, "utf8"), "");
@@ -142,6 +220,27 @@ test("native offline artifact preserves presentation and maintained search behav
     ],
   );
   assert.equal($(".article-list time").length, 7);
+  assert.deepEqual(
+    $(".article-list a")
+      .toArray()
+      .map((a) => $(a).attr("href")!.slice(base.length)),
+    [
+      "posts/nebula/",
+      "posts/long/",
+      "posts/continuation-0/",
+      "posts/continuation-1/",
+      `posts/${extracts[2]!.slug}/`,
+      `posts/${extracts[1]!.slug}/`,
+      `posts/${extracts[0]!.slug}/`,
+      "posts/code/",
+      "posts/continuation-2/",
+      "posts/continuation-3/",
+      "posts/continuation-4/",
+      "posts/continuation-5/",
+      "posts/continuation-6/",
+      "posts/continuation-7/",
+    ],
+  );
   for (const link of $(".article-list a").toArray())
     assert.ok($(link).attr("href")?.startsWith(`${base}posts/`));
   assert.ok(existsSync(join(output, "pagefind/pagefind.js")));
@@ -282,7 +381,7 @@ test("native offline artifact preserves presentation and maintained search behav
           ),
         );
         await page.screenshot({
-          path: "/tmp/issue-34-native-mobile.png",
+          path: join(f.dir, "native-mobile.png"),
           fullPage: true,
         });
         await results(page).click();
@@ -421,7 +520,7 @@ test("native offline artifact preserves presentation and maintained search behav
           body: "additionsentinel.\n",
         },
       ]);
-      const refreshed = await changed.cli(["--base", "/"]);
+      const refreshed = await changed.cli(["--base", "/"], offline);
       assert.equal(refreshed.code, 0, refreshed.stderr);
       tool_counts.astro += refreshed.tool_counts.astro;
       tool_counts.pagefind += refreshed.tool_counts.pagefind;
@@ -455,7 +554,7 @@ test("native offline artifact preserves presentation and maintained search behav
     async (t) => {
       const empty = new NativeSiteFixture(t);
       empty.seed();
-      const built = await empty.cli();
+      const built = await empty.cli([], offline);
       assert.equal(built.code, 0, built.stderr);
       assert.ok(built.result.timings.pagefind_ms > 0);
       tool_counts.astro += built.tool_counts.astro;

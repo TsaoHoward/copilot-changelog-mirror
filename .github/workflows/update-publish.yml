@@ -1,6 +1,3 @@
-# PREPARATION ONLY: outside .github/workflows; cannot register on merge.
-# After explicit activation approval and old-chain drain, install unchanged as
-# .github/workflows/update-publish.yml. See docs/v2-production-cutover.md.
 name: Production directory update and Pages
 
 on:
@@ -157,7 +154,7 @@ jobs:
       - name: Push completed Capture before Render
         id: capture-push
         if: steps.entry.outputs.mode == 'full-update'
-        run: bash "$GITHUB_WORKSPACE/control/.github/isolated/persist-stage.sh" capture "$ARCHIVE_DIR"
+        run: bash "$GITHUB_WORKSPACE/control/.github/scripts/persist-stage.sh" capture "$ARCHIVE_DIR"
 
       - name: Render persisted source offline
         id: render
@@ -170,7 +167,7 @@ jobs:
       - name: Push completed Render before build
         id: render-push
         if: steps.entry.outputs.mode != 'republish'
-        run: bash "$GITHUB_WORKSPACE/control/.github/isolated/persist-stage.sh" render "$ARCHIVE_DIR"
+        run: bash "$GITHUB_WORKSPACE/control/.github/scripts/persist-stage.sh" render "$ARCHIVE_DIR"
 
       - name: Build complete saved publication with Astro and Pagefind
         id: build

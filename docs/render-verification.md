@@ -1,7 +1,7 @@
 # Render verification
 
-The former issue #13 v1 verification procedure is retired. Use the [v2 cutover runbook](v2-cutover.md) and [acceptance matrix](v2-acceptance.md) for production verification.
+Cheap saved-source contracts in `tests/v2/directory-normalization.test.ts`, `render-content.test.ts` and `render-metadata.test.ts` own editorial structure, independent authentic expectations, metadata precedence and synthetic gaps. Directory/Git tests own batch failures and durable source. `npm run test:browser` renders saved authentic extracts offline, builds/indexes with actual Astro/Pagefind, then checks presentation, search and fallbacks in Chromium. [Final dispositions](v2-cleanup-tests.md) map every former case to its current owner or obsolete guarantee.
 
-Offline editorial behavior remains protected by `tests/v2/production-render.test.ts` and `tests/v2/site-production.test.ts`, using the unchanged six saved source articles and 123 independently reviewed editorial blocks in `tests/fixtures/production/`. Real Node commands verify metadata/body ownership, links, sections, media, deterministic identities and source-acquisition blocking. `npm run test:browser` checks the finished Astro/Pagefind artifact in Chromium.
+The six-article/123-block migration records and independent source review remain in [the saved comparison](v2-native-site-comparison.json) and [review](v2-native-site-review.md). Full sources, frozen expectations and comparison runners are recoverable from Git; they are outside routine CI. See `tests/fixtures/production/README.md` for retrieval.
 
-Local tests do not prove hosted persistence, workflow chaining, deployment, public search or scheduled events. Record those independently on #24.
+Local tests establish no new hosted publication proof. Use the [current production runbook](v2-production-cutover.md) and accepted #36 evidence for operation. #24 remains a separate historical acceptance issue.

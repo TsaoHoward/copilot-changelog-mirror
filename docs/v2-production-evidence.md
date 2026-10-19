@@ -1,3 +1,9 @@
+> Dated #36 audit/activation evidence. The final 2026-10-19 acceptance is appended
+> below; earlier Pending rows retain their original observation dates. Historical
+> migration commands/paths are recoverable from Git revision
+> `64516e9d685c2082f9fa67aeccb87d113be7c480`; use the
+> [current runbook](v2-production-cutover.md) for operation.
+
 # Issue #36 production preparation and observation
 
 **Production manual acceptance and rollback passed; both real schedule observations Pending.** The preparation record below is historical. See the dated activation section for current status. #36 remains Open. Authority:
@@ -496,3 +502,20 @@ Next required work is observing both actual scheduled events and their public
 outcomes, then recording dated evidence before deciding #36 completion. #24 remains
 independent and unchanged; #37 has not started. No additional evidence protocol,
 scheduler or recovery framework was introduced.
+
+## 2026-10-19 final acceptance (Asia/Taipei)
+
+[#36's final accepted record](https://github.com/TsaoHoward/copilot-changelog-mirror/issues/36#issuecomment-6264851670)
+closed the cutover issue as completed. This supersedes the earlier dated Pending
+schedule/closure rows, without changing their historical observations.
+
+- Actual native `schedule` events [39179692637](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39179692637) at 08:11:58 Taipei and [39233149746](https://github.com/TsaoHoward/copilot-changelog-mirror/actions/runs/39233149746) at 17:51:13 Taipei both completed Capture → confirmed ordinary push → offline Render/no-change push → Astro/Pagefind → native Pages.
+- Accepted archive: `55d5cd933dca78107957f254dea52d9c0bced333`, an ordinary descendant retaining 17 identities. The user exported this saved revision and ran `production-site.browser.ts` against the public repository base: 1/1 passed in 10.32s, at 18:11:46.702 Taipei. Listing/date/routes/attribution, representative anchors/media/assets, executed title/body search (`weekly releases`, `enterprise-provided`) and navigation passed. External media was blocked and checked as references only.
+- The public check used local Node 24.15.0 despite the declared Node 22.22.x range. Locked install warned `EBADENGINE` and the Chromium check passed; this is not a Node 22 environment observation.
+- Sole production workflow `388375554`, all three manual modes, native known-good rollback and latest-publication restoration were accepted with retained archive/checkpoints/history. PR #43/#44 and relevant CI passed. The #37 stability/rollback prerequisite is satisfied; no additional production dispatch was needed.
+
+Observed schedule execution substantially lagged configured 06:17/12:17 nominal
+slots. Native records do not independently associate each run with its exact
+nominal slot or establish the root cause. This accepted limitation requires
+separate scheduler review, rather than a punctuality claim or a cron/timezone
+change. #24 remains untouched. #37 still owns its cleanup/caller/test audit.

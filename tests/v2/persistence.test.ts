@@ -6,7 +6,7 @@ import { test } from "node:test";
 import { DirectoryFixture } from "./directory-support.js";
 import { root } from "./support.js";
 
-const persistence = join(root, ".github/isolated/persist-stage.sh");
+const persistence = join(root, ".github/scripts/persist-stage.sh");
 function remote(f: DirectoryFixture, ...args: string[]) {
   return execFileSync("git", ["--git-dir", f.remote, ...args])
     .toString()
@@ -43,68 +43,6 @@ function persist(f: DirectoryFixture, stage: "capture" | "render") {
   );
   return { ...result, downstream: existsSync(downstream) };
 }
-
-test("reviewed Actions persistence pushes Capture before Render and a separate Render before build; no-change continues", async (t) => {
-  const f = new DirectoryFixture(t);
-  prepare(f);
-  const source = f.source(
-    "saved.html",
-    "<article><h1>Saved title</h1><p>Durable body.</p></article>",
-  );
-  const feed = f.feed(`<item><link>${source}</link></item>`);
-  assert.equal((await f.cli("capture", ["--feed-url", feed])).code, 0);
-  assert.equal(persist(f, "capture").status, 0);
-  const c = remote(f, "rev-parse", "mirror-data-v2");
-  const article = Object.values(f.manifest().articles)[0] as any;
-  assert.equal(
-    JSON.parse(remote(f, "show", `${c}:metadata.json`)).articles[
-      article.article_id
-    ].canonical,
-    null,
-  );
-  assert.match(
-    remote(f, "show", `${c}:snapshots/${article.article_id}.html`),
-    /Durable body/,
-  );
-  assert.equal((await f.cli("render")).code, 0);
-  assert.equal(persist(f, "render").status, 0);
-  const r = remote(f, "rev-parse", "mirror-data-v2");
-  assert.notEqual(r, c);
-  assert.equal(remote(f, "rev-parse", `${r}^`), c);
-  assert.equal(
-    remote(f, "show", `${r}:posts/${article.article_id}.md`),
-    "Durable body.",
-  );
-  // Reuse the native CLI's output-safety failure, not another compiler fault matrix.
-  const failedBuild = spawnSync(
-    process.execPath,
-    [
-      "--import",
-      "tsx",
-      join(root, "src/v2/native-site-cli.ts"),
-      "--archive-dir",
-      f.archive,
-      "--output",
-      f.archive,
-    ],
-    { cwd: root, encoding: "utf8" },
-  );
-  assert.equal(failedBuild.status, 1, failedBuild.stderr);
-  assert.equal(JSON.parse(failedBuild.stdout).outcome, "failure");
-  assert.equal(remote(f, "rev-parse", "mirror-data-v2"), r);
-  assert.equal(
-    (await f.cli("capture", ["--feed-url", feed])).result.outcome,
-    "no-change",
-  );
-  assert.equal(persist(f, "capture").status, 0);
-  assert.equal((await f.cli("render")).result.outcome, "no-change");
-  assert.equal(persist(f, "render").status, 0);
-  assert.equal(remote(f, "rev-parse", "mirror-data-v2"), r);
-  assert.match(
-    readFileSync(join(f.dir, "summary"), "utf8"),
-    /Confirmed pushed/,
-  );
-});
 
 for (const stage of ["capture", "render"] as const) {
   test(`${stage} non-fast-forward rejection preserves competitor and stops downstream, including no-change`, async (t) => {
@@ -219,59 +157,25 @@ test("a nonzero push result blocks downstream even when the remote accepted the 
   );
 });
 
-test("republish builds with actual offline tools without altering saved Git bytes, index, refs or history", async (t) => {
-  const { execFile } = await import("node:child_process");
-  const { promisify } = await import("node:util");
+test("ordinary Git commit failure retains local Capture but blocks push and downstream", async (t) => {
+  const { chmodSync } = await import("node:fs");
   const f = new DirectoryFixture(t);
   prepare(f);
-  const source = f.source(
-    "publication.html",
-    "<article><h1>Complete saved publication</h1><p>Reader search content.</p></article>",
+  const before = remote(f, "rev-parse", "mirror-data-v2");
+  assert.equal((await f.cli("capture", ["--feed-url", f.feed("")])).code, 0);
+  const hook = join(f.archive, ".git/hooks/pre-commit");
+  writeFileSync(
+    hook,
+    "#!/bin/sh\necho 'controlled commit failure' >&2\nexit 1\n",
   );
-  assert.equal(
-    (
-      await f.cli("capture", [
-        "--feed-url",
-        f.feed(`<item><link>${source}</link></item>`),
-      ])
-    ).code,
-    0,
-  );
-  assert.equal(persist(f, "capture").status, 0);
-  assert.equal((await f.cli("render")).code, 0);
-  assert.equal(persist(f, "render").status, 0);
-  const before = {
-    index: readFileSync(join(f.archive, ".git/index")),
-    refs: f.git("show-ref"),
-    log: remote(f, "log", "--format=%H", "mirror-data-v2"),
-    tree: f.git("ls-tree", "-r", "HEAD"),
-  };
-  const result = await promisify(execFile)(
-    process.execPath,
-    [
-      "--import",
-      join(root, "tests/v2/block-network.mjs"),
-      "--import",
-      "tsx",
-      join(root, "src/v2/native-site-cli.ts"),
-      "--archive-dir",
-      f.archive,
-      "--output",
-      join(f.dir, "publication"),
-      "--base",
-      "/isolated/",
-    ],
-    {
-      cwd: root,
-      env: { ...process.env, COPILOT_NETWORK_LOG: join(f.dir, "network.log") },
-    },
-  );
-  assert.equal(JSON.parse(result.stdout).outcome, "success", result.stderr);
-  assert.equal(JSON.parse(result.stdout).article_count, 1);
-  assert.equal(existsSync(join(f.dir, "network.log")), false);
-  assert.deepEqual(readFileSync(join(f.archive, ".git/index")), before.index);
-  assert.equal(f.git("show-ref"), before.refs);
-  assert.equal(remote(f, "log", "--format=%H", "mirror-data-v2"), before.log);
-  assert.equal(f.git("ls-tree", "-r", "HEAD"), before.tree);
-  assert.equal(f.git("status", "--porcelain"), "");
+  chmodSync(hook, 0o755);
+  const failed = persist(f, "capture");
+  assert.equal(failed.status, 1);
+  assert.match(failed.stderr, /controlled commit failure/);
+  assert.equal(failed.downstream, false);
+  assert.equal(remote(f, "rev-parse", "mirror-data-v2"), before);
+  assert.equal(f.git("rev-parse", "HEAD"), before);
+  assert.ok(existsSync(join(f.archive, "metadata.json")));
+  assert.ok(f.git("status", "--porcelain"));
+  assert.equal(existsSync(join(f.dir, "outputs")), false);
 });

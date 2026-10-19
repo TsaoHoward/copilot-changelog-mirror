@@ -1,3 +1,9 @@
+> Historical evidence for #34, recorded before #37 retirement. File paths,
+> commands and caller states below refer to that delivery revision, not supported
+> current entry points. Use [final test ownership](v2-cleanup-tests.md) and the
+> [current runbook](v2-production-cutover.md). Recover removed inputs from Git
+> revision `64516e9d685c2082f9fa67aeccb87d113be7c480`; preserve these dated observations.
+
 # Issue #34 independent review
 
 Fixed point: `9c5c95ad050a992b29e0f3aaaa476e8059b92698`. Initial reviewed
