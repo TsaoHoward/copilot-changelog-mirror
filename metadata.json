@@ -265,7 +265,11 @@
         "discovery_title": "Copilot model policy API for enterprise, orgs, and teams",
         "discovery_published_at": "2026-10-19T21:32:18.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Copilot model policy API for enterprise, orgs, and teams",
+        "published_at": "2026-10-19T21:32:18.000Z",
+        "publication_path": "/posts/2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams/"
+      }
     },
     "2026-10-19-github-copilot-models-deprecated-on-october-19-2026-c4d5caa9ca53": {
       "article_id": "2026-10-19-github-copilot-models-deprecated-on-october-19-2026-c4d5caa9ca53",
@@ -276,7 +280,11 @@
         "discovery_title": "GitHub Copilot models deprecated on October 19, 2026",
         "discovery_published_at": "2026-10-19T21:27:10.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "GitHub Copilot models deprecated on October 19, 2026",
+        "published_at": "2026-10-19T21:27:10.000Z",
+        "publication_path": "/posts/2026-10-19-github-copilot-models-deprecated-on-october-19-2026/"
+      }
     }
   }
 }
