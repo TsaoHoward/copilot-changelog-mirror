@@ -215,8 +215,8 @@
       "article_id": "2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability-449b1014bc14",
       "source_url": "https://github.blog/changelog/2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability",
       "capture": {
-        "snapshot_sha256": "f1ac496b93580c3ef0526c598aae609cae8ead4a473d05dd504fa79d8d5694fa",
-        "observed_at": "2026-10-21T00:36:58.968Z",
+        "snapshot_sha256": "09f31c949eb6e6a6e9edb7760ed17750d93ce4d030eb54068168f9f881c1543c",
+        "observed_at": "2026-10-21T09:20:58.142Z",
         "discovery_title": "Agentic autofix for code scanning alerts general availability",
         "discovery_published_at": "2026-10-15T13:49:20.000Z"
       },
@@ -230,8 +230,8 @@
       "article_id": "2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates-6fdf4a6bc9a4",
       "source_url": "https://github.blog/changelog/2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates",
       "capture": {
-        "snapshot_sha256": "9f9682b5b8409e694849f129ecd8da1fc7080afa076a25e027c76b97f2691908",
-        "observed_at": "2026-10-21T00:36:59.528Z",
+        "snapshot_sha256": "213c0f3daf8e6d0b854ca4a96b3052a7af5886967e9504ee9b8f6eea812889e6",
+        "observed_at": "2026-10-21T09:20:58.839Z",
         "discovery_title": "Multi-repository support and other improvements for GitHub in Slack and Teams",
         "discovery_published_at": "2026-10-16T02:16:35.000Z"
       },
@@ -245,8 +245,8 @@
       "article_id": "2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november-0fb5cf8a26c7",
       "source_url": "https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november",
       "capture": {
-        "snapshot_sha256": "c8e7c2fb782ee9294092179f67acd99e254b4ce24020f95514cef104108aaca5",
-        "observed_at": "2026-10-21T00:37:00.064Z",
+        "snapshot_sha256": "e589bf5fba7364cf5d1540518be8bad0a83a9e8ef3bf98f1ada1098c059e997a",
+        "observed_at": "2026-10-21T09:20:59.676Z",
         "discovery_title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
         "discovery_published_at": "2026-10-15T19:35:13.000Z"
       },
@@ -260,8 +260,8 @@
       "article_id": "2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams-ed6489056834",
       "source_url": "https://github.blog/changelog/2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams",
       "capture": {
-        "snapshot_sha256": "21e995390c59b76f705c74a9962178816ef23b2e78fdcfa5049ea1ecf201493a",
-        "observed_at": "2026-10-21T00:37:00.104Z",
+        "snapshot_sha256": "1a8b50f6503a8d6f213abd6ad0c51cd24f3b21942738b80ce2721a8d53284948",
+        "observed_at": "2026-10-21T09:21:00.141Z",
         "discovery_title": "Copilot model policy API for enterprise, orgs, and teams",
         "discovery_published_at": "2026-10-19T21:32:18.000Z"
       },
@@ -275,8 +275,8 @@
       "article_id": "2026-10-19-github-copilot-models-deprecated-on-october-19-2026-c4d5caa9ca53",
       "source_url": "https://github.blog/changelog/2026-10-19-github-copilot-models-deprecated-on-october-19-2026",
       "capture": {
-        "snapshot_sha256": "80075de7720bcc8c2d0a5c357b86aa1177ee1de42dd093934e9bbefb50e257f0",
-        "observed_at": "2026-10-21T00:37:00.731Z",
+        "snapshot_sha256": "1146e8abcb5682540fd8545707fa71ebb9b82370817d646f2f35ceea2b61495f",
+        "observed_at": "2026-10-21T09:21:00.618Z",
         "discovery_title": "GitHub Copilot models deprecated on October 19, 2026",
         "discovery_published_at": "2026-10-19T21:27:10.000Z"
       },
