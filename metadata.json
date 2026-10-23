@@ -295,7 +295,11 @@
         "discovery_title": "Custom skills, agents, and MCP servers in usage metrics API",
         "discovery_published_at": "2026-10-22T22:19:17.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Custom skills, agents, and MCP servers in usage metrics API",
+        "published_at": "2026-10-22T22:19:17.000Z",
+        "publication_path": "/posts/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api/"
+      }
     },
     "2026-10-22-github-copilot-in-visual-studio-september-update-2-a45f5dfbc346": {
       "article_id": "2026-10-22-github-copilot-in-visual-studio-september-update-2-a45f5dfbc346",
@@ -306,7 +310,11 @@
         "discovery_title": "GitHub Copilot in Visual Studio — September update",
         "discovery_published_at": "2026-10-23T00:17:51.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "GitHub Copilot in Visual Studio — September update",
+        "published_at": "2026-10-23T00:17:51.000Z",
+        "publication_path": "/posts/2026-10-22-github-copilot-in-visual-studio-september-update-2/"
+      }
     },
     "2026-10-22-global-default-for-copilot-features-generally-available-767a7f383549": {
       "article_id": "2026-10-22-global-default-for-copilot-features-generally-available-767a7f383549",
@@ -317,7 +325,11 @@
         "discovery_title": "Global default for Copilot features generally available",
         "discovery_published_at": "2026-10-22T20:44:28.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Global default for Copilot features generally available",
+        "published_at": "2026-10-22T20:44:28.000Z",
+        "publication_path": "/posts/2026-10-22-global-default-for-copilot-features-generally-available/"
+      }
     },
     "2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard-7bf4630bf25d": {
       "article_id": "2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard-7bf4630bf25d",
@@ -328,7 +340,11 @@
         "discovery_title": "Industry comparisons in the Copilot impact dashboard",
         "discovery_published_at": "2026-10-22T16:28:24.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Industry comparisons in the Copilot impact dashboard",
+        "published_at": "2026-10-22T16:28:24.000Z",
+        "publication_path": "/posts/2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard/"
+      }
     }
   }
 }
