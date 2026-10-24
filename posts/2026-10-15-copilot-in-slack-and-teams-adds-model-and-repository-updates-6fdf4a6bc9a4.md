@@ -24,4 +24,4 @@ We’ve also made several improvements to GitHub in Slack and Microsoft Teams:
 **Better Slack conversation context:** @GitHub can use shared Slack messages and threads as context, making it easier to reference discussions without copying and pasting details.  
 **Improved reliability:** We’ve made several improvements to reduce errors, improve task startup, and help @GitHub recover more smoothly from interruptions in Slack and Teams.
 
-Join the discussion within the [GitHub Community](https://github.com/orgs/community/discussions/210411).
+Join the discussion within the [GitHub Community](https://github.com/orgs/community/discussions/211133).

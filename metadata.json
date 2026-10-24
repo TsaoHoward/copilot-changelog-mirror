@@ -355,7 +355,11 @@
         "discovery_title": "Turn notifications into code with GitHub Copilot in Teams",
         "discovery_published_at": "2026-10-23T21:29:58.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Turn notifications into code with GitHub Copilot in Teams",
+        "published_at": "2026-10-23T21:29:58.000Z",
+        "publication_path": "/posts/2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams/"
+      }
     },
     "2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode-dc1ed52c8837": {
       "article_id": "2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode-dc1ed52c8837",
@@ -366,7 +370,11 @@
         "discovery_title": "Usage metrics API adds usage from tools like OpenCode",
         "discovery_published_at": "2026-10-23T23:42:03.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Usage metrics API adds usage from tools like OpenCode",
+        "published_at": "2026-10-23T23:42:03.000Z",
+        "publication_path": "/posts/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode/"
+      }
     }
   }
 }
