@@ -230,8 +230,8 @@
       "article_id": "2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates-6fdf4a6bc9a4",
       "source_url": "https://github.blog/changelog/2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates",
       "capture": {
-        "snapshot_sha256": "8749d08d94faabf10d4e693172bdc51d6b8ec6a69f7446192aa00ec743562daf",
-        "observed_at": "2026-10-25T00:19:47.418Z",
+        "snapshot_sha256": "421dbde1fa05a0a4c1f9ee0f5fd670bffe7f8a7f4c6ed19aebf0d19213bb4943",
+        "observed_at": "2026-10-25T09:07:58.216Z",
         "discovery_title": "Multi-repository support and other improvements for GitHub in Slack and Teams",
         "discovery_published_at": "2026-10-16T02:16:35.000Z"
       },
@@ -245,8 +245,8 @@
       "article_id": "2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november-0fb5cf8a26c7",
       "source_url": "https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november",
       "capture": {
-        "snapshot_sha256": "105ce4526053799cf93b8b1e5fec2faf7f28c4f8172515c8be34e09555a068c1",
-        "observed_at": "2026-10-25T00:19:47.940Z",
+        "snapshot_sha256": "e0c983fdc51f004745d11b1ad0afd52475927dd37f32b75cc6b7ba557f7a6d14",
+        "observed_at": "2026-10-25T09:07:58.824Z",
         "discovery_title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
         "discovery_published_at": "2026-10-15T19:35:13.000Z"
       },
@@ -260,8 +260,8 @@
       "article_id": "2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams-ed6489056834",
       "source_url": "https://github.blog/changelog/2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams",
       "capture": {
-        "snapshot_sha256": "e0dec23dc4ac18af07a5683cd2431214b2dc8f3acd7a4995a4f475d560fd9edd",
-        "observed_at": "2026-10-25T00:19:48.448Z",
+        "snapshot_sha256": "ac1039c870c9f5d9013ee9a79d1bb7724ea5a8290111e58f75708e143f16fd5a",
+        "observed_at": "2026-10-25T09:07:59.306Z",
         "discovery_title": "Copilot model policy API for enterprise, orgs, and teams",
         "discovery_published_at": "2026-10-19T21:32:18.000Z"
       },
@@ -275,8 +275,8 @@
       "article_id": "2026-10-19-github-copilot-models-deprecated-on-october-19-2026-c4d5caa9ca53",
       "source_url": "https://github.blog/changelog/2026-10-19-github-copilot-models-deprecated-on-october-19-2026",
       "capture": {
-        "snapshot_sha256": "34e6b98c6b35cf4578941da69b88c94d6ebb3b1378b178547e47160b6662751e",
-        "observed_at": "2026-10-25T00:19:49.128Z",
+        "snapshot_sha256": "c2ebec1bbdec295daaef49091a214c81b4e78a5f411ab134035796409bf87494",
+        "observed_at": "2026-10-25T09:07:59.849Z",
         "discovery_title": "GitHub Copilot models deprecated on October 19, 2026",
         "discovery_published_at": "2026-10-19T21:27:10.000Z"
       },
@@ -290,8 +290,8 @@
       "article_id": "2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api-dea8ba729eb2",
       "source_url": "https://github.blog/changelog/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api",
       "capture": {
-        "snapshot_sha256": "ec40531f70bea47ece41fbc9dc64df781cc355fe694b4cfd486cd2166667b5d5",
-        "observed_at": "2026-10-25T00:19:49.164Z",
+        "snapshot_sha256": "22821f59ea5d7c9ab70baa82b4d92798eaccfd9b2aaf313f5dee0c8dbedd5338",
+        "observed_at": "2026-10-25T09:08:00.347Z",
         "discovery_title": "Custom skills, agents, and MCP servers in usage metrics API",
         "discovery_published_at": "2026-10-22T22:19:17.000Z"
       },
@@ -305,8 +305,8 @@
       "article_id": "2026-10-22-github-copilot-in-visual-studio-september-update-2-a45f5dfbc346",
       "source_url": "https://github.blog/changelog/2026-10-22-github-copilot-in-visual-studio-september-update-2",
       "capture": {
-        "snapshot_sha256": "cae0c4dd17700ecd5aee8e1fedbdc075503b278a9641b7e123a1fb88d817f839",
-        "observed_at": "2026-10-25T00:19:49.199Z",
+        "snapshot_sha256": "1b73936dd581334cd46fa5028915e5d8f34cce751f54e37917b7d0f84d29ff92",
+        "observed_at": "2026-10-25T09:08:00.775Z",
         "discovery_title": "GitHub Copilot in Visual Studio — September update",
         "discovery_published_at": "2026-10-23T00:17:51.000Z"
       },
@@ -320,8 +320,8 @@
       "article_id": "2026-10-22-global-default-for-copilot-features-generally-available-767a7f383549",
       "source_url": "https://github.blog/changelog/2026-10-22-global-default-for-copilot-features-generally-available",
       "capture": {
-        "snapshot_sha256": "cba8dbe5e369acb57343ad550b8f663b6d674e04012ae6f813f949c434c0a3a6",
-        "observed_at": "2026-10-25T00:19:49.828Z",
+        "snapshot_sha256": "ec2769cd8e4d987fe61bde215e903b96709f57c7a91061881743f927571416d6",
+        "observed_at": "2026-10-25T09:08:01.385Z",
         "discovery_title": "Global default for Copilot features generally available",
         "discovery_published_at": "2026-10-22T20:44:28.000Z"
       },
@@ -350,8 +350,8 @@
       "article_id": "2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams-400d91864296",
       "source_url": "https://github.blog/changelog/2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams",
       "capture": {
-        "snapshot_sha256": "6aa6fc707d6d6807fdb7a44367f82f829d65c1e2b631cae7fc8afaf08c908f6c",
-        "observed_at": "2026-10-25T00:19:50.816Z",
+        "snapshot_sha256": "d0a38eac3f3f11fc537a453e59d7d41b32903aa0c0f15cc44529365afa043b7d",
+        "observed_at": "2026-10-25T09:08:02.301Z",
         "discovery_title": "Turn notifications into code with GitHub Copilot in Teams",
         "discovery_published_at": "2026-10-23T21:29:58.000Z"
       },
@@ -365,8 +365,8 @@
       "article_id": "2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode-dc1ed52c8837",
       "source_url": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode",
       "capture": {
-        "snapshot_sha256": "a11541ff2e73998d4fe97e45f8794d04e7dec83153ea613755e2e7487144f53b",
-        "observed_at": "2026-10-25T00:19:51.334Z",
+        "snapshot_sha256": "be7faba3e913c52ef9b035721bc34a984a591c11618bb272168a405ca36b5977",
+        "observed_at": "2026-10-25T09:08:02.759Z",
         "discovery_title": "Usage metrics API adds usage from tools like OpenCode",
         "discovery_published_at": "2026-10-23T23:42:03.000Z"
       },
