@@ -245,8 +245,8 @@
       "article_id": "2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november-0fb5cf8a26c7",
       "source_url": "https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november",
       "capture": {
-        "snapshot_sha256": "08133741eff21a4a528e5880ccee8415721776cf2fa3bccd96c345c46e7afc9b",
-        "observed_at": "2026-10-26T00:20:01.446Z",
+        "snapshot_sha256": "2dc93cafb21564ea30cb5a994fb00e429a3df97bfdc8015140ca78353589a982",
+        "observed_at": "2026-10-26T10:04:38.070Z",
         "discovery_title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
         "discovery_published_at": "2026-10-15T19:35:13.000Z"
       },
@@ -275,8 +275,8 @@
       "article_id": "2026-10-19-github-copilot-models-deprecated-on-october-19-2026-c4d5caa9ca53",
       "source_url": "https://github.blog/changelog/2026-10-19-github-copilot-models-deprecated-on-october-19-2026",
       "capture": {
-        "snapshot_sha256": "f166e5e1989644931997ad065d4dd673a0d8de50f83e68c28d0a779b2ce89ab2",
-        "observed_at": "2026-10-26T00:20:02.939Z",
+        "snapshot_sha256": "7958045534054288a5b60c9da2ce15363e1685ad8b0e363b9bf6b7c69e524705",
+        "observed_at": "2026-10-26T10:04:38.525Z",
         "discovery_title": "GitHub Copilot models deprecated on October 19, 2026",
         "discovery_published_at": "2026-10-19T21:27:10.000Z"
       },
@@ -290,8 +290,8 @@
       "article_id": "2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api-dea8ba729eb2",
       "source_url": "https://github.blog/changelog/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api",
       "capture": {
-        "snapshot_sha256": "dfd33cdf48276c77db98a4ea95b04ae68c7d52f5f623707ddacb6e39a4346ce3",
-        "observed_at": "2026-10-26T00:20:03.347Z",
+        "snapshot_sha256": "3c3b1a400d7143195d8b1c393ef7b719893bb304021c871ec7585437d935710a",
+        "observed_at": "2026-10-26T10:04:39.002Z",
         "discovery_title": "Custom skills, agents, and MCP servers in usage metrics API",
         "discovery_published_at": "2026-10-22T22:19:17.000Z"
       },
@@ -305,8 +305,8 @@
       "article_id": "2026-10-22-github-copilot-in-visual-studio-september-update-2-a45f5dfbc346",
       "source_url": "https://github.blog/changelog/2026-10-22-github-copilot-in-visual-studio-september-update-2",
       "capture": {
-        "snapshot_sha256": "326faca5455075c5f9f8fc76734c45a48a1e3dc5431e02dfd12bb7ca32d02ca3",
-        "observed_at": "2026-10-26T00:20:03.743Z",
+        "snapshot_sha256": "7aee7b6dbc13d27df96569e9b19361a16fbc3a87a528ba8d130c38b8636c4f31",
+        "observed_at": "2026-10-26T10:04:39.400Z",
         "discovery_title": "GitHub Copilot in Visual Studio — September update",
         "discovery_published_at": "2026-10-23T00:17:51.000Z"
       },
@@ -320,8 +320,8 @@
       "article_id": "2026-10-22-global-default-for-copilot-features-generally-available-767a7f383549",
       "source_url": "https://github.blog/changelog/2026-10-22-global-default-for-copilot-features-generally-available",
       "capture": {
-        "snapshot_sha256": "998594e071554e34399f27921dc78db5033530843192ac841973a96b3150fc04",
-        "observed_at": "2026-10-26T00:20:04.141Z",
+        "snapshot_sha256": "389469d12fe126df62e258bfd03e8a6a445077d3fa5eaef8976297c1c4dd9d86",
+        "observed_at": "2026-10-26T10:04:39.810Z",
         "discovery_title": "Global default for Copilot features generally available",
         "discovery_published_at": "2026-10-22T20:44:28.000Z"
       },
@@ -335,8 +335,8 @@
       "article_id": "2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard-7bf4630bf25d",
       "source_url": "https://github.blog/changelog/2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard",
       "capture": {
-        "snapshot_sha256": "24284a2c3f8e9988c91453afc191bb27fd36b066dd9df3a8338474115f15372c",
-        "observed_at": "2026-10-26T00:20:04.583Z",
+        "snapshot_sha256": "2da3995675fc885e8c2dbeb080dea11265d39748aa81e7fd57c2d77e02ae2445",
+        "observed_at": "2026-10-26T10:04:40.316Z",
         "discovery_title": "Industry comparisons in the Copilot impact dashboard",
         "discovery_published_at": "2026-10-22T16:28:24.000Z"
       },
@@ -350,8 +350,8 @@
       "article_id": "2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams-400d91864296",
       "source_url": "https://github.blog/changelog/2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams",
       "capture": {
-        "snapshot_sha256": "473d8bc988ae64ac1723e4aebee548b6d6a6780972eb49cc887157457c773c7f",
-        "observed_at": "2026-10-26T00:20:05.061Z",
+        "snapshot_sha256": "f5230675b7943d02e303209a6b1881628ed5aec4a3e9d940702df9810f023566",
+        "observed_at": "2026-10-26T10:04:40.795Z",
         "discovery_title": "Turn notifications into code with GitHub Copilot in Teams",
         "discovery_published_at": "2026-10-23T21:29:58.000Z"
       },
