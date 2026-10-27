@@ -260,8 +260,8 @@
       "article_id": "2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams-ed6489056834",
       "source_url": "https://github.blog/changelog/2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams",
       "capture": {
-        "snapshot_sha256": "70a18bd42429207ca520494f95eb28c09b45420517600a4d8b4263320d9566fa",
-        "observed_at": "2026-10-27T01:28:17.876Z",
+        "snapshot_sha256": "8e32f68c7018f78620e29347a59f149f34968f8cf67849993c467c0fb1093e21",
+        "observed_at": "2026-10-27T09:47:43.502Z",
         "discovery_title": "Copilot model policy API for enterprise, orgs, and teams",
         "discovery_published_at": "2026-10-19T21:32:18.000Z"
       },
@@ -275,8 +275,8 @@
       "article_id": "2026-10-19-github-copilot-models-deprecated-on-october-19-2026-c4d5caa9ca53",
       "source_url": "https://github.blog/changelog/2026-10-19-github-copilot-models-deprecated-on-october-19-2026",
       "capture": {
-        "snapshot_sha256": "36f835f441051be3928d07dc7a1178bc41caf792907de6d18870b1717fb4d834",
-        "observed_at": "2026-10-27T01:28:18.937Z",
+        "snapshot_sha256": "982ec22d483232eeea975c5f60fae9b7615dc9f4b23fb723a57030d6afc6be8e",
+        "observed_at": "2026-10-27T09:47:44.085Z",
         "discovery_title": "GitHub Copilot models deprecated on October 19, 2026",
         "discovery_published_at": "2026-10-19T21:27:10.000Z"
       },
@@ -305,8 +305,8 @@
       "article_id": "2026-10-22-github-copilot-in-visual-studio-september-update-2-a45f5dfbc346",
       "source_url": "https://github.blog/changelog/2026-10-22-github-copilot-in-visual-studio-september-update-2",
       "capture": {
-        "snapshot_sha256": "ddcdf8a015544c5949ac743c7cd270248a938b0aba1a65db3d582ec8a5c4cfe2",
-        "observed_at": "2026-10-27T01:28:21.207Z",
+        "snapshot_sha256": "7890a72f03e6b876b5dd0b9793132a5438c041f06e2a85bf623f969ca9968b80",
+        "observed_at": "2026-10-27T09:47:45.173Z",
         "discovery_title": "GitHub Copilot in Visual Studio — September update",
         "discovery_published_at": "2026-10-23T00:17:51.000Z"
       },
@@ -320,8 +320,8 @@
       "article_id": "2026-10-22-global-default-for-copilot-features-generally-available-767a7f383549",
       "source_url": "https://github.blog/changelog/2026-10-22-global-default-for-copilot-features-generally-available",
       "capture": {
-        "snapshot_sha256": "72b76bc38143e245dea56cab02bb80e0e0bf94f05472625f20d11a3851b58b6e",
-        "observed_at": "2026-10-27T01:28:21.711Z",
+        "snapshot_sha256": "52e4b889f3af1f4cb074c4714a123f353549f734e05c02b11bc24a6a2f2e8839",
+        "observed_at": "2026-10-27T09:47:45.748Z",
         "discovery_title": "Global default for Copilot features generally available",
         "discovery_published_at": "2026-10-22T20:44:28.000Z"
       },
@@ -335,8 +335,8 @@
       "article_id": "2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard-7bf4630bf25d",
       "source_url": "https://github.blog/changelog/2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard",
       "capture": {
-        "snapshot_sha256": "ee762b974a75fae1ecb72cb26a534d991268dd55c586404c922ee12ddf5ae514",
-        "observed_at": "2026-10-27T01:28:22.779Z",
+        "snapshot_sha256": "6f64eade99776e4258fcef7dcc4a1ddf42fae2b5761b89cf1f660e04a0599283",
+        "observed_at": "2026-10-27T09:47:46.776Z",
         "discovery_title": "Industry comparisons in the Copilot impact dashboard",
         "discovery_published_at": "2026-10-22T16:28:24.000Z"
       },
@@ -350,8 +350,8 @@
       "article_id": "2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams-400d91864296",
       "source_url": "https://github.blog/changelog/2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams",
       "capture": {
-        "snapshot_sha256": "025b3b31822450d746b139310142d17995ccfcc735dc523a3b571b6dc4c5123d",
-        "observed_at": "2026-10-27T01:28:23.382Z",
+        "snapshot_sha256": "8b8323d13ddfe81bf76c8650d97202cf52eaea03437e6fc8c785b35f95b0295a",
+        "observed_at": "2026-10-27T09:47:47.492Z",
         "discovery_title": "Turn notifications into code with GitHub Copilot in Teams",
         "discovery_published_at": "2026-10-23T21:29:58.000Z"
       },
@@ -365,8 +365,8 @@
       "article_id": "2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode-dc1ed52c8837",
       "source_url": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode",
       "capture": {
-        "snapshot_sha256": "f8bc8c5e82e688d54103d6b152c6b3d2a77f79f771d2b8fc72b9e36a766bc885",
-        "observed_at": "2026-10-27T01:28:24.122Z",
+        "snapshot_sha256": "1a501b785f7899a3bd2bf73f9cf08e3cdd5d31f626d9436c9c1a30ba4c9855ba",
+        "observed_at": "2026-10-27T09:47:48.013Z",
         "discovery_title": "Usage metrics API adds usage from tools like OpenCode",
         "discovery_published_at": "2026-10-23T23:42:03.000Z"
       },
@@ -376,12 +376,23 @@
         "publication_path": "/posts/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode/"
       }
     },
+    "2026-10-26-github-copilot-assisted-permissions-generally-available-b26f70c79003": {
+      "article_id": "2026-10-26-github-copilot-assisted-permissions-generally-available-b26f70c79003",
+      "source_url": "https://github.blog/changelog/2026-10-26-github-copilot-assisted-permissions-generally-available",
+      "capture": {
+        "snapshot_sha256": "64f86f37524716a780e534b20120f18aaf36fbb3d240ea549a08d1a79ba39c8a",
+        "observed_at": "2026-10-27T09:47:48.115Z",
+        "discovery_title": "GitHub Copilot assisted permissions generally available",
+        "discovery_published_at": "2026-10-26T22:31:30.000Z"
+      },
+      "canonical": null
+    },
     "2026-10-26-gpt-6-1-terra-in-github-copilot-256c7b6c72dd": {
       "article_id": "2026-10-26-gpt-6-1-terra-in-github-copilot-256c7b6c72dd",
       "source_url": "https://github.blog/changelog/2026-10-26-gpt-6-1-terra-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "f517b68b7a9eb2ac5b26673cf2e7820b068cabff73b1561de37a8d49a728cf83",
-        "observed_at": "2026-10-27T01:28:24.221Z",
+        "snapshot_sha256": "bc956329aa5207da8bc62493581325113a784d42395492d6fdd54b20e3d60cbb",
+        "observed_at": "2026-10-27T09:47:48.217Z",
         "discovery_title": "GPT-6.1 Terra in GitHub Copilot",
         "discovery_published_at": "2026-10-26T19:15:53.000Z"
       },
