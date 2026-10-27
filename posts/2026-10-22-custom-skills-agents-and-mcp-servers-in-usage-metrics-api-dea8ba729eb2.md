@@ -18,7 +18,7 @@ The customizations that matter most to an organization are often the ones its ow
 
 ## [Important notes](#archive-heading-3)
 
--   **Coverage:** Names are reported from Copilot CLI (interactive sessions and prompt mode), the GitHub Copilot app, Agent Client Protocol (ACP) integrations such as JetBrains, and the Copilot SDK. Prompt mode, the app, and ACP integrations require Copilot CLI 1.0.97 or later. The Copilot SDK requires v1.0.21 or later. IDEs report names when their agent experiences run on the Copilot SDK v1.0.21 or later. Names aren’t reported from an IDE’s built-in chat telemetry.
+-   **Coverage:** Names are reported from Copilot CLI (interactive sessions and prompt mode), the GitHub Copilot app, clients built on the Copilot SDK (e.g., VS Code and JetBrains IDEs), and Agent Client Protocol (ACP) integrations. Prompt mode, the app, and ACP integrations require Copilot CLI 1.0.97 or later. Copilot SDK clients require SDK v1.0.21 or later. IDE integrations that aren’t built on the Copilot SDK don’t report names.
 -   **Configured names:** Names are reported as they are configured, trimmed and limited to 128 characters. Names that look like file paths stay grouped under `other` or `custom`. Review names before sharing reports outside your organization.
 -   **Accuracy:** These metrics come from client telemetry and can undercount activity, for example when clients are outdated or telemetry is blocked. Use them to understand trends and adoption rather than for exact accounting.
 -   **History:** Names appear starting with report days processed after this release. Earlier days still show `other` or `custom`.

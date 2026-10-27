@@ -385,7 +385,11 @@
         "discovery_title": "GPT-6.1 Terra in GitHub Copilot",
         "discovery_published_at": "2026-10-26T19:15:53.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "GPT-6.1 Terra in GitHub Copilot",
+        "published_at": "2026-10-26T19:15:53.000Z",
+        "publication_path": "/posts/2026-10-26-gpt-6-1-terra-in-github-copilot/"
+      }
     }
   }
 }
