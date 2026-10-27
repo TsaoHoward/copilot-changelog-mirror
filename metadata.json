@@ -385,7 +385,11 @@
         "discovery_title": "GitHub Copilot assisted permissions generally available",
         "discovery_published_at": "2026-10-26T22:31:30.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "GitHub Copilot assisted permissions generally available",
+        "published_at": "2026-10-26T22:31:30.000Z",
+        "publication_path": "/posts/2026-10-26-github-copilot-assisted-permissions-generally-available/"
+      }
     },
     "2026-10-26-gpt-6-1-terra-in-github-copilot-256c7b6c72dd": {
       "article_id": "2026-10-26-gpt-6-1-terra-in-github-copilot-256c7b6c72dd",
