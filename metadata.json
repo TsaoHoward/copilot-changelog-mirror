@@ -415,7 +415,11 @@
         "discovery_title": "GitHub Copilot supports server-to-server authentication",
         "discovery_published_at": "2026-10-27T21:36:55.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "GitHub Copilot supports server-to-server authentication",
+        "published_at": "2026-10-27T21:36:55.000Z",
+        "publication_path": "/posts/2026-10-27-github-copilot-supports-server-to-server-authentication/"
+      }
     }
   }
 }
