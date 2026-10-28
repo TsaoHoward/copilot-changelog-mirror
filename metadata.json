@@ -290,8 +290,8 @@
       "article_id": "2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api-dea8ba729eb2",
       "source_url": "https://github.blog/changelog/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api",
       "capture": {
-        "snapshot_sha256": "b412e49651ecb1f78e7a59b9e3f2d058a88bc0fb55a873d593b289790bb0cac7",
-        "observed_at": "2026-10-28T01:18:54.687Z",
+        "snapshot_sha256": "2243580046606e8b19f8d5eda826e227e61c9ed239625365d3d1686236ad4349",
+        "observed_at": "2026-10-28T10:33:14.924Z",
         "discovery_title": "Custom skills, agents, and MCP servers in usage metrics API",
         "discovery_published_at": "2026-10-22T22:19:17.000Z"
       },
@@ -305,8 +305,8 @@
       "article_id": "2026-10-22-github-copilot-in-visual-studio-september-update-2-a45f5dfbc346",
       "source_url": "https://github.blog/changelog/2026-10-22-github-copilot-in-visual-studio-september-update-2",
       "capture": {
-        "snapshot_sha256": "8c96698fc2f2353c7002fc23d0b7aca00b2315c9240fb816c0a8164c846b222e",
-        "observed_at": "2026-10-28T01:18:55.170Z",
+        "snapshot_sha256": "9efd4d3c3e69a36738c9d7725237b02e858d02bd4641ad43279dc5d6759336a2",
+        "observed_at": "2026-10-28T10:33:16.348Z",
         "discovery_title": "GitHub Copilot in Visual Studio — September update",
         "discovery_published_at": "2026-10-23T00:17:51.000Z"
       },
@@ -320,8 +320,8 @@
       "article_id": "2026-10-22-global-default-for-copilot-features-generally-available-767a7f383549",
       "source_url": "https://github.blog/changelog/2026-10-22-global-default-for-copilot-features-generally-available",
       "capture": {
-        "snapshot_sha256": "5d97125072465868636dc8c9d7568327bc64d95cb75bdba69ed32d17302ab43a",
-        "observed_at": "2026-10-28T01:18:55.610Z",
+        "snapshot_sha256": "15a3a1e1b76db3c0a3b788a765f5b8d3353e1f97d1ffd31c6ebb4bee404a5289",
+        "observed_at": "2026-10-28T10:33:16.848Z",
         "discovery_title": "Global default for Copilot features generally available",
         "discovery_published_at": "2026-10-22T20:44:28.000Z"
       },
@@ -335,8 +335,8 @@
       "article_id": "2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard-7bf4630bf25d",
       "source_url": "https://github.blog/changelog/2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard",
       "capture": {
-        "snapshot_sha256": "c0ee54e045d6f3b17ad6d147ed3da4fcd4e98f75a7e8a16719c7ffd4ffc019e3",
-        "observed_at": "2026-10-28T01:18:56.269Z",
+        "snapshot_sha256": "4d3dc2a59816c891c0cab34f1c4a613d2f4f48179dce9aee4d22ece17c7fff15",
+        "observed_at": "2026-10-28T10:33:17.342Z",
         "discovery_title": "Industry comparisons in the Copilot impact dashboard",
         "discovery_published_at": "2026-10-22T16:28:24.000Z"
       },
@@ -350,8 +350,8 @@
       "article_id": "2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams-400d91864296",
       "source_url": "https://github.blog/changelog/2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams",
       "capture": {
-        "snapshot_sha256": "5a09a2a8863df3a0746dc67bb0d34f6369bfc6a78e3a703bc0ac09095f3ec27c",
-        "observed_at": "2026-10-28T01:18:56.778Z",
+        "snapshot_sha256": "47b652c1b43aa52c2f7fef568943c7fcd7bda5d15a23f25a989f8ded247a1dc9",
+        "observed_at": "2026-10-28T10:33:17.827Z",
         "discovery_title": "Turn notifications into code with GitHub Copilot in Teams",
         "discovery_published_at": "2026-10-23T21:29:58.000Z"
       },
@@ -365,8 +365,8 @@
       "article_id": "2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode-dc1ed52c8837",
       "source_url": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode",
       "capture": {
-        "snapshot_sha256": "74a3222564d94f72ae34c78ae9afcd3510d97ac44765a5b95d5cd91454328732",
-        "observed_at": "2026-10-28T01:18:57.356Z",
+        "snapshot_sha256": "e491fe680e9ba75be7a7d41df4a113cacf82811acda19ee1ee300053e1de18d1",
+        "observed_at": "2026-10-28T10:33:18.268Z",
         "discovery_title": "Usage metrics API adds usage from tools like OpenCode",
         "discovery_published_at": "2026-10-23T23:42:03.000Z"
       },
