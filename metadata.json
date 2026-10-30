@@ -550,7 +550,11 @@
         "discovery_title": "Repository plugin defaults and enterprise plugin controls generally available",
         "discovery_published_at": "2026-10-28T15:33:00.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Repository plugin defaults and enterprise plugin controls generally available",
+        "published_at": "2026-10-28T15:33:00.000Z",
+        "publication_path": "/posts/2026-10-28-repository-plugin-defaults-and-enterprise-plugin-controls-generally-available/"
+      }
     },
     "2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion-af8e72e013cb": {
       "article_id": "2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion-af8e72e013cb",
