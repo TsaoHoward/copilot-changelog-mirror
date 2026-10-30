@@ -425,8 +425,8 @@
       "article_id": "2026-10-28-build-shared-workflows-for-your-team-with-copilot-automations-e825f4123d0c",
       "source_url": "https://github.blog/changelog/2026-10-28-build-shared-workflows-for-your-team-with-copilot-automations",
       "capture": {
-        "snapshot_sha256": "cbf19fc1127a35de35a350d290d2191f722de4e671f1466c59b5454f62e686cd",
-        "observed_at": "2026-10-30T01:56:53.549Z",
+        "snapshot_sha256": "58ad47b5c14ba748e2b87363a93af05239ced92f5e86dc18fb6de7f5f6dcfa03",
+        "observed_at": "2026-10-30T10:51:06.288Z",
         "discovery_title": "Build shared workflows for your team with Copilot Automations",
         "discovery_published_at": "2026-10-28T15:35:00.000Z"
       },
@@ -500,8 +500,8 @@
       "article_id": "2026-10-28-github-copilot-in-vs-code-universe-releases-1e84e499960d",
       "source_url": "https://github.blog/changelog/2026-10-28-github-copilot-in-vs-code-universe-releases",
       "capture": {
-        "snapshot_sha256": "614076de3255fc2a34157a39ade75ee29c5694f1a5829b8c276e3bffa6863b6d",
-        "observed_at": "2026-10-30T01:56:55.196Z",
+        "snapshot_sha256": "eac748aebd2cebd19b7154a9629808a8d45a63f952733075bc8ace4ad60c3791",
+        "observed_at": "2026-10-30T10:51:08.790Z",
         "discovery_title": "GitHub Copilot in VS Code, Universe releases",
         "discovery_published_at": "2026-10-28T15:33:00.000Z"
       },
@@ -560,8 +560,8 @@
       "article_id": "2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion-af8e72e013cb",
       "source_url": "https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion",
       "capture": {
-        "snapshot_sha256": "c2449554fd148ac6ff1b834639abaec28f5c10c75c2ff4f640eb7680c9d93362",
-        "observed_at": "2026-10-30T01:56:56.996Z",
+        "snapshot_sha256": "e612e26d19b6e40ce73c1988390aded4c42a375f1273066d51af2b7cae1366e2",
+        "observed_at": "2026-10-30T10:51:10.742Z",
         "discovery_title": "Route and orchestrate models with GitHub Copilot Fusion",
         "discovery_published_at": "2026-10-28T16:00:00.000Z"
       },
@@ -575,8 +575,8 @@
       "article_id": "2026-10-28-security-extension-for-the-github-copilot-app-532ef9d141d9",
       "source_url": "https://github.blog/changelog/2026-10-28-security-extension-for-the-github-copilot-app",
       "capture": {
-        "snapshot_sha256": "c416230aab5ff9ccf27d68576805f9759cb9d23e63fdacbed3cfc92fe2ae694e",
-        "observed_at": "2026-10-30T01:56:57.527Z",
+        "snapshot_sha256": "7b2dffd32becaac3f67d9ac2ebdbca96d0f75687fe19b64cf8aff6f4aa65227a",
+        "observed_at": "2026-10-30T10:51:11.276Z",
         "discovery_title": "Security extension for the GitHub Copilot app",
         "discovery_published_at": "2026-10-28T15:45:00.000Z"
       },
