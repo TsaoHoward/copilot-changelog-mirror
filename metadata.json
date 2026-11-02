@@ -425,8 +425,8 @@
       "article_id": "2026-10-28-build-shared-workflows-for-your-team-with-copilot-automations-e825f4123d0c",
       "source_url": "https://github.blog/changelog/2026-10-28-build-shared-workflows-for-your-team-with-copilot-automations",
       "capture": {
-        "snapshot_sha256": "059d8f7ec4969c58ef3eff146ebbe4910f591e39bd76d88b123bd511d94d151a",
-        "observed_at": "2026-11-02T01:29:57.812Z",
+        "snapshot_sha256": "cff1127acffbac8b16259f5a22dbd6f18f43b55fc336e8c99ecde63562fd5f9a",
+        "observed_at": "2026-11-02T12:20:10.570Z",
         "discovery_title": "Build shared workflows for your team with Copilot Automations",
         "discovery_published_at": "2026-10-28T15:35:00.000Z"
       },
@@ -440,8 +440,8 @@
       "article_id": "2026-10-28-generate-and-edit-images-directly-in-copilot-535be6664def",
       "source_url": "https://github.blog/changelog/2026-10-28-generate-and-edit-images-directly-in-copilot",
       "capture": {
-        "snapshot_sha256": "1cde8f0950c8275d7ac1c761e4c16f96c5977ba4c7d7890b3c72c1bb5b015354",
-        "observed_at": "2026-11-02T01:29:58.313Z",
+        "snapshot_sha256": "aa5d1c9a49b1129dd33c5f8adc9b16ba05095a69416658e2cdaa06c5fa8de5d9",
+        "observed_at": "2026-11-02T12:20:11.228Z",
         "discovery_title": "Generate and edit images directly in Copilot",
         "discovery_published_at": "2026-10-28T15:30:55.000Z"
       },
@@ -470,8 +470,8 @@
       "article_id": "2026-10-28-github-copilot-app-universe-releases-515b47292221",
       "source_url": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases",
       "capture": {
-        "snapshot_sha256": "f321e92cb49fbfc0092be769cd4729e025ec959fe7b6b7392359f27832dc2705",
-        "observed_at": "2026-11-02T01:29:58.848Z",
+        "snapshot_sha256": "ba8a6ab8420f90a80b0e76a7e8fa8c36794feeb13f643fdfce74a30372be65cb",
+        "observed_at": "2026-11-02T12:20:11.939Z",
         "discovery_title": "GitHub Copilot app, Universe releases",
         "discovery_published_at": "2026-10-28T15:55:00.000Z"
       },
@@ -485,8 +485,8 @@
       "article_id": "2026-10-28-github-copilot-fusion-now-supports-selection-of-local-models-f48a388f03b9",
       "source_url": "https://github.blog/changelog/2026-10-28-github-copilot-fusion-now-supports-selection-of-local-models",
       "capture": {
-        "snapshot_sha256": "cdfed4e715174481e6728df17f955184593461a693bb6838e28ba7b052fe49c6",
-        "observed_at": "2026-11-02T01:29:59.470Z",
+        "snapshot_sha256": "beedb632f84b66e81b4055fcb781aa926405a7f44465c61a41e6c2e49b3c02dd",
+        "observed_at": "2026-11-02T12:20:12.878Z",
         "discovery_title": "GitHub Copilot Fusion now supports selection of local models",
         "discovery_published_at": "2026-10-28T15:30:42.000Z"
       },
@@ -515,8 +515,8 @@
       "article_id": "2026-10-28-github-enterprise-now-includes-access-to-github-copilot-9084abaaec71",
       "source_url": "https://github.blog/changelog/2026-10-28-github-enterprise-now-includes-access-to-github-copilot",
       "capture": {
-        "snapshot_sha256": "245901e802a01a160608124d1ffbb5ed919b6a5542c3986bb0eaf1edcd271ce7",
-        "observed_at": "2026-11-02T01:30:00.934Z",
+        "snapshot_sha256": "afb02c90211459e27b56cd039b7eb89c795541c296a27b1f8da17738a26da723",
+        "observed_at": "2026-11-02T12:20:13.962Z",
         "discovery_title": "GitHub Enterprise now includes access to GitHub Copilot",
         "discovery_published_at": "2026-10-28T15:50:00.000Z"
       },
@@ -530,8 +530,8 @@
       "article_id": "2026-10-28-github-intelligence-puts-your-code-context-and-history-to-work-6e5ebe8af36d",
       "source_url": "https://github.blog/changelog/2026-10-28-github-intelligence-puts-your-code-context-and-history-to-work",
       "capture": {
-        "snapshot_sha256": "83f6cebb7e4d46295bc59b3c69210bb26c35d31b3b5d8dfd3e4d10d28bbf0b85",
-        "observed_at": "2026-11-02T01:30:01.546Z",
+        "snapshot_sha256": "bc9d05a51f6def34310fa4ed2979887a16bfccff4008a12dc745162ff618b93e",
+        "observed_at": "2026-11-02T12:20:14.473Z",
         "discovery_title": "GitHub intelligence puts your code, context, and history to work",
         "discovery_published_at": "2026-10-28T15:40:00.000Z"
       },
@@ -545,8 +545,8 @@
       "article_id": "2026-10-28-repository-plugin-defaults-and-enterprise-plugin-controls-generally-available-11dab8e53a50",
       "source_url": "https://github.blog/changelog/2026-10-28-repository-plugin-defaults-and-enterprise-plugin-controls-generally-available",
       "capture": {
-        "snapshot_sha256": "5da4a1cfbe056ed2eda3cd926601c483c4017df3f104bf0b76c6e9b85b2268a4",
-        "observed_at": "2026-11-02T01:30:02.229Z",
+        "snapshot_sha256": "614908914e72a2fc68259dbd48d8603dd98e82a81fcf1ae518a5e4a3c4c3de12",
+        "observed_at": "2026-11-02T12:20:15.122Z",
         "discovery_title": "Repository plugin defaults and enterprise plugin controls generally available",
         "discovery_published_at": "2026-10-28T15:33:00.000Z"
       },
