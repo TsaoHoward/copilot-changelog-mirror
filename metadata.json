@@ -425,8 +425,8 @@
       "article_id": "2026-10-28-build-shared-workflows-for-your-team-with-copilot-automations-e825f4123d0c",
       "source_url": "https://github.blog/changelog/2026-10-28-build-shared-workflows-for-your-team-with-copilot-automations",
       "capture": {
-        "snapshot_sha256": "959f976b2aac59292bd47b3bbf796d392b969d12ba22b104532344ac6be30ca7",
-        "observed_at": "2026-11-01T11:14:43.238Z",
+        "snapshot_sha256": "059d8f7ec4969c58ef3eff146ebbe4910f591e39bd76d88b123bd511d94d151a",
+        "observed_at": "2026-11-02T01:29:57.812Z",
         "discovery_title": "Build shared workflows for your team with Copilot Automations",
         "discovery_published_at": "2026-10-28T15:35:00.000Z"
       },
@@ -440,8 +440,8 @@
       "article_id": "2026-10-28-generate-and-edit-images-directly-in-copilot-535be6664def",
       "source_url": "https://github.blog/changelog/2026-10-28-generate-and-edit-images-directly-in-copilot",
       "capture": {
-        "snapshot_sha256": "8451bc15922bc6284593c162491de145e5746c4b8d01f3b999881ad6a902d44a",
-        "observed_at": "2026-11-01T11:14:43.666Z",
+        "snapshot_sha256": "1cde8f0950c8275d7ac1c761e4c16f96c5977ba4c7d7890b3c72c1bb5b015354",
+        "observed_at": "2026-11-02T01:29:58.313Z",
         "discovery_title": "Generate and edit images directly in Copilot",
         "discovery_published_at": "2026-10-28T15:30:55.000Z"
       },
@@ -470,8 +470,8 @@
       "article_id": "2026-10-28-github-copilot-app-universe-releases-515b47292221",
       "source_url": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases",
       "capture": {
-        "snapshot_sha256": "ed35d263d6643137f1d8d38a6f8d2edc6a889a42a945070c3e94050f9d248e5f",
-        "observed_at": "2026-11-01T11:14:44.136Z",
+        "snapshot_sha256": "f321e92cb49fbfc0092be769cd4729e025ec959fe7b6b7392359f27832dc2705",
+        "observed_at": "2026-11-02T01:29:58.848Z",
         "discovery_title": "GitHub Copilot app, Universe releases",
         "discovery_published_at": "2026-10-28T15:55:00.000Z"
       },
@@ -485,8 +485,8 @@
       "article_id": "2026-10-28-github-copilot-fusion-now-supports-selection-of-local-models-f48a388f03b9",
       "source_url": "https://github.blog/changelog/2026-10-28-github-copilot-fusion-now-supports-selection-of-local-models",
       "capture": {
-        "snapshot_sha256": "e40dd7f3e3f412913fba3a37b831a3f8508c56b0a55af3de662d2a9b0f53eac3",
-        "observed_at": "2026-11-01T11:14:44.570Z",
+        "snapshot_sha256": "cdfed4e715174481e6728df17f955184593461a693bb6838e28ba7b052fe49c6",
+        "observed_at": "2026-11-02T01:29:59.470Z",
         "discovery_title": "GitHub Copilot Fusion now supports selection of local models",
         "discovery_published_at": "2026-10-28T15:30:42.000Z"
       },
@@ -500,8 +500,8 @@
       "article_id": "2026-10-28-github-copilot-in-vs-code-universe-releases-1e84e499960d",
       "source_url": "https://github.blog/changelog/2026-10-28-github-copilot-in-vs-code-universe-releases",
       "capture": {
-        "snapshot_sha256": "d7145d3ca28cf2d1aff7dd024f6d3df5a4f718592a8e2282216cea877294c408",
-        "observed_at": "2026-11-01T11:14:44.595Z",
+        "snapshot_sha256": "ba3efb804a3d87559f767bef83aba7f9fbf883ba74c29cb8baca3704c9be64cb",
+        "observed_at": "2026-11-02T01:30:00.146Z",
         "discovery_title": "GitHub Copilot in VS Code, Universe releases",
         "discovery_published_at": "2026-10-28T15:33:00.000Z"
       },
@@ -515,8 +515,8 @@
       "article_id": "2026-10-28-github-enterprise-now-includes-access-to-github-copilot-9084abaaec71",
       "source_url": "https://github.blog/changelog/2026-10-28-github-enterprise-now-includes-access-to-github-copilot",
       "capture": {
-        "snapshot_sha256": "ecc8eef8b4871bf20fe6077a9b65a699839328acab704398236a389e0e9e0ab7",
-        "observed_at": "2026-11-01T11:14:45.093Z",
+        "snapshot_sha256": "245901e802a01a160608124d1ffbb5ed919b6a5542c3986bb0eaf1edcd271ce7",
+        "observed_at": "2026-11-02T01:30:00.934Z",
         "discovery_title": "GitHub Enterprise now includes access to GitHub Copilot",
         "discovery_published_at": "2026-10-28T15:50:00.000Z"
       },
@@ -530,8 +530,8 @@
       "article_id": "2026-10-28-github-intelligence-puts-your-code-context-and-history-to-work-6e5ebe8af36d",
       "source_url": "https://github.blog/changelog/2026-10-28-github-intelligence-puts-your-code-context-and-history-to-work",
       "capture": {
-        "snapshot_sha256": "c0aeae47f4ea98804d8c0f9fc4527e6f0705b40c8792460e88a66c67dc931330",
-        "observed_at": "2026-11-01T11:14:45.115Z",
+        "snapshot_sha256": "83f6cebb7e4d46295bc59b3c69210bb26c35d31b3b5d8dfd3e4d10d28bbf0b85",
+        "observed_at": "2026-11-02T01:30:01.546Z",
         "discovery_title": "GitHub intelligence puts your code, context, and history to work",
         "discovery_published_at": "2026-10-28T15:40:00.000Z"
       },
@@ -545,8 +545,8 @@
       "article_id": "2026-10-28-repository-plugin-defaults-and-enterprise-plugin-controls-generally-available-11dab8e53a50",
       "source_url": "https://github.blog/changelog/2026-10-28-repository-plugin-defaults-and-enterprise-plugin-controls-generally-available",
       "capture": {
-        "snapshot_sha256": "f965b2a2ec4e781efde6d5cab7e865fedc31dbd36e5101e069c53a3da08c199c",
-        "observed_at": "2026-11-01T11:14:45.536Z",
+        "snapshot_sha256": "5da4a1cfbe056ed2eda3cd926601c483c4017df3f104bf0b76c6e9b85b2268a4",
+        "observed_at": "2026-11-02T01:30:02.229Z",
         "discovery_title": "Repository plugin defaults and enterprise plugin controls generally available",
         "discovery_published_at": "2026-10-28T15:33:00.000Z"
       },
@@ -560,8 +560,8 @@
       "article_id": "2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion-af8e72e013cb",
       "source_url": "https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion",
       "capture": {
-        "snapshot_sha256": "9461b23398d26fd9a5380f21f0c41e323fb9474ba36fbd0d07804b1f64c7178c",
-        "observed_at": "2026-11-01T11:14:45.555Z",
+        "snapshot_sha256": "2b1ed702db5e66e99fe4dd4f0340025ed3d30e5c038beebf45056dad30ae6255",
+        "observed_at": "2026-11-02T01:30:02.754Z",
         "discovery_title": "Route and orchestrate models with GitHub Copilot Fusion",
         "discovery_published_at": "2026-10-28T16:00:00.000Z"
       },
@@ -575,8 +575,8 @@
       "article_id": "2026-10-28-security-extension-for-the-github-copilot-app-532ef9d141d9",
       "source_url": "https://github.blog/changelog/2026-10-28-security-extension-for-the-github-copilot-app",
       "capture": {
-        "snapshot_sha256": "1c15cb9db78d7a323c6fd5b0a954148b36655c43a7f762b9788d2157c81d9f56",
-        "observed_at": "2026-11-01T11:14:45.576Z",
+        "snapshot_sha256": "4d095ed0b9cf1c0fa381277e6eb7b7b0c0b5563951e0e2190e84ab5f193ad789",
+        "observed_at": "2026-11-02T01:30:03.315Z",
         "discovery_title": "Security extension for the GitHub Copilot app",
         "discovery_published_at": "2026-10-28T15:45:00.000Z"
       },
