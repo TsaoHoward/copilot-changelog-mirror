@@ -625,7 +625,11 @@
         "discovery_title": "GitHub Copilot is now available in Xcode’s coding assistant",
         "discovery_published_at": "2026-11-04T19:10:40.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "GitHub Copilot is now available in Xcode’s coding assistant",
+        "published_at": "2026-11-04T19:10:40.000Z",
+        "publication_path": "/posts/2026-11-04-github-copilot-is-now-available-in-xcodes-coding-assistant/"
+      }
     }
   }
 }
