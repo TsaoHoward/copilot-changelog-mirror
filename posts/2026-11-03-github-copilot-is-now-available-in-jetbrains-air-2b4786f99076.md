@@ -1,7 +1,3 @@
-![GitHub Copilot launch banner showing GitHub Copilot selected in the JetBrains Air agent picker](https://github.blog/wp-content/uploads/2026/11/689797142-96dbb0c9-dccb-41f6-8990-acf5c575db04.png?resize=1672%2C941)
-
-![GitHub Copilot launch banner showing GitHub Copilot selected in the JetBrains Air agent picker](https://github.com/user-attachments/assets/96dbb0c9-dccb-41f6-8990-acf5c575db04)
-
 You can now delegate coding tasks, guide execution, and review results with GitHub Copilot in [JetBrains Air](https://www.jetbrains.com/air/). The integration uses the [Agent Client Protocol (ACP)](https://www.jetbrains.com/acp/) and supports tasks in your JetBrains IDE or in the cloud.
 
 Use Copilot in Air alongside the [GitHub Copilot plugin](https://plugins.jetbrains.com/plugin/17718-github-copilot) and choose the workflow that works best for you. For a comparison and FAQ, see [GitHub Copilot in JetBrains Air](https://aka.ms/ghcp/jetbrains/air).
