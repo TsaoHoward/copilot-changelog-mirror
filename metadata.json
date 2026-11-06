@@ -470,8 +470,8 @@
       "article_id": "2026-10-28-github-copilot-app-universe-releases-515b47292221",
       "source_url": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases",
       "capture": {
-        "snapshot_sha256": "52d7104035161ab4fb36bd8c1dc6bfd194d723cf158880af2f15d9bdeb56df6d",
-        "observed_at": "2026-11-05T12:16:28.314Z",
+        "snapshot_sha256": "c6c72ce85141ce1e6fb2117edca23e8b7d73f778559ba9af1188cdbd1119fbb8",
+        "observed_at": "2026-11-06T02:24:07.790Z",
         "discovery_title": "GitHub Copilot app, Universe releases",
         "discovery_published_at": "2026-10-28T15:55:00.000Z"
       },
@@ -515,8 +515,8 @@
       "article_id": "2026-10-28-github-enterprise-now-includes-access-to-github-copilot-9084abaaec71",
       "source_url": "https://github.blog/changelog/2026-10-28-github-enterprise-now-includes-access-to-github-copilot",
       "capture": {
-        "snapshot_sha256": "7b3a73078224c44953b33ee146c48487231ec83345246b132860fc71468d46a0",
-        "observed_at": "2026-11-05T02:24:01.403Z",
+        "snapshot_sha256": "da4f712c189fc34f4512c44f39283dc1c366edd20bc429fd6f959896238667b1",
+        "observed_at": "2026-11-06T02:24:08.305Z",
         "discovery_title": "GitHub Enterprise now includes access to GitHub Copilot",
         "discovery_published_at": "2026-10-28T15:50:00.000Z"
       },
@@ -530,8 +530,8 @@
       "article_id": "2026-10-28-github-intelligence-puts-your-code-context-and-history-to-work-6e5ebe8af36d",
       "source_url": "https://github.blog/changelog/2026-10-28-github-intelligence-puts-your-code-context-and-history-to-work",
       "capture": {
-        "snapshot_sha256": "ac0631aa99cce76d2d01f829221d12a1198ef3e0df4fd3244b0fd356da59ed1c",
-        "observed_at": "2026-11-05T12:16:30.846Z",
+        "snapshot_sha256": "99d3fbed92fbbe78d3b411a2aea797df5946e0d4b0266e15b1a9a89155d3e39e",
+        "observed_at": "2026-11-06T02:24:08.829Z",
         "discovery_title": "GitHub intelligence puts your code, context, and history to work",
         "discovery_published_at": "2026-10-28T15:40:00.000Z"
       },
@@ -560,8 +560,8 @@
       "article_id": "2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion-af8e72e013cb",
       "source_url": "https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion",
       "capture": {
-        "snapshot_sha256": "935dff2341ae3a7c491755249dd1ac827afd7ccc4654c953f0dbe7c6b67fa2aa",
-        "observed_at": "2026-11-05T02:24:02.395Z",
+        "snapshot_sha256": "d5d16b8ec694821f7a91235aa259a22ed407165fd61635618f0c5850dbfcdd57",
+        "observed_at": "2026-11-06T02:24:09.240Z",
         "discovery_title": "Route and orchestrate models with GitHub Copilot Fusion",
         "discovery_published_at": "2026-10-28T16:00:00.000Z"
       },
@@ -575,8 +575,8 @@
       "article_id": "2026-10-28-security-extension-for-the-github-copilot-app-532ef9d141d9",
       "source_url": "https://github.blog/changelog/2026-10-28-security-extension-for-the-github-copilot-app",
       "capture": {
-        "snapshot_sha256": "e98a6e6acb70fd1a789b4debefe9067fd85f27774aad0ff537bdae4910c7a7b1",
-        "observed_at": "2026-11-05T12:16:32.538Z",
+        "snapshot_sha256": "b9524d9c85274bcc642a851bae1bb28ac93e887b9de386f37e3819b71bf05ea1",
+        "observed_at": "2026-11-06T02:24:09.691Z",
         "discovery_title": "Security extension for the GitHub Copilot app",
         "discovery_published_at": "2026-10-28T15:45:00.000Z"
       },
@@ -590,8 +590,8 @@
       "article_id": "2026-11-03-byok-and-enterprise-custom-models-in-the-copilot-usage-api-3120cb53fbc5",
       "source_url": "https://github.blog/changelog/2026-11-03-byok-and-enterprise-custom-models-in-the-copilot-usage-api",
       "capture": {
-        "snapshot_sha256": "4aaa58cea4ee2770a03948644b148ec960d04d5d4be0685b6a44dce914836eff",
-        "observed_at": "2026-11-05T02:24:03.268Z",
+        "snapshot_sha256": "1741f8630f072394da5d5adc673d4823b73ba45bde981ccdd1d0717b71875945",
+        "observed_at": "2026-11-06T02:24:10.221Z",
         "discovery_title": "BYOK and enterprise custom models in the Copilot usage API",
         "discovery_published_at": "2026-11-04T00:32:19.000Z"
       },
@@ -605,8 +605,8 @@
       "article_id": "2026-11-03-github-copilot-is-now-available-in-jetbrains-air-2b4786f99076",
       "source_url": "https://github.blog/changelog/2026-11-03-github-copilot-is-now-available-in-jetbrains-air",
       "capture": {
-        "snapshot_sha256": "92d85ee2802f39eb3c652df24695ac5ece33ece7f7fe9c912c3443e7c13e599c",
-        "observed_at": "2026-11-05T02:24:03.684Z",
+        "snapshot_sha256": "dc90296da755b070ca6845ad063ec526a0e518ec9b361a1c3b3130a67de55f8a",
+        "observed_at": "2026-11-06T02:24:10.757Z",
         "discovery_title": "GitHub Copilot is now available in JetBrains Air",
         "discovery_published_at": "2026-11-03T15:11:46.000Z"
       },
@@ -620,8 +620,8 @@
       "article_id": "2026-11-04-github-copilot-is-now-available-in-xcodes-coding-assistant-d53634b505a7",
       "source_url": "https://github.blog/changelog/2026-11-04-github-copilot-is-now-available-in-xcodes-coding-assistant",
       "capture": {
-        "snapshot_sha256": "7d4e369312a533bab111b9acd3cdfc3dcc4fcd1d43f0cdfa924c7553cd7ebe84",
-        "observed_at": "2026-11-05T12:16:34.419Z",
+        "snapshot_sha256": "5f2c65520ea33f77cdae410bfe534ab74593a0fb8cd099a4f0b75970da2f4e7c",
+        "observed_at": "2026-11-06T02:24:11.493Z",
         "discovery_title": "GitHub Copilot is now available in Xcode’s coding assistant",
         "discovery_published_at": "2026-11-04T19:10:40.000Z"
       },
@@ -630,6 +630,28 @@
         "published_at": "2026-11-04T19:10:40.000Z",
         "publication_path": "/posts/2026-11-04-github-copilot-is-now-available-in-xcodes-coding-assistant/"
       }
+    },
+    "2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate-525555dfe497": {
+      "article_id": "2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate-525555dfe497",
+      "source_url": "https://github.blog/changelog/2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate",
+      "capture": {
+        "snapshot_sha256": "41c7099862cac9ac9a82e4a784f1951c9d0d8f7a004b29bf8de708cc6fb29530",
+        "observed_at": "2026-11-06T02:24:11.572Z",
+        "discovery_title": "Usage metrics API adds code review details and addressed rate",
+        "discovery_published_at": "2026-11-06T00:19:07.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps-0778fb85d915": {
+      "article_id": "2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps-0778fb85d915",
+      "source_url": "https://github.blog/changelog/2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps",
+      "capture": {
+        "snapshot_sha256": "748550dda3fd1055dcf24d5344b72330c66ebd5d670ff76a87a9b559a33d71e8",
+        "observed_at": "2026-11-06T02:24:11.650Z",
+        "discovery_title": "Usage metrics API flags telemetry and version gaps",
+        "discovery_published_at": "2026-11-06T00:08:31.000Z"
+      },
+      "canonical": null
     }
   }
 }
