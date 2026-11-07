@@ -670,7 +670,11 @@
         "discovery_title": "Copilot code review: API management and review overview updates",
         "discovery_published_at": "2026-11-07T00:27:19.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Copilot code review: API management and review overview updates",
+        "published_at": "2026-11-07T00:27:19.000Z",
+        "publication_path": "/posts/2026-11-06-copilot-code-review-api-management-and-review-overview-updates/"
+      }
     },
     "2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage-a5fcc1255202": {
       "article_id": "2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage-a5fcc1255202",
@@ -681,7 +685,11 @@
         "discovery_title": "Copilot impact dashboard adds chat and VS Code agent usage",
         "discovery_published_at": "2026-11-06T22:17:28.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Copilot impact dashboard adds chat and VS Code agent usage",
+        "published_at": "2026-11-06T22:17:28.000Z",
+        "publication_path": "/posts/2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage/"
+      }
     },
     "2026-11-06-github-copilot-in-slack-and-teams-is-generally-available-2b1caf305a69": {
       "article_id": "2026-11-06-github-copilot-in-slack-and-teams-is-generally-available-2b1caf305a69",
@@ -692,7 +700,11 @@
         "discovery_title": "@GitHub in Slack and Teams is generally available and more",
         "discovery_published_at": "2026-11-06T20:31:08.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "@GitHub in Slack and Teams is generally available and more",
+        "published_at": "2026-11-06T20:31:08.000Z",
+        "publication_path": "/posts/2026-11-06-github-copilot-in-slack-and-teams-is-generally-available/"
+      }
     },
     "2026-11-06-github-copilot-weekly-releases-november-2-353c4d26111c": {
       "article_id": "2026-11-06-github-copilot-weekly-releases-november-2-353c4d26111c",
@@ -703,7 +715,11 @@
         "discovery_title": "GitHub Copilot weekly releases — November 2",
         "discovery_published_at": "2026-11-06T21:00:26.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "GitHub Copilot weekly releases — November 2",
+        "published_at": "2026-11-06T21:00:26.000Z",
+        "publication_path": "/posts/2026-11-06-github-copilot-weekly-releases-november-2/"
+      }
     }
   }
 }
