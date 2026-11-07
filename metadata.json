@@ -590,8 +590,8 @@
       "article_id": "2026-11-03-byok-and-enterprise-custom-models-in-the-copilot-usage-api-3120cb53fbc5",
       "source_url": "https://github.blog/changelog/2026-11-03-byok-and-enterprise-custom-models-in-the-copilot-usage-api",
       "capture": {
-        "snapshot_sha256": "76cd158f314d93f0eb21f570f016224227517441b81165c02c9e754bbfc7f8fb",
-        "observed_at": "2026-11-07T01:54:01.656Z",
+        "snapshot_sha256": "1f973cb6cf00ee1f5a906d32320194a861e3a2bd60769b6472d2406b0be508bf",
+        "observed_at": "2026-11-07T11:01:58.175Z",
         "discovery_title": "BYOK and enterprise custom models in the Copilot usage API",
         "discovery_published_at": "2026-11-04T00:32:19.000Z"
       },
@@ -605,8 +605,8 @@
       "article_id": "2026-11-03-github-copilot-is-now-available-in-jetbrains-air-2b4786f99076",
       "source_url": "https://github.blog/changelog/2026-11-03-github-copilot-is-now-available-in-jetbrains-air",
       "capture": {
-        "snapshot_sha256": "2c0541c654765d97e1b0857e2a20021d781cc1a84c1a697a4542820bff5696bf",
-        "observed_at": "2026-11-07T01:54:02.320Z",
+        "snapshot_sha256": "ca72bd2d6552d8a3ec3ca054a072bf2264e81e395433745a252409dabe97c0e7",
+        "observed_at": "2026-11-07T11:01:58.715Z",
         "discovery_title": "GitHub Copilot is now available in JetBrains Air",
         "discovery_published_at": "2026-11-03T15:11:46.000Z"
       },
@@ -620,8 +620,8 @@
       "article_id": "2026-11-04-github-copilot-is-now-available-in-xcodes-coding-assistant-d53634b505a7",
       "source_url": "https://github.blog/changelog/2026-11-04-github-copilot-is-now-available-in-xcodes-coding-assistant",
       "capture": {
-        "snapshot_sha256": "eda0c034c125c086e55acfa2093e6563642c27003da32fcf98e94c02dc322b67",
-        "observed_at": "2026-11-07T01:54:02.903Z",
+        "snapshot_sha256": "fb7434a2ca2f7560aebe6e1838e2e7d635ae824140b1a959798dbb7b6f04cdc7",
+        "observed_at": "2026-11-07T11:01:58.816Z",
         "discovery_title": "GitHub Copilot is now available in Xcode’s coding assistant",
         "discovery_published_at": "2026-11-04T19:10:40.000Z"
       },
@@ -650,8 +650,8 @@
       "article_id": "2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps-0778fb85d915",
       "source_url": "https://github.blog/changelog/2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps",
       "capture": {
-        "snapshot_sha256": "5a38071f0e1c72af8df37626b3013dfa27e94f1ef8eeb0742470525f4b95dab6",
-        "observed_at": "2026-11-07T01:54:04.163Z",
+        "snapshot_sha256": "f35ff30b17ae1c52c47fb5ef65fdfc36f8559749be12405199c84a168d51c14d",
+        "observed_at": "2026-11-07T11:01:59.962Z",
         "discovery_title": "Usage metrics API flags telemetry and version gaps",
         "discovery_published_at": "2026-11-06T00:08:31.000Z"
       },
@@ -680,8 +680,8 @@
       "article_id": "2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage-a5fcc1255202",
       "source_url": "https://github.blog/changelog/2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage",
       "capture": {
-        "snapshot_sha256": "1d2d3ddf9dd8fe69a1b582a6b4544da35ecd98990c737800d5bf7e1ca1008e48",
-        "observed_at": "2026-11-07T01:54:05.451Z",
+        "snapshot_sha256": "7c7f1ae114d7ef39f1515553fc9bb4ceb9982eb73188bbcb42c88df0778b55a3",
+        "observed_at": "2026-11-07T11:02:00.156Z",
         "discovery_title": "Copilot impact dashboard adds chat and VS Code agent usage",
         "discovery_published_at": "2026-11-06T22:17:28.000Z"
       },
