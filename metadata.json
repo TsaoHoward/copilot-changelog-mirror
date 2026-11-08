@@ -560,8 +560,8 @@
       "article_id": "2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion-af8e72e013cb",
       "source_url": "https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion",
       "capture": {
-        "snapshot_sha256": "ed8ff1da5052e6708557ac483b6e67e4bea44d678b2bc33194ea56fabd2515fc",
-        "observed_at": "2026-11-08T01:25:24.193Z",
+        "snapshot_sha256": "06973eddd18fb9a4a97fd3c7d7a7ed4345ab9575247303725b9acc9c3d008b49",
+        "observed_at": "2026-11-08T11:15:25.641Z",
         "discovery_title": "Route and orchestrate models with GitHub Copilot Fusion",
         "discovery_published_at": "2026-10-28T16:00:00.000Z"
       },
@@ -635,8 +635,8 @@
       "article_id": "2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate-525555dfe497",
       "source_url": "https://github.blog/changelog/2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate",
       "capture": {
-        "snapshot_sha256": "212187b00874d7dffb5fa54589baa43a2057005abb4365edcda78d1406d27f24",
-        "observed_at": "2026-11-08T01:25:26.258Z",
+        "snapshot_sha256": "d4df75bcafac5c422abcad7b066a24933eb4eb432dc33297821d89f2a3b873bc",
+        "observed_at": "2026-11-08T11:15:28.109Z",
         "discovery_title": "Usage metrics API adds code review details and addressed rate",
         "discovery_published_at": "2026-11-06T00:19:07.000Z"
       },
@@ -680,8 +680,8 @@
       "article_id": "2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage-a5fcc1255202",
       "source_url": "https://github.blog/changelog/2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage",
       "capture": {
-        "snapshot_sha256": "b558cd9c026bea245ba301301aaf9eb1d2ac3fa1ecaab2a1ace3d10698076716",
-        "observed_at": "2026-11-08T01:25:27.610Z",
+        "snapshot_sha256": "9d09e5b5505073d788ef8035c76504004a7f18b565422381b62176d517c8665d",
+        "observed_at": "2026-11-08T11:15:29.055Z",
         "discovery_title": "Copilot impact dashboard adds chat and VS Code agent usage",
         "discovery_published_at": "2026-11-06T22:17:28.000Z"
       },
@@ -710,8 +710,8 @@
       "article_id": "2026-11-06-github-copilot-weekly-releases-november-2-353c4d26111c",
       "source_url": "https://github.blog/changelog/2026-11-06-github-copilot-weekly-releases-november-2",
       "capture": {
-        "snapshot_sha256": "6db2793c211ed84f50bf0f0959ebfca9fa01c076cc0c0bf5f301ac9eaecedee7",
-        "observed_at": "2026-11-08T01:25:28.857Z",
+        "snapshot_sha256": "e8b3b686ad6ecbc881aace1a705de12f2890305f00042bca8f570b795557d531",
+        "observed_at": "2026-11-08T11:15:29.916Z",
         "discovery_title": "GitHub Copilot weekly releases — November 2",
         "discovery_published_at": "2026-11-06T21:00:26.000Z"
       },
