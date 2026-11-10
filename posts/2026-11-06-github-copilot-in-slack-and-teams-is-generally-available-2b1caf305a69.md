@@ -10,7 +10,7 @@ Turn conversations into code with `@GitHub` in Slack and Teams! Investigate bugs
 
 ### [Build and review together with Canvas in Teams](#archive-heading-2)
 
-<video loop="" controls="" autoplay="" muted="" width="100%" src="https://github.com/user-attachments/assets/5091b76b-7aad-47be-b49d-212e13f455e6"></video>
+![Canvas for Teams](https://github.com/user-attachments/assets/8f45ee45-9734-4cfc-b4d3-6a35c9531d01)
 
 Turn team discussions into working code. With **Canvas**, you can review implementation plans, code changes, and previews alongside your conversation. Continue the discussion with teammates, share feedback, and refine the implementation together—all without leaving Teams.
 

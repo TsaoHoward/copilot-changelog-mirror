@@ -730,7 +730,11 @@
         "discovery_title": "Claude Fable 5.2 in GitHub Copilot",
         "discovery_published_at": "2026-11-09T16:46:43.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Claude Fable 5.2 in GitHub Copilot",
+        "published_at": "2026-11-09T16:46:43.000Z",
+        "publication_path": "/posts/2026-11-09-claude-fable-5-2-in-github-copilot/"
+      }
     }
   }
 }
