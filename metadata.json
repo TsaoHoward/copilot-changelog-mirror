@@ -590,8 +590,8 @@
       "article_id": "2026-11-03-byok-and-enterprise-custom-models-in-the-copilot-usage-api-3120cb53fbc5",
       "source_url": "https://github.blog/changelog/2026-11-03-byok-and-enterprise-custom-models-in-the-copilot-usage-api",
       "capture": {
-        "snapshot_sha256": "b8d00e34db36e7342c1d781d3ea44ffb2bcfdb12c9c3a1c36022ef0ae218bd4a",
-        "observed_at": "2026-11-09T01:43:14.311Z",
+        "snapshot_sha256": "caf68100e01a0b8f7ebbcf8e140afed3bc6119777e4510e1c4bd76c127af5bf9",
+        "observed_at": "2026-11-10T04:06:12.388Z",
         "discovery_title": "BYOK and enterprise custom models in the Copilot usage API",
         "discovery_published_at": "2026-11-04T00:32:19.000Z"
       },
@@ -605,8 +605,8 @@
       "article_id": "2026-11-03-github-copilot-is-now-available-in-jetbrains-air-2b4786f99076",
       "source_url": "https://github.blog/changelog/2026-11-03-github-copilot-is-now-available-in-jetbrains-air",
       "capture": {
-        "snapshot_sha256": "4bcaaf7ae0a6826c7ac9794703b80e472488998d9869c2bcb2fa9e875039246d",
-        "observed_at": "2026-11-09T01:43:14.824Z",
+        "snapshot_sha256": "a5c686d03a56cdd02cd62b5dceca8e61090de4924e1441dd9532a10504282a20",
+        "observed_at": "2026-11-10T04:06:12.967Z",
         "discovery_title": "GitHub Copilot is now available in JetBrains Air",
         "discovery_published_at": "2026-11-03T15:11:46.000Z"
       },
@@ -620,8 +620,8 @@
       "article_id": "2026-11-04-github-copilot-is-now-available-in-xcodes-coding-assistant-d53634b505a7",
       "source_url": "https://github.blog/changelog/2026-11-04-github-copilot-is-now-available-in-xcodes-coding-assistant",
       "capture": {
-        "snapshot_sha256": "aaed69131b8857b94149ac83beba782aea381d40315e7ea55d94970ddfebe2b2",
-        "observed_at": "2026-11-09T12:49:18.145Z",
+        "snapshot_sha256": "32a4cf97778b4da5f4cce02041543298becf05ff69d618ab7d21171967346299",
+        "observed_at": "2026-11-10T04:06:13.867Z",
         "discovery_title": "GitHub Copilot is now available in Xcode’s coding assistant",
         "discovery_published_at": "2026-11-04T19:10:40.000Z"
       },
@@ -650,8 +650,8 @@
       "article_id": "2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps-0778fb85d915",
       "source_url": "https://github.blog/changelog/2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps",
       "capture": {
-        "snapshot_sha256": "ad8d5adb6d186d17da5c019ba6f46785beb56cfd2748d5aa59f54feb546eaacb",
-        "observed_at": "2026-11-09T12:49:19.416Z",
+        "snapshot_sha256": "04152f2d5505de39e946cd52d83265ade2a445ebb11895573bd6b255da06d69d",
+        "observed_at": "2026-11-10T04:06:15.765Z",
         "discovery_title": "Usage metrics API flags telemetry and version gaps",
         "discovery_published_at": "2026-11-06T00:08:31.000Z"
       },
@@ -680,8 +680,8 @@
       "article_id": "2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage-a5fcc1255202",
       "source_url": "https://github.blog/changelog/2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage",
       "capture": {
-        "snapshot_sha256": "04d00e898eb9288d8f3088a20db7079a7c77a74539d4cf267393a7aced77ac80",
-        "observed_at": "2026-11-09T12:49:20.442Z",
+        "snapshot_sha256": "d4297759b7719f20da26634eb3eaa52ad592abd2dbad66720d61c4d92efeb1e4",
+        "observed_at": "2026-11-10T04:06:17.008Z",
         "discovery_title": "Copilot impact dashboard adds chat and VS Code agent usage",
         "discovery_published_at": "2026-11-06T22:17:28.000Z"
       },
@@ -695,8 +695,8 @@
       "article_id": "2026-11-06-github-copilot-in-slack-and-teams-is-generally-available-2b1caf305a69",
       "source_url": "https://github.blog/changelog/2026-11-06-github-copilot-in-slack-and-teams-is-generally-available",
       "capture": {
-        "snapshot_sha256": "5b1555cecb30b2f6d987c320bc7020cedacdd04ea47a758bb91685b75a6ce9d6",
-        "observed_at": "2026-11-09T12:49:20.830Z",
+        "snapshot_sha256": "d7c64b3d154f3577a1e41d9f5af72b3e40798465c4d3e08d91814bc4c4917e85",
+        "observed_at": "2026-11-10T04:06:17.557Z",
         "discovery_title": "@GitHub in Slack and Teams is generally available and more",
         "discovery_published_at": "2026-11-06T20:31:08.000Z"
       },
@@ -710,8 +710,8 @@
       "article_id": "2026-11-06-github-copilot-weekly-releases-november-2-353c4d26111c",
       "source_url": "https://github.blog/changelog/2026-11-06-github-copilot-weekly-releases-november-2",
       "capture": {
-        "snapshot_sha256": "35f7256b68d318fab2ad4997bcb29730cb1ed530c6b474897ec5e8f894f5abb2",
-        "observed_at": "2026-11-09T12:49:21.175Z",
+        "snapshot_sha256": "878ead05ddc455a9718e0dff8c3a8bc8e44606b887d8c251eaf35d2f2c7d90a5",
+        "observed_at": "2026-11-10T04:06:18.082Z",
         "discovery_title": "GitHub Copilot weekly releases — November 2",
         "discovery_published_at": "2026-11-06T21:00:26.000Z"
       },
@@ -720,6 +720,17 @@
         "published_at": "2026-11-06T21:00:26.000Z",
         "publication_path": "/posts/2026-11-06-github-copilot-weekly-releases-november-2/"
       }
+    },
+    "2026-11-09-claude-fable-5-2-in-github-copilot-a3eb4dc7ae89": {
+      "article_id": "2026-11-09-claude-fable-5-2-in-github-copilot-a3eb4dc7ae89",
+      "source_url": "https://github.blog/changelog/2026-11-09-claude-fable-5-2-in-github-copilot",
+      "capture": {
+        "snapshot_sha256": "099299e7eb454887902db77c2fd44c8ded18ed07ccdee1fe56ee6900edc71b15",
+        "observed_at": "2026-11-10T04:06:18.127Z",
+        "discovery_title": "Claude Fable 5.2 in GitHub Copilot",
+        "discovery_published_at": "2026-11-09T16:46:43.000Z"
+      },
+      "canonical": null
     }
   }
 }
