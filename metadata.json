@@ -635,8 +635,8 @@
       "article_id": "2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate-525555dfe497",
       "source_url": "https://github.blog/changelog/2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate",
       "capture": {
-        "snapshot_sha256": "bd3ac8c84d7565b41c06e57e7e3cb6436c3c53a5581d3d385f3dcb7aeab083e2",
-        "observed_at": "2026-11-10T12:35:58.661Z",
+        "snapshot_sha256": "c91bdc0aff3540ac5caa898c0f99c8611d1930f08369d96519f4f2e701b61a90",
+        "observed_at": "2026-11-11T01:54:56.578Z",
         "discovery_title": "Usage metrics API adds code review details and addressed rate",
         "discovery_published_at": "2026-11-06T00:19:07.000Z"
       },
@@ -650,8 +650,8 @@
       "article_id": "2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps-0778fb85d915",
       "source_url": "https://github.blog/changelog/2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps",
       "capture": {
-        "snapshot_sha256": "04152f2d5505de39e946cd52d83265ade2a445ebb11895573bd6b255da06d69d",
-        "observed_at": "2026-11-10T04:06:15.765Z",
+        "snapshot_sha256": "17025858b53950a979ea2d402c8cac9ffc19ec9d1b895ea0cb45a15428a6f0eb",
+        "observed_at": "2026-11-11T01:54:57.107Z",
         "discovery_title": "Usage metrics API flags telemetry and version gaps",
         "discovery_published_at": "2026-11-06T00:08:31.000Z"
       },
@@ -665,8 +665,8 @@
       "article_id": "2026-11-06-copilot-code-review-api-management-and-review-overview-updates-cc9249299f5d",
       "source_url": "https://github.blog/changelog/2026-11-06-copilot-code-review-api-management-and-review-overview-updates",
       "capture": {
-        "snapshot_sha256": "27fa9be4de202db6831af42491d1626a7a307005487d89546f9fad8cdb1850c6",
-        "observed_at": "2026-11-10T12:36:00.148Z",
+        "snapshot_sha256": "b5889b17f8b8875590f8cd7d368b2b88c0f4fea948250c53de0dbd1297c50961",
+        "observed_at": "2026-11-11T01:54:57.655Z",
         "discovery_title": "Copilot code review: API management and review overview updates",
         "discovery_published_at": "2026-11-07T00:27:19.000Z"
       },
@@ -680,8 +680,8 @@
       "article_id": "2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage-a5fcc1255202",
       "source_url": "https://github.blog/changelog/2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage",
       "capture": {
-        "snapshot_sha256": "e96fd61627110f0b170173b7c6fc377861adcd9dfbecf770ab0c7e3a6476b3ae",
-        "observed_at": "2026-11-10T12:36:00.719Z",
+        "snapshot_sha256": "47dd949c1d379e78cdffd5807ede4a44b87c6e7fd6e077fc4c247708d640c479",
+        "observed_at": "2026-11-11T01:54:58.102Z",
         "discovery_title": "Copilot impact dashboard adds chat and VS Code agent usage",
         "discovery_published_at": "2026-11-06T22:17:28.000Z"
       },
@@ -695,8 +695,8 @@
       "article_id": "2026-11-06-github-copilot-in-slack-and-teams-is-generally-available-2b1caf305a69",
       "source_url": "https://github.blog/changelog/2026-11-06-github-copilot-in-slack-and-teams-is-generally-available",
       "capture": {
-        "snapshot_sha256": "4c8fa31518e637b0a7f35a56524e53af8f128d65caefdd0c5df79ba2df013d01",
-        "observed_at": "2026-11-10T12:36:01.316Z",
+        "snapshot_sha256": "6ece17082e933e3b171251904d81d4dc452da538b61f4223791b76b9b774a166",
+        "observed_at": "2026-11-11T01:54:58.718Z",
         "discovery_title": "@GitHub in Slack and Teams is generally available and more",
         "discovery_published_at": "2026-11-06T20:31:08.000Z"
       },
@@ -710,8 +710,8 @@
       "article_id": "2026-11-06-github-copilot-weekly-releases-november-2-353c4d26111c",
       "source_url": "https://github.blog/changelog/2026-11-06-github-copilot-weekly-releases-november-2",
       "capture": {
-        "snapshot_sha256": "877515b1c82b6dad114aa96395c8349085501ad751f61ee9c6153229e3137cbb",
-        "observed_at": "2026-11-10T12:36:01.892Z",
+        "snapshot_sha256": "e6b812b4f1b3a42fa89043edafcce70a634e43219c84f4db0878a7788e772a33",
+        "observed_at": "2026-11-11T01:54:59.182Z",
         "discovery_title": "GitHub Copilot weekly releases — November 2",
         "discovery_published_at": "2026-11-06T21:00:26.000Z"
       },
@@ -725,8 +725,8 @@
       "article_id": "2026-11-09-claude-fable-5-2-in-github-copilot-a3eb4dc7ae89",
       "source_url": "https://github.blog/changelog/2026-11-09-claude-fable-5-2-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "d5f3d1a003851cedd8fd69fb5be1fa66362299ef7e5364f533c33c63ec2efbc0",
-        "observed_at": "2026-11-10T12:36:02.021Z",
+        "snapshot_sha256": "7a8c0ebad1b8481d262306412d4aba92a0ad7efc79fbd1a4346d8360f4fbcf4c",
+        "observed_at": "2026-11-11T01:54:59.687Z",
         "discovery_title": "Claude Fable 5.2 in GitHub Copilot",
         "discovery_published_at": "2026-11-09T16:46:43.000Z"
       },
@@ -735,6 +735,39 @@
         "published_at": "2026-11-09T16:46:43.000Z",
         "publication_path": "/posts/2026-11-09-claude-fable-5-2-in-github-copilot/"
       }
+    },
+    "2026-11-10-c-language-server-now-auto-configures-msbuild-builds-ce169ea5d1f1": {
+      "article_id": "2026-11-10-c-language-server-now-auto-configures-msbuild-builds-ce169ea5d1f1",
+      "source_url": "https://github.blog/changelog/2026-11-10-c-language-server-now-auto-configures-msbuild-builds",
+      "capture": {
+        "snapshot_sha256": "498cb57eb0bd19188cc7b88d9ac4226db0da3456c59824d731c225a4341f998c",
+        "observed_at": "2026-11-11T01:55:00.198Z",
+        "discovery_title": "C++ language server now auto-configures MSBuild builds",
+        "discovery_published_at": "2026-11-10T17:04:10.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-10-gemini-4-carbon-in-github-copilot-78c954e9f04a": {
+      "article_id": "2026-11-10-gemini-4-carbon-in-github-copilot-78c954e9f04a",
+      "source_url": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
+      "capture": {
+        "snapshot_sha256": "b7c9d5f006e9fde25ff12066b8253dfc68aef85f38d32af0c1759b229223cd24",
+        "observed_at": "2026-11-11T01:55:00.267Z",
+        "discovery_title": "Gemini 4 Carbon in GitHub Copilot",
+        "discovery_published_at": "2026-11-10T19:26:51.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-10-github-app-support-for-enterprise-copilot-seat-management-b5d37a4739ec": {
+      "article_id": "2026-11-10-github-app-support-for-enterprise-copilot-seat-management-b5d37a4739ec",
+      "source_url": "https://github.blog/changelog/2026-11-10-github-app-support-for-enterprise-copilot-seat-management",
+      "capture": {
+        "snapshot_sha256": "3a12f5654abea62be5b7a740586248b61d563bbd0dbff3baab24edbbb8b43028",
+        "observed_at": "2026-11-11T01:55:00.758Z",
+        "discovery_title": "GitHub App support for Enterprise Copilot seat management",
+        "discovery_published_at": "2026-11-11T00:10:31.000Z"
+      },
+      "canonical": null
     }
   }
 }
