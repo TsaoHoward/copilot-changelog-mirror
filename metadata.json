@@ -635,8 +635,8 @@
       "article_id": "2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate-525555dfe497",
       "source_url": "https://github.blog/changelog/2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate",
       "capture": {
-        "snapshot_sha256": "c91bdc0aff3540ac5caa898c0f99c8611d1930f08369d96519f4f2e701b61a90",
-        "observed_at": "2026-11-11T01:54:56.578Z",
+        "snapshot_sha256": "afbdeceac22d858f6d0e06dc146a71c20a219015084af0d918347c18d7911551",
+        "observed_at": "2026-11-11T11:50:55.499Z",
         "discovery_title": "Usage metrics API adds code review details and addressed rate",
         "discovery_published_at": "2026-11-06T00:19:07.000Z"
       },
@@ -650,8 +650,8 @@
       "article_id": "2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps-0778fb85d915",
       "source_url": "https://github.blog/changelog/2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps",
       "capture": {
-        "snapshot_sha256": "17025858b53950a979ea2d402c8cac9ffc19ec9d1b895ea0cb45a15428a6f0eb",
-        "observed_at": "2026-11-11T01:54:57.107Z",
+        "snapshot_sha256": "a9f4bc9f80ae75a254d57c0002900ed1978179bd3ed4621199890c03ce2bc0a1",
+        "observed_at": "2026-11-11T11:50:55.960Z",
         "discovery_title": "Usage metrics API flags telemetry and version gaps",
         "discovery_published_at": "2026-11-06T00:08:31.000Z"
       },
@@ -665,8 +665,8 @@
       "article_id": "2026-11-06-copilot-code-review-api-management-and-review-overview-updates-cc9249299f5d",
       "source_url": "https://github.blog/changelog/2026-11-06-copilot-code-review-api-management-and-review-overview-updates",
       "capture": {
-        "snapshot_sha256": "b5889b17f8b8875590f8cd7d368b2b88c0f4fea948250c53de0dbd1297c50961",
-        "observed_at": "2026-11-11T01:54:57.655Z",
+        "snapshot_sha256": "61a61461f4b921018da8bbd00b42154c020fa173f86c6fdcbdc3a6b3c3fcd6bc",
+        "observed_at": "2026-11-11T11:50:56.365Z",
         "discovery_title": "Copilot code review: API management and review overview updates",
         "discovery_published_at": "2026-11-07T00:27:19.000Z"
       },
@@ -680,8 +680,8 @@
       "article_id": "2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage-a5fcc1255202",
       "source_url": "https://github.blog/changelog/2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage",
       "capture": {
-        "snapshot_sha256": "47dd949c1d379e78cdffd5807ede4a44b87c6e7fd6e077fc4c247708d640c479",
-        "observed_at": "2026-11-11T01:54:58.102Z",
+        "snapshot_sha256": "f7ed32b6f7ed18563bbe3ea36d60cbf57a0c9a9baa9489acfbe579cf273fe64b",
+        "observed_at": "2026-11-11T11:50:56.990Z",
         "discovery_title": "Copilot impact dashboard adds chat and VS Code agent usage",
         "discovery_published_at": "2026-11-06T22:17:28.000Z"
       },
@@ -725,8 +725,8 @@
       "article_id": "2026-11-09-claude-fable-5-2-in-github-copilot-a3eb4dc7ae89",
       "source_url": "https://github.blog/changelog/2026-11-09-claude-fable-5-2-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "7a8c0ebad1b8481d262306412d4aba92a0ad7efc79fbd1a4346d8360f4fbcf4c",
-        "observed_at": "2026-11-11T01:54:59.687Z",
+        "snapshot_sha256": "a6c2e2df51abc592a4d82039b6029d00c0327cd05ad823f1fc72449dbc69ed14",
+        "observed_at": "2026-11-11T11:50:58.368Z",
         "discovery_title": "Claude Fable 5.2 in GitHub Copilot",
         "discovery_published_at": "2026-11-09T16:46:43.000Z"
       },
