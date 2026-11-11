@@ -745,7 +745,11 @@
         "discovery_title": "C++ language server now auto-configures MSBuild builds",
         "discovery_published_at": "2026-11-10T17:04:10.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "C++ language server now auto-configures MSBuild builds",
+        "published_at": "2026-11-10T17:04:10.000Z",
+        "publication_path": "/posts/2026-11-10-c-language-server-now-auto-configures-msbuild-builds/"
+      }
     },
     "2026-11-10-gemini-4-carbon-in-github-copilot-78c954e9f04a": {
       "article_id": "2026-11-10-gemini-4-carbon-in-github-copilot-78c954e9f04a",
@@ -756,7 +760,11 @@
         "discovery_title": "Gemini 4 Carbon in GitHub Copilot",
         "discovery_published_at": "2026-11-10T19:26:51.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Gemini 4 Carbon in GitHub Copilot",
+        "published_at": "2026-11-10T19:26:51.000Z",
+        "publication_path": "/posts/2026-11-10-gemini-4-carbon-in-github-copilot/"
+      }
     },
     "2026-11-10-github-app-support-for-enterprise-copilot-seat-management-b5d37a4739ec": {
       "article_id": "2026-11-10-github-app-support-for-enterprise-copilot-seat-management-b5d37a4739ec",
@@ -767,7 +775,11 @@
         "discovery_title": "GitHub App support for Enterprise Copilot seat management",
         "discovery_published_at": "2026-11-11T00:10:31.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "GitHub App support for Enterprise Copilot seat management",
+        "published_at": "2026-11-11T00:10:31.000Z",
+        "publication_path": "/posts/2026-11-10-github-app-support-for-enterprise-copilot-seat-management/"
+      }
     }
   }
 }
