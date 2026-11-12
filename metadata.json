@@ -635,8 +635,8 @@
       "article_id": "2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate-525555dfe497",
       "source_url": "https://github.blog/changelog/2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate",
       "capture": {
-        "snapshot_sha256": "e5dabab6b73895c419cee437b5fcde9ae6cd8ba77d3bb88a3d1eced2651dca0a",
-        "observed_at": "2026-11-12T02:56:59.031Z",
+        "snapshot_sha256": "0738408996507e548cf4df2be867dde0fc5bb1163c51373025f3a01206ee7875",
+        "observed_at": "2026-11-12T12:39:46.521Z",
         "discovery_title": "Usage metrics API adds code review details and addressed rate",
         "discovery_published_at": "2026-11-06T00:19:07.000Z"
       },
@@ -725,8 +725,8 @@
       "article_id": "2026-11-09-claude-fable-5-2-in-github-copilot-a3eb4dc7ae89",
       "source_url": "https://github.blog/changelog/2026-11-09-claude-fable-5-2-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "9ad8bd11c989f2ce1e785a4c2212b24fc8685a8906ba4babc9fa24315a967429",
-        "observed_at": "2026-11-12T02:57:03.040Z",
+        "snapshot_sha256": "1025b5dc366836a230d538a68d34566f488733824d07c63a2ea00fb251ba7869",
+        "observed_at": "2026-11-12T12:39:49.979Z",
         "discovery_title": "Claude Fable 5.2 in GitHub Copilot",
         "discovery_published_at": "2026-11-09T16:46:43.000Z"
       },
@@ -755,8 +755,8 @@
       "article_id": "2026-11-10-gemini-4-carbon-in-github-copilot-78c954e9f04a",
       "source_url": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "5b821570e3b6feecba5c7ceac097df49608dd65f42d83e0797966ddbe4e0071b",
-        "observed_at": "2026-11-12T02:57:04.323Z",
+        "snapshot_sha256": "3a614c8333b3e67298521d881f9aad25e0eda4915829f888fa34dcefa8bebef9",
+        "observed_at": "2026-11-12T12:39:51.132Z",
         "discovery_title": "Gemini 4 Carbon in GitHub Copilot",
         "discovery_published_at": "2026-11-10T19:26:51.000Z"
       },
@@ -770,8 +770,8 @@
       "article_id": "2026-11-10-github-app-support-for-enterprise-copilot-seat-management-b5d37a4739ec",
       "source_url": "https://github.blog/changelog/2026-11-10-github-app-support-for-enterprise-copilot-seat-management",
       "capture": {
-        "snapshot_sha256": "c5768ccfd142da782c912e56bb3426a26710f53576ac113a22b8cf7b814f1b2d",
-        "observed_at": "2026-11-12T02:57:04.884Z",
+        "snapshot_sha256": "291ddd8ffad996e00c64c6d4baf7f3a8a6e2f9108c3390b253ec878991a9c902",
+        "observed_at": "2026-11-12T12:39:51.207Z",
         "discovery_title": "GitHub App support for Enterprise Copilot seat management",
         "discovery_published_at": "2026-11-11T00:10:31.000Z"
       },
