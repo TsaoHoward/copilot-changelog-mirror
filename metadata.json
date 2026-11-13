@@ -635,8 +635,8 @@
       "article_id": "2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate-525555dfe497",
       "source_url": "https://github.blog/changelog/2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate",
       "capture": {
-        "snapshot_sha256": "521733de5c626e60f491e6d4281e891f901faf7e3bce4bb8cd97685483b7d110",
-        "observed_at": "2026-11-13T02:37:10.426Z",
+        "snapshot_sha256": "93b11b0c3f76f6ffd88f6e2c56e6f6c0ab18c100ad9e166d455637b71596f16b",
+        "observed_at": "2026-11-13T12:09:54.074Z",
         "discovery_title": "Usage metrics API adds code review details and addressed rate",
         "discovery_published_at": "2026-11-06T00:19:07.000Z"
       },
@@ -650,8 +650,8 @@
       "article_id": "2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps-0778fb85d915",
       "source_url": "https://github.blog/changelog/2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps",
       "capture": {
-        "snapshot_sha256": "2ca0306e8df135643279d944e7c6cfa765fdd98da11a57715b5308c573f11294",
-        "observed_at": "2026-11-13T02:37:11.473Z",
+        "snapshot_sha256": "51d2a528f61b5f9a0917c2520cd9653f7c3afac0154475ff6f7e57384402314b",
+        "observed_at": "2026-11-13T12:09:54.300Z",
         "discovery_title": "Usage metrics API flags telemetry and version gaps",
         "discovery_published_at": "2026-11-06T00:08:31.000Z"
       },
@@ -710,8 +710,8 @@
       "article_id": "2026-11-06-github-copilot-weekly-releases-november-2-353c4d26111c",
       "source_url": "https://github.blog/changelog/2026-11-06-github-copilot-weekly-releases-november-2",
       "capture": {
-        "snapshot_sha256": "883167310b431eb0c3e99bab1047cac193e97936731f6d996d5f1d0838776f19",
-        "observed_at": "2026-11-13T02:37:13.218Z",
+        "snapshot_sha256": "526b85983318c9c98cf5ee2b684f1edb2d8a40350524acfab857f73d17d831e5",
+        "observed_at": "2026-11-13T12:09:56.852Z",
         "discovery_title": "GitHub Copilot weekly releases — November 2",
         "discovery_published_at": "2026-11-06T21:00:26.000Z"
       },
@@ -740,8 +740,8 @@
       "article_id": "2026-11-10-c-language-server-now-auto-configures-msbuild-builds-ce169ea5d1f1",
       "source_url": "https://github.blog/changelog/2026-11-10-c-language-server-now-auto-configures-msbuild-builds",
       "capture": {
-        "snapshot_sha256": "68cb6bdeb8320e59781f4ecec525fb4aeac4f38b37e97941722926912472a6e7",
-        "observed_at": "2026-11-13T02:37:13.722Z",
+        "snapshot_sha256": "40c7194ef3728389566b9c21419da87a9c219623607b479e8349990def5c687a",
+        "observed_at": "2026-11-13T12:09:57.309Z",
         "discovery_title": "C++ language server now auto-configures MSBuild builds",
         "discovery_published_at": "2026-11-10T17:04:10.000Z"
       },
@@ -755,8 +755,8 @@
       "article_id": "2026-11-10-gemini-4-carbon-in-github-copilot-78c954e9f04a",
       "source_url": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "e4ff406a7e8ca261c55685775dfe6e4d6f6dc3f089cac86c13a1065a2d4d24b8",
-        "observed_at": "2026-11-13T02:37:14.262Z",
+        "snapshot_sha256": "416aee6b82f6c4e842abeb5976acf70045117b9373b74583e4e7b01f88eaeeec",
+        "observed_at": "2026-11-13T12:09:57.886Z",
         "discovery_title": "Gemini 4 Carbon in GitHub Copilot",
         "discovery_published_at": "2026-11-10T19:26:51.000Z"
       },
@@ -770,8 +770,8 @@
       "article_id": "2026-11-10-github-app-support-for-enterprise-copilot-seat-management-b5d37a4739ec",
       "source_url": "https://github.blog/changelog/2026-11-10-github-app-support-for-enterprise-copilot-seat-management",
       "capture": {
-        "snapshot_sha256": "6dc7bc11f9227f559df0930fe92fccf333c4926999e886cd5462b21869ab8872",
-        "observed_at": "2026-11-13T02:37:14.691Z",
+        "snapshot_sha256": "3733cf6fd092ddce155b56d06f4a09d7d0fae86603e2ee77065e0e8c3ccc29a9",
+        "observed_at": "2026-11-13T12:09:58.447Z",
         "discovery_title": "GitHub App support for Enterprise Copilot seat management",
         "discovery_published_at": "2026-11-11T00:10:31.000Z"
       },
