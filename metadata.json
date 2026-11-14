@@ -790,7 +790,11 @@
         "discovery_title": "Gemini 4 Hydrogen in GitHub Copilot",
         "discovery_published_at": "2026-11-13T18:23:48.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Gemini 4 Hydrogen in GitHub Copilot",
+        "published_at": "2026-11-13T18:23:48.000Z",
+        "publication_path": "/posts/2026-11-13-gemini-4-hydrogen-in-github-copilot/"
+      }
     },
     "2026-11-13-github-enterprise-server-support-in-the-github-copilot-app-a82a582d254d": {
       "article_id": "2026-11-13-github-enterprise-server-support-in-the-github-copilot-app-a82a582d254d",
@@ -801,7 +805,11 @@
         "discovery_title": "GitHub Enterprise Server support in the GitHub Copilot app",
         "discovery_published_at": "2026-11-13T18:27:13.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "GitHub Enterprise Server support in the GitHub Copilot app",
+        "published_at": "2026-11-13T18:27:13.000Z",
+        "publication_path": "/posts/2026-11-13-github-enterprise-server-support-in-the-github-copilot-app/"
+      }
     },
     "2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december-995c4a805a2d": {
       "article_id": "2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december-995c4a805a2d",
@@ -812,7 +820,11 @@
         "discovery_title": "Upcoming deprecation of selected GitHub Copilot models in December",
         "discovery_published_at": "2026-11-13T20:40:05.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Upcoming deprecation of selected GitHub Copilot models in December",
+        "published_at": "2026-11-13T20:40:05.000Z",
+        "publication_path": "/posts/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december/"
+      }
     }
   }
 }
