@@ -680,8 +680,8 @@
       "article_id": "2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage-a5fcc1255202",
       "source_url": "https://github.blog/changelog/2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage",
       "capture": {
-        "snapshot_sha256": "ea97d684b3117d1b468c51a607738bf235c62626c2eb826d60b912c9fdd49142",
-        "observed_at": "2026-11-14T02:24:45.322Z",
+        "snapshot_sha256": "d44d1f8ef743e7dcd917c7d354f9e0b88b87575bee3467ccf9428797251a3425",
+        "observed_at": "2026-11-14T11:26:09.074Z",
         "discovery_title": "Copilot impact dashboard adds chat and VS Code agent usage",
         "discovery_published_at": "2026-11-06T22:17:28.000Z"
       },
@@ -710,8 +710,8 @@
       "article_id": "2026-11-06-github-copilot-weekly-releases-november-2-353c4d26111c",
       "source_url": "https://github.blog/changelog/2026-11-06-github-copilot-weekly-releases-november-2",
       "capture": {
-        "snapshot_sha256": "ec52db9e6f8d4cec11f6e643b8a16449a25010966680fe5ad2121bdad42917e7",
-        "observed_at": "2026-11-14T02:24:45.796Z",
+        "snapshot_sha256": "565fef86e43564188d7fcfedfa991c910c89d3f5f0e654e7e53e5ec278d84bd3",
+        "observed_at": "2026-11-14T11:26:10.402Z",
         "discovery_title": "GitHub Copilot weekly releases — November 2",
         "discovery_published_at": "2026-11-06T21:00:26.000Z"
       },
@@ -755,8 +755,8 @@
       "article_id": "2026-11-10-gemini-4-carbon-in-github-copilot-78c954e9f04a",
       "source_url": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "ea9aff8c0f196f05429aca848921a9667d9b91d9a9a79a6c6a92fc79e23e26c8",
-        "observed_at": "2026-11-14T02:24:46.696Z",
+        "snapshot_sha256": "e7ac4710ae8c9bc425a983720bb32a62681b5a32119faf40a434b612558e9ff5",
+        "observed_at": "2026-11-14T11:26:13.253Z",
         "discovery_title": "Gemini 4 Carbon in GitHub Copilot",
         "discovery_published_at": "2026-11-10T19:26:51.000Z"
       },
