@@ -835,7 +835,11 @@
         "discovery_title": "Control where GitHub Copilot customizations come from",
         "discovery_published_at": "2026-11-16T19:48:33.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Control where GitHub Copilot customizations come from",
+        "published_at": "2026-11-16T19:48:33.000Z",
+        "publication_path": "/posts/2026-11-16-control-where-github-copilot-customizations-come-from/"
+      }
     },
     "2026-11-16-github-copilot-models-deprecated-on-november-16-2026-ff1caf51baea": {
       "article_id": "2026-11-16-github-copilot-models-deprecated-on-november-16-2026-ff1caf51baea",
@@ -846,7 +850,11 @@
         "discovery_title": "GitHub Copilot models deprecated on November 16, 2026",
         "discovery_published_at": "2026-11-16T20:25:20.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "GitHub Copilot models deprecated on November 16, 2026",
+        "published_at": "2026-11-16T20:25:20.000Z",
+        "publication_path": "/posts/2026-11-16-github-copilot-models-deprecated-on-november-16-2026/"
+      }
     },
     "2026-11-16-github-copilot-weekly-releases-november-9-fd96ccdd509b": {
       "article_id": "2026-11-16-github-copilot-weekly-releases-november-9-fd96ccdd509b",
@@ -857,7 +865,11 @@
         "discovery_title": "GitHub Copilot weekly releases — November 9",
         "discovery_published_at": "2026-11-16T21:34:53.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "GitHub Copilot weekly releases — November 9",
+        "published_at": "2026-11-16T21:34:53.000Z",
+        "publication_path": "/posts/2026-11-16-github-copilot-weekly-releases-november-9/"
+      }
     },
     "2026-11-16-vs-code-retires-the-local-harness-in-february-2027-c04e20070f0f": {
       "article_id": "2026-11-16-vs-code-retires-the-local-harness-in-february-2027-c04e20070f0f",
@@ -868,7 +880,11 @@
         "discovery_title": "VS Code retires the Local harness in February 2027",
         "discovery_published_at": "2026-11-16T19:22:56.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "VS Code retires the Local harness in February 2027",
+        "published_at": "2026-11-16T19:22:56.000Z",
+        "publication_path": "/posts/2026-11-16-vs-code-retires-the-local-harness-in-february-2027/"
+      }
     }
   }
 }
