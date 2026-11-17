@@ -740,8 +740,8 @@
       "article_id": "2026-11-10-c-language-server-now-auto-configures-msbuild-builds-ce169ea5d1f1",
       "source_url": "https://github.blog/changelog/2026-11-10-c-language-server-now-auto-configures-msbuild-builds",
       "capture": {
-        "snapshot_sha256": "465d4d6867cc16b1794256df4f488f3b2dccccdb30d5b1bfae616365228c45d3",
-        "observed_at": "2026-11-16T12:41:58.257Z",
+        "snapshot_sha256": "c965448be73d5b06c6000cd5a3f29617331edc6189487df4ec89c20500fbdf13",
+        "observed_at": "2026-11-17T04:28:13.175Z",
         "discovery_title": "C++ language server now auto-configures MSBuild builds",
         "discovery_published_at": "2026-11-10T17:04:10.000Z"
       },
@@ -755,8 +755,8 @@
       "article_id": "2026-11-10-gemini-4-carbon-in-github-copilot-78c954e9f04a",
       "source_url": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "6609d2b3b252928c01eddea2f450c802d28f8c98e2857701aa8c4c8c96b56ee2",
-        "observed_at": "2026-11-16T12:41:58.329Z",
+        "snapshot_sha256": "8b36fb8b22cf67031769206844314b2e32a59f30d3823a9c3064ef3022a5815d",
+        "observed_at": "2026-11-17T04:28:13.962Z",
         "discovery_title": "Gemini 4 Carbon in GitHub Copilot",
         "discovery_published_at": "2026-11-10T19:26:51.000Z"
       },
@@ -770,8 +770,8 @@
       "article_id": "2026-11-10-github-app-support-for-enterprise-copilot-seat-management-b5d37a4739ec",
       "source_url": "https://github.blog/changelog/2026-11-10-github-app-support-for-enterprise-copilot-seat-management",
       "capture": {
-        "snapshot_sha256": "208367ba1a1a3b5f5065e51edd5d9327145ef91f4d6acc475d5dfe1058bcf311",
-        "observed_at": "2026-11-16T02:00:33.640Z",
+        "snapshot_sha256": "248ffff971f7adb68885bfe20ea5a01b3f60b021b3f8355b59823552c4ff60e4",
+        "observed_at": "2026-11-17T04:28:14.549Z",
         "discovery_title": "GitHub App support for Enterprise Copilot seat management",
         "discovery_published_at": "2026-11-11T00:10:31.000Z"
       },
@@ -785,8 +785,8 @@
       "article_id": "2026-11-13-gemini-4-hydrogen-in-github-copilot-dde13a6350f0",
       "source_url": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "7d861432e422780195902911ab5933ce6aee54a57a6e9e8329829f76b252add5",
-        "observed_at": "2026-11-16T02:00:34.070Z",
+        "snapshot_sha256": "ae5089a2351370f17f9a8f76e0f322129893180791405b3253873551b93c2f0f",
+        "observed_at": "2026-11-17T04:28:15.209Z",
         "discovery_title": "Gemini 4 Hydrogen in GitHub Copilot",
         "discovery_published_at": "2026-11-13T18:23:48.000Z"
       },
@@ -800,8 +800,8 @@
       "article_id": "2026-11-13-github-enterprise-server-support-in-the-github-copilot-app-a82a582d254d",
       "source_url": "https://github.blog/changelog/2026-11-13-github-enterprise-server-support-in-the-github-copilot-app",
       "capture": {
-        "snapshot_sha256": "77ecd8266242132d4b18d3fee7d7e19fce0f2c74884018e815bc91f8fb5d0272",
-        "observed_at": "2026-11-16T12:41:59.303Z",
+        "snapshot_sha256": "be331e1adfab9d8d1f304f49022ab0866f8e22b1520427e2c740e4c52f1b5ae8",
+        "observed_at": "2026-11-17T04:28:15.844Z",
         "discovery_title": "GitHub Enterprise Server support in the GitHub Copilot app",
         "discovery_published_at": "2026-11-13T18:27:13.000Z"
       },
@@ -815,8 +815,8 @@
       "article_id": "2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december-995c4a805a2d",
       "source_url": "https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december",
       "capture": {
-        "snapshot_sha256": "44e2b9beb58147f2998131b8ae88692ee51de50efca071c11ac82386d0ee8901",
-        "observed_at": "2026-11-16T12:41:59.361Z",
+        "snapshot_sha256": "2992308207cfe92a3fd57f442cf39196f11c7e82d273f786c135aedfc2124353",
+        "observed_at": "2026-11-17T04:28:16.655Z",
         "discovery_title": "Upcoming deprecation of selected GitHub Copilot models in December",
         "discovery_published_at": "2026-11-13T20:40:05.000Z"
       },
@@ -825,6 +825,50 @@
         "published_at": "2026-11-13T20:40:05.000Z",
         "publication_path": "/posts/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december/"
       }
+    },
+    "2026-11-16-control-where-github-copilot-customizations-come-from-a06076806a0e": {
+      "article_id": "2026-11-16-control-where-github-copilot-customizations-come-from-a06076806a0e",
+      "source_url": "https://github.blog/changelog/2026-11-16-control-where-github-copilot-customizations-come-from",
+      "capture": {
+        "snapshot_sha256": "8b0d1dba47ca87329cb2a9586fcc008e9e88f72cb14d2a160d8ed40fcd3cb4c4",
+        "observed_at": "2026-11-17T04:28:17.420Z",
+        "discovery_title": "Control where GitHub Copilot customizations come from",
+        "discovery_published_at": "2026-11-16T19:48:33.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-16-github-copilot-models-deprecated-on-november-16-2026-ff1caf51baea": {
+      "article_id": "2026-11-16-github-copilot-models-deprecated-on-november-16-2026-ff1caf51baea",
+      "source_url": "https://github.blog/changelog/2026-11-16-github-copilot-models-deprecated-on-november-16-2026",
+      "capture": {
+        "snapshot_sha256": "78ead73b6f247203879dde24117600118f04f4bea9584312f2afc178dffb89c9",
+        "observed_at": "2026-11-17T04:28:17.934Z",
+        "discovery_title": "GitHub Copilot models deprecated on November 16, 2026",
+        "discovery_published_at": "2026-11-16T20:25:20.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-16-github-copilot-weekly-releases-november-9-fd96ccdd509b": {
+      "article_id": "2026-11-16-github-copilot-weekly-releases-november-9-fd96ccdd509b",
+      "source_url": "https://github.blog/changelog/2026-11-16-github-copilot-weekly-releases-november-9",
+      "capture": {
+        "snapshot_sha256": "2030adf2e3986a3532f72ae2f5654a5442491f6cdd27280d4def56ce8def87b7",
+        "observed_at": "2026-11-17T04:28:18.479Z",
+        "discovery_title": "GitHub Copilot weekly releases — November 9",
+        "discovery_published_at": "2026-11-16T21:34:53.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-16-vs-code-retires-the-local-harness-in-february-2027-c04e20070f0f": {
+      "article_id": "2026-11-16-vs-code-retires-the-local-harness-in-february-2027-c04e20070f0f",
+      "source_url": "https://github.blog/changelog/2026-11-16-vs-code-retires-the-local-harness-in-february-2027",
+      "capture": {
+        "snapshot_sha256": "101aec41b51951acc6adbb266c7ca289ca68a5534a5eded5207681783a291704",
+        "observed_at": "2026-11-17T04:28:18.614Z",
+        "discovery_title": "VS Code retires the Local harness in February 2027",
+        "discovery_published_at": "2026-11-16T19:22:56.000Z"
+      },
+      "canonical": null
     }
   }
 }
