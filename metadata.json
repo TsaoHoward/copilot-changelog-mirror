@@ -885,6 +885,116 @@
         "published_at": "2026-11-16T19:22:56.000Z",
         "publication_path": "/posts/2026-11-16-vs-code-retires-the-local-harness-in-february-2027/"
       }
+    },
+    "2026-11-17-copilot-code-review-adaptive-effort-secret-detection-and-more-6beb5088ff95": {
+      "article_id": "2026-11-17-copilot-code-review-adaptive-effort-secret-detection-and-more-6beb5088ff95",
+      "source_url": "https://github.blog/changelog/2026-11-17-copilot-code-review-adaptive-effort-secret-detection-and-more",
+      "capture": {
+        "snapshot_sha256": "e84e03f41a8d4ee61d44e795825434a9c5b4d36df7695876db36735838d0d45c",
+        "observed_at": "2026-11-18T03:42:00.551Z",
+        "discovery_title": "Copilot code review: Adaptive effort, secret detection, and more",
+        "discovery_published_at": "2026-11-17T18:02:05.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-17-github-copilot-app-microsoft-ignite-releases-c381f1f20c43": {
+      "article_id": "2026-11-17-github-copilot-app-microsoft-ignite-releases-c381f1f20c43",
+      "source_url": "https://github.blog/changelog/2026-11-17-github-copilot-app-microsoft-ignite-releases",
+      "capture": {
+        "snapshot_sha256": "e1dce4dda8408fa677ed699af1c6811d52ee8bbea55689567d9f5f07ef795d7f",
+        "observed_at": "2026-11-18T03:42:00.643Z",
+        "discovery_title": "GitHub Copilot app, Microsoft Ignite releases",
+        "discovery_published_at": "2026-11-17T18:03:42.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-17-github-copilot-cli-adds-microsoft-entra-sign-in-as-a-preview-8420186bd2fe": {
+      "article_id": "2026-11-17-github-copilot-cli-adds-microsoft-entra-sign-in-as-a-preview-8420186bd2fe",
+      "source_url": "https://github.blog/changelog/2026-11-17-github-copilot-cli-adds-microsoft-entra-sign-in-as-a-preview",
+      "capture": {
+        "snapshot_sha256": "29e2296cc055e91a992455b2d9fb1ebc6a4434dfecc524bf6ccd097c75efddaf",
+        "observed_at": "2026-11-18T03:42:00.764Z",
+        "discovery_title": "GitHub Copilot CLI adds Microsoft Entra sign-in as a preview",
+        "discovery_published_at": "2026-11-17T18:00:35.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-17-github-copilot-evals-is-now-in-public-preview-1811a0441af9": {
+      "article_id": "2026-11-17-github-copilot-evals-is-now-in-public-preview-1811a0441af9",
+      "source_url": "https://github.blog/changelog/2026-11-17-github-copilot-evals-is-now-in-public-preview",
+      "capture": {
+        "snapshot_sha256": "a5365b938e632b2671b0b8ae4f71b6d52ac64edabebbd6fcc5f69a624d478503",
+        "observed_at": "2026-11-18T03:42:01.507Z",
+        "discovery_title": "GitHub Copilot Evals is now in public preview",
+        "discovery_published_at": "2026-11-17T18:00:33.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-17-github-copilot-fusion-updates-more-availability-benchmarks-and-models-75073ab85494": {
+      "article_id": "2026-11-17-github-copilot-fusion-updates-more-availability-benchmarks-and-models-75073ab85494",
+      "source_url": "https://github.blog/changelog/2026-11-17-github-copilot-fusion-updates-more-availability-benchmarks-and-models",
+      "capture": {
+        "snapshot_sha256": "0347554e124bbc8f7da324a0371fe45c55a4f8006d9617099ef14ae092458278",
+        "observed_at": "2026-11-18T03:42:02.058Z",
+        "discovery_title": "GitHub Copilot Fusion updates: more availability, benchmarks, and models",
+        "discovery_published_at": "2026-11-17T18:04:48.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-17-github-copilot-in-jetbrains-ignite-releases-453bf0492215": {
+      "article_id": "2026-11-17-github-copilot-in-jetbrains-ignite-releases-453bf0492215",
+      "source_url": "https://github.blog/changelog/2026-11-17-github-copilot-in-jetbrains-ignite-releases",
+      "capture": {
+        "snapshot_sha256": "f303cfcca9e9689a91eb1e67a526c9b343e75ef6668374f6a66c3e874a0789b1",
+        "observed_at": "2026-11-18T03:42:02.604Z",
+        "discovery_title": "GitHub Copilot in JetBrains, Ignite releases",
+        "discovery_published_at": "2026-11-17T18:00:59.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot-467e19c06d56": {
+      "article_id": "2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot-467e19c06d56",
+      "source_url": "https://github.blog/changelog/2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot",
+      "capture": {
+        "snapshot_sha256": "80eded3e3ff0c861c664952ed58fad6c05f773e35014be554cf562b6c385e3f0",
+        "observed_at": "2026-11-18T03:42:03.301Z",
+        "discovery_title": "MAI Code 2 and MAI Code 2 Flash in GitHub Copilot",
+        "discovery_published_at": "2026-11-17T18:01:45.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-17-monitor-github-copilot-activity-through-microsoft-agent-365-4cc1e304d768": {
+      "article_id": "2026-11-17-monitor-github-copilot-activity-through-microsoft-agent-365-4cc1e304d768",
+      "source_url": "https://github.blog/changelog/2026-11-17-monitor-github-copilot-activity-through-microsoft-agent-365",
+      "capture": {
+        "snapshot_sha256": "d0b3f77f9a4a351c02cc090ccb92764be5b735e8d4b4de427f154d205316ae19",
+        "observed_at": "2026-11-18T03:42:03.441Z",
+        "discovery_title": "Monitor GitHub Copilot activity through Microsoft Agent 365",
+        "discovery_published_at": "2026-11-17T18:00:59.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-17-openais-gpt-6-2-astra-and-gpt-6-2-sol-now-available-57e7781a892d": {
+      "article_id": "2026-11-17-openais-gpt-6-2-astra-and-gpt-6-2-sol-now-available-57e7781a892d",
+      "source_url": "https://github.blog/changelog/2026-11-17-openais-gpt-6-2-astra-and-gpt-6-2-sol-now-available",
+      "capture": {
+        "snapshot_sha256": "b9015a2a315b369077a86fee9152bc8bf0d417e4aebb8635c0c1926b82b0b371",
+        "observed_at": "2026-11-18T03:42:04.325Z",
+        "discovery_title": "OpenAI’s GPT-6.2 Astra and GPT-6.2 Sol now available",
+        "discovery_published_at": "2026-11-17T20:20:29.000Z"
+      },
+      "canonical": null
+    },
+    "2026-11-17-track-copilot-code-review-outcomes-in-repository-insights-7be142154dd5": {
+      "article_id": "2026-11-17-track-copilot-code-review-outcomes-in-repository-insights-7be142154dd5",
+      "source_url": "https://github.blog/changelog/2026-11-17-track-copilot-code-review-outcomes-in-repository-insights",
+      "capture": {
+        "snapshot_sha256": "369d7e16a326c731d5bea494b3cee2f4bd5daae12554882aa7db2d687e31a6d2",
+        "observed_at": "2026-11-18T03:42:05.071Z",
+        "discovery_title": "Track Copilot code review outcomes in Repository insights",
+        "discovery_published_at": "2026-11-17T18:00:35.000Z"
+      },
+      "canonical": null
     }
   }
 }
