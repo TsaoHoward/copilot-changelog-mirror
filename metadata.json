@@ -1045,7 +1045,11 @@
         "discovery_title": "Connect Supabase, Box, Calendly, and more to Copilot",
         "discovery_published_at": "2026-11-18T22:04:50.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Connect Supabase, Box, Calendly, and more to Copilot",
+        "published_at": "2026-11-18T22:04:50.000Z",
+        "publication_path": "/posts/2026-11-18-connect-supabase-box-calendly-and-more-to-copilot/"
+      }
     },
     "2026-11-18-customize-github-copilot-for-your-team-6e93a4cc0991": {
       "article_id": "2026-11-18-customize-github-copilot-for-your-team-6e93a4cc0991",
@@ -1056,7 +1060,11 @@
         "discovery_title": "Customize GitHub Copilot for your team",
         "discovery_published_at": "2026-11-18T16:00:13.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Customize GitHub Copilot for your team",
+        "published_at": "2026-11-18T16:00:13.000Z",
+        "publication_path": "/posts/2026-11-18-customize-github-copilot-for-your-team/"
+      }
     },
     "2026-11-18-gemini-4-neon-in-github-copilot-362ee7bc4f19": {
       "article_id": "2026-11-18-gemini-4-neon-in-github-copilot-362ee7bc4f19",
@@ -1067,7 +1075,11 @@
         "discovery_title": "Gemini 4 Neon in GitHub Copilot",
         "discovery_published_at": "2026-11-18T21:49:21.000Z"
       },
-      "canonical": null
+      "canonical": {
+        "title": "Gemini 4 Neon in GitHub Copilot",
+        "published_at": "2026-11-18T21:49:21.000Z",
+        "publication_path": "/posts/2026-11-18-gemini-4-neon-in-github-copilot/"
+      }
     }
   }
 }
