@@ -890,8 +890,8 @@
       "article_id": "2026-11-17-copilot-code-review-adaptive-effort-secret-detection-and-more-6beb5088ff95",
       "source_url": "https://github.blog/changelog/2026-11-17-copilot-code-review-adaptive-effort-secret-detection-and-more",
       "capture": {
-        "snapshot_sha256": "30127ee03a8c3a2db4a4f67bb61033e7adab2b7aaa04c6a10b1d2a781f7b1820",
-        "observed_at": "2026-11-20T03:09:40.368Z",
+        "snapshot_sha256": "510ff8814c5b8f4b623278dbc1ea9d5d5c774ee391cda938cf47fc8d939d37dd",
+        "observed_at": "2026-11-20T12:50:13.116Z",
         "discovery_title": "Copilot code review: Adaptive effort, secret detection, and more",
         "discovery_published_at": "2026-11-17T18:02:05.000Z"
       },
@@ -905,8 +905,8 @@
       "article_id": "2026-11-17-github-copilot-app-microsoft-ignite-releases-c381f1f20c43",
       "source_url": "https://github.blog/changelog/2026-11-17-github-copilot-app-microsoft-ignite-releases",
       "capture": {
-        "snapshot_sha256": "c33b4d7edd73bf786ce088e353be3d120c05214538f897aa184adb6de71533f4",
-        "observed_at": "2026-11-19T12:58:59.809Z",
+        "snapshot_sha256": "e1c3386c725233382b2640ae2ab25d4fca539bec62cb144e21c8c22b8e94b85d",
+        "observed_at": "2026-11-20T12:50:13.722Z",
         "discovery_title": "GitHub Copilot app, Microsoft Ignite releases",
         "discovery_published_at": "2026-11-17T18:03:42.000Z"
       },
@@ -965,8 +965,8 @@
       "article_id": "2026-11-17-github-copilot-in-jetbrains-ignite-releases-453bf0492215",
       "source_url": "https://github.blog/changelog/2026-11-17-github-copilot-in-jetbrains-ignite-releases",
       "capture": {
-        "snapshot_sha256": "98fda1988d217dbc9f6a94c3d1c87a2d58a71c5240f30979fa8c4352c5561920",
-        "observed_at": "2026-11-20T03:09:41.895Z",
+        "snapshot_sha256": "984ccc564f70bbc300a392ff1cb60c244722fb45c3fe0efb84409595eb5efdb4",
+        "observed_at": "2026-11-20T12:50:14.748Z",
         "discovery_title": "GitHub Copilot in JetBrains, Ignite releases",
         "discovery_published_at": "2026-11-17T18:00:59.000Z"
       },
@@ -980,8 +980,8 @@
       "article_id": "2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot-467e19c06d56",
       "source_url": "https://github.blog/changelog/2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "e659f07c2ab55166395c62bd9337c7b5e8d9d1defea2717335a2deec024f15bb",
-        "observed_at": "2026-11-19T12:59:01.768Z",
+        "snapshot_sha256": "026df0c5777432e46d16056d43ed7b47b60688e0f8690f48abb715fcf2c1a8e1",
+        "observed_at": "2026-11-20T12:50:15.290Z",
         "discovery_title": "MAI Code 2 and MAI Code 2 Flash in GitHub Copilot",
         "discovery_published_at": "2026-11-17T18:01:45.000Z"
       },
@@ -995,8 +995,8 @@
       "article_id": "2026-11-17-monitor-github-copilot-activity-through-microsoft-agent-365-4cc1e304d768",
       "source_url": "https://github.blog/changelog/2026-11-17-monitor-github-copilot-activity-through-microsoft-agent-365",
       "capture": {
-        "snapshot_sha256": "567a47b33fe9dd38015f9037a856d8670d3cf8aa9e7eed17f05ce38572c2d3d5",
-        "observed_at": "2026-11-20T03:09:43.776Z",
+        "snapshot_sha256": "111e25f23904927e0cc13dd0a6d41d4f12a5f779e8c406530fd6c54e12943c14",
+        "observed_at": "2026-11-20T12:50:16.230Z",
         "discovery_title": "Monitor GitHub Copilot activity through Microsoft Agent 365",
         "discovery_published_at": "2026-11-17T18:00:59.000Z"
       },
@@ -1010,8 +1010,8 @@
       "article_id": "2026-11-17-openais-gpt-6-2-astra-and-gpt-6-2-sol-now-available-57e7781a892d",
       "source_url": "https://github.blog/changelog/2026-11-17-openais-gpt-6-2-astra-and-gpt-6-2-sol-now-available",
       "capture": {
-        "snapshot_sha256": "721d502f6f9c7da496a16dda214b7733d8c8a832101d4291874faf0cb5e5188d",
-        "observed_at": "2026-11-20T03:09:44.290Z",
+        "snapshot_sha256": "3dbf204845c07197513142e7435a969b18cfd55172434cef274f756e998b47e6",
+        "observed_at": "2026-11-20T12:50:17.213Z",
         "discovery_title": "OpenAI’s GPT-6.2 Astra and GPT-6.2 Sol now available",
         "discovery_published_at": "2026-11-17T20:20:29.000Z"
       },
@@ -1040,8 +1040,8 @@
       "article_id": "2026-11-18-connect-supabase-box-calendly-and-more-to-copilot-8e2ce054ff04",
       "source_url": "https://github.blog/changelog/2026-11-18-connect-supabase-box-calendly-and-more-to-copilot",
       "capture": {
-        "snapshot_sha256": "4f951ab591354976822b0a375a6c79422c5b8f2f0330e51cd11f6d4f09be1c7a",
-        "observed_at": "2026-11-20T03:09:44.806Z",
+        "snapshot_sha256": "f4d22eb94eda58759c11028d9dfb3964555e145ad0f8494aa97759e21bcce46b",
+        "observed_at": "2026-11-20T12:50:17.939Z",
         "discovery_title": "Connect Supabase, Box, Calendly, and more to Copilot",
         "discovery_published_at": "2026-11-18T22:04:50.000Z"
       },
@@ -1055,8 +1055,8 @@
       "article_id": "2026-11-18-customize-github-copilot-for-your-team-6e93a4cc0991",
       "source_url": "https://github.blog/changelog/2026-11-18-customize-github-copilot-for-your-team",
       "capture": {
-        "snapshot_sha256": "13aa948fd8b9ad1578451ae73bac8664465374fb44f0b0632e9c0a61746baaa9",
-        "observed_at": "2026-11-19T12:59:04.027Z",
+        "snapshot_sha256": "981cc196be1e5a46ab2b1c1955058ca58b3cc5a9bd069815b7fd9304b189dd1c",
+        "observed_at": "2026-11-20T12:50:18.401Z",
         "discovery_title": "Customize GitHub Copilot for your team",
         "discovery_published_at": "2026-11-18T16:00:13.000Z"
       },
@@ -1070,8 +1070,8 @@
       "article_id": "2026-11-18-gemini-4-neon-in-github-copilot-362ee7bc4f19",
       "source_url": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "22b1db0bd20dc4d2e345b42bdbec14cbc2c5f431b9c791a031841878e8f21e2a",
-        "observed_at": "2026-11-20T03:09:45.860Z",
+        "snapshot_sha256": "b04ed7a251a4ffe6fb82225fb8405dafea15b376b9d9cc08baaafdb6411121ac",
+        "observed_at": "2026-11-20T12:50:18.954Z",
         "discovery_title": "Gemini 4 Neon in GitHub Copilot",
         "discovery_published_at": "2026-11-18T21:49:21.000Z"
       },
