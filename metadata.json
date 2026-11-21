@@ -905,8 +905,8 @@
       "article_id": "2026-11-17-github-copilot-app-microsoft-ignite-releases-c381f1f20c43",
       "source_url": "https://github.blog/changelog/2026-11-17-github-copilot-app-microsoft-ignite-releases",
       "capture": {
-        "snapshot_sha256": "e1c3386c725233382b2640ae2ab25d4fca539bec62cb144e21c8c22b8e94b85d",
-        "observed_at": "2026-11-20T12:50:13.722Z",
+        "snapshot_sha256": "f104025db14a02d598ee72e873dac9bdb147e99a69a884f5c3c0d45894c2df56",
+        "observed_at": "2026-11-21T12:35:53.990Z",
         "discovery_title": "GitHub Copilot app, Microsoft Ignite releases",
         "discovery_published_at": "2026-11-17T18:03:42.000Z"
       },
@@ -965,8 +965,8 @@
       "article_id": "2026-11-17-github-copilot-in-jetbrains-ignite-releases-453bf0492215",
       "source_url": "https://github.blog/changelog/2026-11-17-github-copilot-in-jetbrains-ignite-releases",
       "capture": {
-        "snapshot_sha256": "ce72d6905e0412953c259a88270dfd30bb918adc7ad3b5cdd0034349ec7453c9",
-        "observed_at": "2026-11-21T03:12:01.496Z",
+        "snapshot_sha256": "727ae70e94a3bb27e75efab6d404aeca38f8efb3266e9ed9bb7cc4ec9e998369",
+        "observed_at": "2026-11-21T12:35:55.611Z",
         "discovery_title": "GitHub Copilot in JetBrains, Ignite releases",
         "discovery_published_at": "2026-11-17T18:00:59.000Z"
       },
@@ -980,8 +980,8 @@
       "article_id": "2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot-467e19c06d56",
       "source_url": "https://github.blog/changelog/2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "d4981c6903d40aff149061f12110f40838fbf2d9b0828f08c7fa4df06a1a08de",
-        "observed_at": "2026-11-21T03:12:01.858Z",
+        "snapshot_sha256": "6e6886c0aff10c81858f8fb8fecd9e227665b4781ad692d4521fb4130c9384da",
+        "observed_at": "2026-11-21T12:35:56.059Z",
         "discovery_title": "MAI Code 2 and MAI Code 2 Flash in GitHub Copilot",
         "discovery_published_at": "2026-11-17T18:01:45.000Z"
       },
@@ -995,8 +995,8 @@
       "article_id": "2026-11-17-monitor-github-copilot-activity-through-microsoft-agent-365-4cc1e304d768",
       "source_url": "https://github.blog/changelog/2026-11-17-monitor-github-copilot-activity-through-microsoft-agent-365",
       "capture": {
-        "snapshot_sha256": "e63edbd135d70f95185aff002affececb04dff3322b1097f24344832e58884c9",
-        "observed_at": "2026-11-21T03:12:02.262Z",
+        "snapshot_sha256": "d2823474bbc676a6996e649588c5d15fefdbc743da7843b2b51b9591318b4d88",
+        "observed_at": "2026-11-21T12:35:57.077Z",
         "discovery_title": "Monitor GitHub Copilot activity through Microsoft Agent 365",
         "discovery_published_at": "2026-11-17T18:00:59.000Z"
       },
@@ -1040,8 +1040,8 @@
       "article_id": "2026-11-18-connect-supabase-box-calendly-and-more-to-copilot-8e2ce054ff04",
       "source_url": "https://github.blog/changelog/2026-11-18-connect-supabase-box-calendly-and-more-to-copilot",
       "capture": {
-        "snapshot_sha256": "5d885000793f25bdd0673fb1bc8506fbea4e80914215595fdfcd485cd85a15f1",
-        "observed_at": "2026-11-21T03:12:03.419Z",
+        "snapshot_sha256": "b6db3424b6981a8a6b630fe8f4e8e76391ccb92526196d2b0880bbdb4551253a",
+        "observed_at": "2026-11-21T12:35:58.036Z",
         "discovery_title": "Connect Supabase, Box, Calendly, and more to Copilot",
         "discovery_published_at": "2026-11-18T22:04:50.000Z"
       },
@@ -1070,8 +1070,8 @@
       "article_id": "2026-11-18-gemini-4-neon-in-github-copilot-362ee7bc4f19",
       "source_url": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "9689c5736655622ecea1acf855d2149e444b9ed92317b1a4cb1f617c4d91db9f",
-        "observed_at": "2026-11-21T03:12:04.292Z",
+        "snapshot_sha256": "1d4010e61ddde8636790043bf384c5b15c581d7febd4487e9d6e1b0063274701",
+        "observed_at": "2026-11-21T12:35:59.597Z",
         "discovery_title": "Gemini 4 Neon in GitHub Copilot",
         "discovery_published_at": "2026-11-18T21:49:21.000Z"
       },
