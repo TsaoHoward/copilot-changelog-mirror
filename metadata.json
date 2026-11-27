@@ -890,8 +890,8 @@
       "article_id": "2026-11-17-copilot-code-review-adaptive-effort-secret-detection-and-more-6beb5088ff95",
       "source_url": "https://github.blog/changelog/2026-11-17-copilot-code-review-adaptive-effort-secret-detection-and-more",
       "capture": {
-        "snapshot_sha256": "4a4ec13719b7c69f3086189445d92fb4075b0599c776ea083ce0640a468bffbd",
-        "observed_at": "2026-11-26T13:51:23.093Z",
+        "snapshot_sha256": "ccf4b4a80ee0cdfa782336d6fa5eb49155bc7f93dacb673a28c48f9325487230",
+        "observed_at": "2026-11-27T13:50:58.271Z",
         "discovery_title": "Copilot code review: Adaptive effort, secret detection, and more",
         "discovery_published_at": "2026-11-17T18:02:05.000Z"
       },
@@ -905,8 +905,8 @@
       "article_id": "2026-11-17-github-copilot-app-microsoft-ignite-releases-c381f1f20c43",
       "source_url": "https://github.blog/changelog/2026-11-17-github-copilot-app-microsoft-ignite-releases",
       "capture": {
-        "snapshot_sha256": "1c0f82df48f158eda1a22a48f8698ec233d701e990788c331cec262f7f038913",
-        "observed_at": "2026-11-26T13:51:23.528Z",
+        "snapshot_sha256": "fb16d43dc50559d1b12fb7a8ebbb2671eb41cf2e997774c239c5a1743a8cd311",
+        "observed_at": "2026-11-27T13:50:58.871Z",
         "discovery_title": "GitHub Copilot app, Microsoft Ignite releases",
         "discovery_published_at": "2026-11-17T18:03:42.000Z"
       },
@@ -980,8 +980,8 @@
       "article_id": "2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot-467e19c06d56",
       "source_url": "https://github.blog/changelog/2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "d7feae5a3faad233be16c71b80dd8ed0f8abd008b13f03c3fe625468cab2ab27",
-        "observed_at": "2026-11-27T04:14:05.377Z",
+        "snapshot_sha256": "b86eb7b779797597228dcbc5a861478fb636221255275f4a996bd1bd26576632",
+        "observed_at": "2026-11-27T13:51:00.664Z",
         "discovery_title": "MAI Code 2 and MAI Code 2 Flash in GitHub Copilot",
         "discovery_published_at": "2026-11-17T18:01:45.000Z"
       },
@@ -1070,8 +1070,8 @@
       "article_id": "2026-11-18-gemini-4-neon-in-github-copilot-362ee7bc4f19",
       "source_url": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "0d840aa1828412f229f46e8ec71e743e01302b142e72f1c48f96e23b6d8f6eea",
-        "observed_at": "2026-11-26T13:51:26.792Z",
+        "snapshot_sha256": "b8b2194358fa31f8c1406eba4f89dc24dec2775b686c08538e647c1ce46c06cd",
+        "observed_at": "2026-11-27T13:51:02.863Z",
         "discovery_title": "Gemini 4 Neon in GitHub Copilot",
         "discovery_published_at": "2026-11-18T21:49:21.000Z"
       },
@@ -1085,8 +1085,8 @@
       "article_id": "2026-11-25-copilot-code-review-billing-will-default-to-the-organization-69c0601d70f9",
       "source_url": "https://github.blog/changelog/2026-11-25-copilot-code-review-billing-will-default-to-the-organization",
       "capture": {
-        "snapshot_sha256": "8ef31e64cc8dcd77daa83f7902b1347e2e9e025e1c0c1b2bb4868a9ea327fbcf",
-        "observed_at": "2026-11-27T04:14:09.968Z",
+        "snapshot_sha256": "e8facf9f49696e3f7f170b4e0d74782311137d7fe804558233368c0074ddf92f",
+        "observed_at": "2026-11-27T13:51:03.383Z",
         "discovery_title": "Copilot code review billing will default to the organization",
         "discovery_published_at": "2026-11-25T22:18:03.000Z"
       },
