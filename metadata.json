@@ -950,8 +950,8 @@
       "article_id": "2026-11-17-github-copilot-fusion-updates-more-availability-benchmarks-and-models-75073ab85494",
       "source_url": "https://github.blog/changelog/2026-11-17-github-copilot-fusion-updates-more-availability-benchmarks-and-models",
       "capture": {
-        "snapshot_sha256": "a3d374e764a6d10db098e41aff5b769bcb319f34a8386bb7504344f42ba0a476",
-        "observed_at": "2026-11-26T13:51:24.006Z",
+        "snapshot_sha256": "0d28d4ecc27f9a4d034fc8659708d4cfd1007d4782df2c9b02207c819968ccaf",
+        "observed_at": "2026-11-27T04:14:03.698Z",
         "discovery_title": "GitHub Copilot Fusion updates: more availability, benchmarks, and models",
         "discovery_published_at": "2026-11-17T18:04:48.000Z"
       },
@@ -965,8 +965,8 @@
       "article_id": "2026-11-17-github-copilot-in-jetbrains-ignite-releases-453bf0492215",
       "source_url": "https://github.blog/changelog/2026-11-17-github-copilot-in-jetbrains-ignite-releases",
       "capture": {
-        "snapshot_sha256": "2b65de15c78844cc12d2a0a86a115ce2ab2d564e2b1369779954c5f639773186",
-        "observed_at": "2026-11-26T04:08:29.606Z",
+        "snapshot_sha256": "954ff7d9fbd1f025a504aa24fc1158ac7f010758dd699170602c26a031fe3f16",
+        "observed_at": "2026-11-27T04:14:04.813Z",
         "discovery_title": "GitHub Copilot in JetBrains, Ignite releases",
         "discovery_published_at": "2026-11-17T18:00:59.000Z"
       },
@@ -980,8 +980,8 @@
       "article_id": "2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot-467e19c06d56",
       "source_url": "https://github.blog/changelog/2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot",
       "capture": {
-        "snapshot_sha256": "9db958ac376275bbb6baa62ff0da1da4964cf0e700d9261d82e76cac387887fb",
-        "observed_at": "2026-11-26T13:51:25.064Z",
+        "snapshot_sha256": "d7feae5a3faad233be16c71b80dd8ed0f8abd008b13f03c3fe625468cab2ab27",
+        "observed_at": "2026-11-27T04:14:05.377Z",
         "discovery_title": "MAI Code 2 and MAI Code 2 Flash in GitHub Copilot",
         "discovery_published_at": "2026-11-17T18:01:45.000Z"
       },
@@ -1010,8 +1010,8 @@
       "article_id": "2026-11-17-openais-gpt-6-2-astra-and-gpt-6-2-sol-now-available-57e7781a892d",
       "source_url": "https://github.blog/changelog/2026-11-17-openais-gpt-6-2-astra-and-gpt-6-2-sol-now-available",
       "capture": {
-        "snapshot_sha256": "42dc78fa0408ae6cc64a9e7d5b66997860388a594b60a3ea4d485569cd38888b",
-        "observed_at": "2026-11-26T13:51:25.482Z",
+        "snapshot_sha256": "e6d04b6e19466698e1b005c16393d99306bbbd9f23268fbc5db9563050723773",
+        "observed_at": "2026-11-27T04:14:06.602Z",
         "discovery_title": "OpenAI’s GPT-6.2 Astra and GPT-6.2 Sol now available",
         "discovery_published_at": "2026-11-17T20:20:29.000Z"
       },
@@ -1040,8 +1040,8 @@
       "article_id": "2026-11-18-connect-supabase-box-calendly-and-more-to-copilot-8e2ce054ff04",
       "source_url": "https://github.blog/changelog/2026-11-18-connect-supabase-box-calendly-and-more-to-copilot",
       "capture": {
-        "snapshot_sha256": "d66a55cba714bbf5466044b25d7b300c156bad56f4c95f0ae8583c7e1a294ef8",
-        "observed_at": "2026-11-26T13:51:25.911Z",
+        "snapshot_sha256": "53a33251fcd86fb3ebe4c616be8e2212a86b9fa9cf82e602edce0b76977172e3",
+        "observed_at": "2026-11-27T04:14:07.597Z",
         "discovery_title": "Connect Supabase, Box, Calendly, and more to Copilot",
         "discovery_published_at": "2026-11-18T22:04:50.000Z"
       },
@@ -1055,8 +1055,8 @@
       "article_id": "2026-11-18-customize-github-copilot-for-your-team-6e93a4cc0991",
       "source_url": "https://github.blog/changelog/2026-11-18-customize-github-copilot-for-your-team",
       "capture": {
-        "snapshot_sha256": "54dd48eaead3dc249a601f2824f8b41b9714869660f206cd595e63d311008956",
-        "observed_at": "2026-11-26T04:08:34.141Z",
+        "snapshot_sha256": "b00b005b9b8246da2ecd92192ff5d113001bf2c680214b3d5f656ebaa74393b4",
+        "observed_at": "2026-11-27T04:14:08.928Z",
         "discovery_title": "Customize GitHub Copilot for your team",
         "discovery_published_at": "2026-11-18T16:00:13.000Z"
       },
@@ -1085,8 +1085,8 @@
       "article_id": "2026-11-25-copilot-code-review-billing-will-default-to-the-organization-69c0601d70f9",
       "source_url": "https://github.blog/changelog/2026-11-25-copilot-code-review-billing-will-default-to-the-organization",
       "capture": {
-        "snapshot_sha256": "a7094fa8baade355e3457447833bb74614be7e4d325277dc63954e462d9ff613",
-        "observed_at": "2026-11-26T13:51:26.883Z",
+        "snapshot_sha256": "8ef31e64cc8dcd77daa83f7902b1347e2e9e025e1c0c1b2bb4868a9ea327fbcf",
+        "observed_at": "2026-11-27T04:14:09.968Z",
         "discovery_title": "Copilot code review billing will default to the organization",
         "discovery_published_at": "2026-11-25T22:18:03.000Z"
       },
